@@ -1,1 +1,26 @@
-console.log('test connection')
+function init() {
+  console.log ('content loaded')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+window.addEventListener('DOMContentLoaded', init)
