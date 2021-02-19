@@ -13,7 +13,7 @@ function init() {
   const playerClass = 'playerCharacter'
 
   const weaponStartingPosition = 0
-  let weaponCurrentPosition = playerCurrentPosition -= 10
+  let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
   const enemyStartingPosition = 30
@@ -42,41 +42,37 @@ function init() {
     cells[position].classList.remove(character)
   }
 
-  function characterMovement(keyPress) {
+  function characterMoveset(keyPress) {
     const key = keyPress.keyCode
-    removeCharacter(playerCurrentPosition, playerClass)
-    if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
-  //right 
-      playerCurrentPosition++
-      addCharacter(playerCurrentPosition, playerClass)
-      console.log(playerCurrentPosition)
-    } else if ((key === 37 || key === 18) && playerCurrentPosition % width !== 0) {
-  //left
-      playerCurrentPosition--
-      addCharacter(playerCurrentPosition, playerClass)
-    } else if (key === 32) {
+    //character Movement
+    if (key === 39 || key === 68 || key === 37 || key === 18) {
+      removeCharacter(playerCurrentPosition, playerClass)
+      if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
+        playerCurrentPosition++
+        addCharacter(playerCurrentPosition, playerClass)
+        console.log(playerCurrentPosition)
+      } else if ((key === 37 || key === 18) && playerCurrentPosition % width !== 0) {
+        playerCurrentPosition--
+        addCharacter(playerCurrentPosition, playerClass)
+      } else{
+        addCharacter(playerCurrentPosition, playerClass)
+      }
+    } else if (key === 32){
+      weaponCurrentPosition = playerCurrentPosition -= width
       addCharacter(weaponCurrentPosition, weaponClassBolt)
+      playerCurrentPosition += width
       let bolt = setInterval(() => {
-        if (weaponCurrentPosition > 0){
-          removeCharacter(weaponCurrentPosition, weaponClassBolt) 
-          weaponCurrentPosition -= 10
+        removeCharacter(weaponCurrentPosition, weaponClassBolt)
+        if (weaponCurrentPosition > 0) {
+          weaponCurrentPosition -= width
           addCharacter(weaponCurrentPosition, weaponClassBolt)
-        } else if {
-
-          clearInterval(bolt) 
-        }
-  
+        } else {
+          clearInterval(bolt)
+        }        
       }, 100);
-    } else {
-      addCharacter(playerCurrentPosition, playerClass)
     }
-
   }
 
-  function characterWeapon(keyPress){
-    const key = keyPress.keyCode
-    
-  }
 
   // let enemyMovement = setInterval(() => {
   //   if (enemyCurrentPosition % width === width - 1) {
@@ -105,11 +101,7 @@ function init() {
   // }, 10000);
   // }
 
-document.addEventListener('keydown', characterWeapon )
-  
-
-
-document.addEventListener('keydown', characterMovement)
+document.addEventListener('keydown', characterMoveset)
 
 
 
