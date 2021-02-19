@@ -12,8 +12,6 @@ const playerStartingPosition = 94
 let playerCurrentPosition = playerStartingPosition
 const playerClass = 'playerCharacter'
 
-
-
 const enemyStartingPosition = 34
 let enemyCurrentPosition = enemyStartingPosition
 const enemyClass = 'enemyCharacter'
@@ -41,10 +39,6 @@ function removeCharacter(position, character) {
   cells[position].classList.remove(character)
 }
 
-const addEnemy = addCharacter(enemyCurrentPosition, enemyClass)
-const removeEnemy = removeCharacter(enemyCurrentPosition, enemyClass)
-
-
 function moveCharacter(keyPress) {
   const key = keyPress.keyCode
   removeCharacter(playerCurrentPosition, playerClass)
@@ -63,23 +57,37 @@ function moveCharacter(keyPress) {
 
 }
 
-let enemyMovement =  setInterval(() => {
-    removeEnemy
-    if (enemyCurrentPosition % width !== width - 1){
-    enemyCurrentPosition++
-    addEnemy
+// let enemyMovementRightAndDown =  setInterval(() => {
+//     removeCharacter(enemyCurrentPosition, enemyClass)
+//     if (enemyCurrentPosition % width !== width - 1){
+//       enemyCurrentPosition++
+//       addCharacter(enemyCurrentPosition, enemyClass)
+//     } else {
+//       enemyCurrentPosition += width
+//       addCharacter(enemyCurrentPosition, enemyClass)
+//       clearInterval(enemyMovementRightAndDown)
+//     }
+//   }, 1000);
+
+  let enemyMovementLeftAndDown = setInterval(() => {
+    removeCharacter(enemyCurrentPosition, enemyClass)
+    if (enemyCurrentPosition % width !== 0) {
+      enemyCurrentPosition--
+      addCharacter(enemyCurrentPosition, enemyClass)
     } else {
-      addEnemy
-      clearInterval(enemyMovement)
+      enemyCurrentPosition += 10
+      addCharacter(enemyCurrentPosition, enemyClass)
+      clearInterval(enemyMovementLeftAndDown)
     }
   }, 1000);
+  
   
   // enemyCurrentPosition += 10
   // enemyCurrentPosition--
   // enemyCurrentPosition += 10
 
 
-document.addEventListener('keydown', moveCharacter)
+document.addEventListener('keydown', characterMovement)
 
 
 
