@@ -15,6 +15,7 @@ const playerClass = 'playerCharacter'
 const enemyStartingPosition = 34
 let enemyCurrentPosition = 0
 const enemyClass = 'enemyCharacter'
+
 //! **************GAME BOARD**************************
 function createGrid() {
   for (let i = 0; i < cellCount; i++) {
@@ -41,14 +42,18 @@ function removeCharacter(position, character) {
 function moveCharacter(keyPress) {
   const key = keyPress.keyCode
   removeCharacter(playerCurrentPosition, playerClass)
-  if (key === 39 || key === 68) {
+  if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
+//right 
     playerCurrentPosition++
     addCharacter(playerCurrentPosition, playerClass)
     console.log(playerCurrentPosition)
-  } else if (key === 37 || key === 18) {
+  } else if ((key === 37 || key === 18) && playerCurrentPosition % width !== 0) {
+//left
     playerCurrentPosition--
     addCharacter(playerCurrentPosition, playerClass)
-  } 
+  } else{
+    addCharacter(playerCurrentPosition, playerClass)
+  }
 
 }
 
