@@ -12,6 +12,10 @@ function init() {
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
 
+  const weaponStartingPosition = 0
+  let weaponCurrentPosition = playerCurrentPosition -= 10
+  const weaponClassBolt = 'weaponBolt'
+
   const enemyStartingPosition = 30
   let enemyCurrentPosition = enemyStartingPosition
   const enemyClass = 'enemyCharacter'
@@ -50,10 +54,28 @@ function init() {
   //left
       playerCurrentPosition--
       addCharacter(playerCurrentPosition, playerClass)
-    } else{
+    } else if (key === 32) {
+      addCharacter(weaponCurrentPosition, weaponClassBolt)
+      let bolt = setInterval(() => {
+        if (weaponCurrentPosition > 0){
+          removeCharacter(weaponCurrentPosition, weaponClassBolt) 
+          weaponCurrentPosition -= 10
+          addCharacter(weaponCurrentPosition, weaponClassBolt)
+        } else if {
+
+          clearInterval(bolt) 
+        }
+  
+      }, 100);
+    } else {
       addCharacter(playerCurrentPosition, playerClass)
     }
 
+  }
+
+  function characterWeapon(keyPress){
+    const key = keyPress.keyCode
+    
   }
 
   // let enemyMovement = setInterval(() => {
@@ -69,7 +91,7 @@ function init() {
   //           clearInterval(enemyMovementRightAndDown)
   //         }
   //       }, 1000);
-  //   } else if (enemyCurrentPosition % width === width) {
+  //   } else if (enemyCurrentPosition % width === width) { 
   //     let enemyMovementLeftAndDown = setInterval(() => {
   //       removeCharacter(enemyCurrentPosition, enemyClass)
   //       if (enemyCurrentPosition % width !== 0) {
@@ -83,7 +105,7 @@ function init() {
   // }, 10000);
   // }
 
-  
+document.addEventListener('keydown', characterWeapon )
   
 
 
