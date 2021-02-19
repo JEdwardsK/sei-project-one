@@ -12,15 +12,11 @@ const playerStartingPosition = 94
 let playerCurrentPosition = playerStartingPosition
 const playerClass = 'playerCharacter'
 
-const addPlayer = addCharacter(playerCurrentPosition, playerClass)
-const removePlayer = removeCharacter(playerCurrentPosition, playerClass)
+
 
 const enemyStartingPosition = 34
 let enemyCurrentPosition = enemyStartingPosition
 const enemyClass = 'enemyCharacter'
-
-const addEnemy = addCharacter(enemyCurrentPosition, enemyClass)
-const removeEnemy = removeCharacter(enemyCurrentPosition, enemyClass)
 
 
 //! **************GAME BOARD**************************
@@ -45,21 +41,24 @@ function removeCharacter(position, character) {
   cells[position].classList.remove(character)
 }
 
+const addEnemy = addCharacter(enemyCurrentPosition, enemyClass)
+const removeEnemy = removeCharacter(enemyCurrentPosition, enemyClass)
+
 
 function moveCharacter(keyPress) {
   const key = keyPress.keyCode
-  removePlayer
+  removeCharacter(playerCurrentPosition, playerClass)
   if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
 //right 
     playerCurrentPosition++
-    addPlayer
+    addCharacter(playerCurrentPosition, playerClass)
     console.log(playerCurrentPosition)
   } else if ((key === 37 || key === 18) && playerCurrentPosition % width !== 0) {
 //left
     playerCurrentPosition--
-    addPlayer
+    addCharacter(playerCurrentPosition, playerClass)
   } else{
-    addPlayer
+    addCharacter(playerCurrentPosition, playerClass)
   }
 
 }
@@ -75,11 +74,11 @@ let enemyMovement =  setInterval(() => {
     }
   }, 1000);
   
-  enemyCurrentPosition += 10
-  enemyCurrentPosition--
-  enemyCurrentPosition += 10
+  // enemyCurrentPosition += 10
+  // enemyCurrentPosition--
+  // enemyCurrentPosition += 10
 
-document.addEventListener('')
+
 document.addEventListener('keydown', moveCharacter)
 
 
