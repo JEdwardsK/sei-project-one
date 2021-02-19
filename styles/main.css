@@ -42,8 +42,11 @@ body {
 
 }
 
-.gridEmpty{
-
+.weaponBolt{
+  background-image: url('../assets/laserBolt.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
 }
 
 .enemyCharacter{
