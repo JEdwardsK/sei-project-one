@@ -1,5 +1,5 @@
 function init() {
-
+const testString = 'i am a test string to test this works'
 // Variables ***************************** //
 
 const grid = document.querySelector('.grid')
@@ -57,10 +57,12 @@ function moveCharacter(keyPress) {
 
 }
 
+let enemyMovement =  setInterval(() => {
+    console.log(testString)
+  }, 1000);
 
 
-
-
+document.addEventListener('')
 document.addEventListener('keydown', moveCharacter)
 
 
