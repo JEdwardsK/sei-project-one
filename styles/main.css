@@ -1,5 +1,10 @@
-.body{
+* {
+  box-sizing: border-box;
+}
 
+body {
+  height: 100vh;
+  margin: 0;
 }
 
 .grid-wrapper {
@@ -30,6 +35,10 @@
 }
 
 .playerCharacter{
+  background-image: url('../assets/alienBlack.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
 
 }
 

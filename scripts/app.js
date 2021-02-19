@@ -1,5 +1,4 @@
 function init() {
-  console.log ('content loaded')
 
 // Variables ***************************** //
 
@@ -9,15 +8,25 @@ const height = 10
 const cellCount = width * height
 const cells = []
 
+const playerStartingPosition = 94
+let currentCatPosition = 0
+//! **************GAME BOARD**************************
 function createGrid() {
-  for (let i = 0; i <= cellCount; i++) {
+  for (let i = 0; i < cellCount; i++) {
   const cell = document.createElement('div')
-  cell.innerHTML = i
+  cell.innerText = i
   grid.appendChild(cell)
+  cells.push(cell)
   }
 }
-
 createGrid()
+
+function addCharacterToBoard() {
+  cells[playerStartingPosition].classlist.add('playerCharacter')
+}
+addCharacterToBoard()
+
+
 
 
 
