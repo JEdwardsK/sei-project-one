@@ -9,7 +9,7 @@ const cellCount = width * height
 const cells = []
 
 const playerStartingPosition = 94
-let playerCurrentPosition = 94
+let playerCurrentPosition = playerStartingPosition
 const playerClass = 'playerCharacter'
 
 const enemyStartingPosition = 34
@@ -23,13 +23,13 @@ function createGrid() {
   grid.appendChild(cell)
   cells.push(cell)
   }
-addStartingPositions(playerStartingPosition, playerClass)
-addStartingPositions(enemyStartingPosition, enemyClass)
+addCharacter(playerStartingPosition, playerClass)
+addCharacter(enemyStartingPosition, enemyClass)
 }
 console.log(cells)
 createGrid()
 
-function addStartingPositions(position, characterType) {
+function addCharacter(position, characterType) {
   cells[position].classList.add([characterType])
 }
 
@@ -43,9 +43,11 @@ function moveCharacter(keyPress) {
   removeCharacter(playerCurrentPosition, playerClass)
   if (key === 39 || key === 68) {
     playerCurrentPosition++
+    addCharacter(playerCurrentPosition, playerClass)
     console.log(playerCurrentPosition)
   } else if (key === 37 || key === 18) {
     playerCurrentPosition--
+    addCharacter(playerCurrentPosition, playerClass)
   } 
 
 }
