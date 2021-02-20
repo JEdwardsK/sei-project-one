@@ -9,7 +9,7 @@ function init() {
   const cellCount = width * height
   const cells = []
 
-  const playerStartingPosition = 38
+  const playerStartingPosition = 94
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
 
@@ -24,6 +24,7 @@ function init() {
   const scoreModifier1 = 10
 
   let scoreCounter = 0
+  
 
   //! **********************GAME START FUNCTIONS*****************************
   function createGrid() {
@@ -34,7 +35,7 @@ function init() {
     cells.push(cell)
     }
   addCharacter(playerStartingPosition, playerClass)
-  addCharacter(enemyStartingPosition, enemyClass)
+  addEnemyRow()
   }
   createGrid()
 
@@ -69,59 +70,83 @@ function init() {
       addCharacter(weaponCurrentPosition, weaponClassBolt)
       playerCurrentPosition += width
       let bolt = setInterval(() => {
-        removeCharacter(weaponCurrentPosition, weaponClassBolt)
+      removeCharacter(weaponCurrentPosition, weaponClassBolt)
         if (weaponCurrentPosition > width) {
           weaponCurrentPosition -= width
           addCharacter(weaponCurrentPosition, weaponClassBolt)
         } else {
           weaponCurrentPosition = weaponStartingPosition
           clearInterval(bolt)
-        }        
-      }, 100);
+        }
+        cells.forEach(cell => {
+          let cellPosition = cells.indexOf(cell)
+          const cellClass = cells[cellPosition].classList.value
+          if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
+            removeCharacter(cellPosition,enemyClass)
+            removeCharacter(cellPosition,weaponClassBolt)
+            //!add explosion for short time then remove
+            scoreCounter += scoreModifier01
+            clearInterval(bolt)
+          }
+        });        
+      }, 75);
     } 
   }
   
-  // function addEnemyRow(){
-  //   cells[34, 36].classList.add(enemyClass)
-  // }
-  // addEnemyRow()
-    const enemyMovementRightAndDown =  setInterval(() => {
-      cells.forEach(cell => {
-        let cellPosition = cells.indexOf(cell)
-        const cellClass = cells[cellPosition].classList.value
-        //!may cause problems if order change dependant on which class is added last, if so add || to catch reverse 
-        if ( cellClass === `${playerClass} ${enemyClass}`) {
-          removeCharacter(cellPosition,enemyClass)
-          removeCharacter(cellPosition,playerClass)
-          //window.alert('GAME OVER YOU LOSE')
-        }
-        if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
-          removeCharacter(cellPosition,enemyClass)
-          removeCharacter(cellPosition,weaponClassBolt)
-          //!add explosion for short time then remove
-          scoreCounter += scoreModifier1
-          return scoreCounter
-        }
-      });
-      removeCharacter(enemyCurrentPosition, enemyClass)
-      if (enemyCurrentPosition % width !== width - 1){
-        enemyCurrentPosition++
-        addCharacter(enemyCurrentPosition, enemyClass)
-      } else {
-      enemyCurrentPosition += width
-      addCharacter(enemyCurrentPosition, enemyClass)
-      clearInterval(enemyMovementRightAndDown)
-      }
+  function addEnemyRow(){
+    for (let i = (enemyStartingPosition - 2); i <= (enemyStartingPosition + 2); i++) {
+      addCharacter(i, enemyClass)
+    }
+  }
+  let groupPositions = []
+  cells.forEach(cell => {
+    if(cell.classList.value === enemyClass){
+    console.log(cells.indexOf(cell))
+    groupPositions.push(cells.indexOf(cell))
+    }
+  });
+  console.log(groupPositions)
+  console.log(typeof groupPositions[1])
 
-    }, 1000);
-    const enemyMovementLeftAndDown = setInterval(() => {
-      removeCharacter(enemyCurrentPosition, enemyClass)
-      if (enemyCurrentPosition % width !== 0) {
-        enemyCurrentPosition--
-        addCharacter(enemyCurrentPosition, enemyClass)
-        clearInterval(enemyMovementLeftAndDown)
-      }
-    }, 1000);
+
+
+  // for (let i = 0; i < groupPositions.length; i++){
+  //   const enemyMovementRightAndDown =  setInterval(() => {
+  //     let currentIndex = groupPositions[i] 
+  //     removeCharacter(currentIndex, enemyClass)
+  //    // cells.forEach(cell => {
+  //       // let cellPosition = cells.indexOf(cell)
+  //       //const cellClass = cells[cellPosition].classList.value
+  //       // //!may cause problems if order change dependant on which class is added last, if so add || to catch reverse 
+  //       let cellClass = currentIndex.classList.value
+  //       if ( cellClass === `${playerClass} ${enemyClass}`) {
+  //         removeCharacter(currentIndex,enemyClass)
+  //         removeCharacter(currentIndex,playerClass)
+  //         clearInterval(enemyMovementRightAndDown)
+  //         window.alert('GAME OVER YOU LOSE')
+  //       }
+  //   //  });
+  //     for (let i = 0; i < groupPositions.length; i++){
+  //       removeCharacter(currentIndex, enemyClass)
+  //       if (currentIndex % width !== width - 1){
+  //         currentIndex++
+  //         addCharacter(currentIndex, enemyClass)
+  //       } else {
+  //         currentIndex += width
+  //         addCharacter(currentIndex, enemyClass)
+  //         clearInterval(enemyMovementRightAndDown)
+  //       }
+  //     }
+  //   }, 1000);
+    // const enemyMovementLeftAndDown = setInterval(() => {
+    //   removeCharacter(enemyCurrentPosition, enemyClass)
+    //   if (enemyCurrentPosition % width !== 0) {
+    //     enemyCurrentPosition--
+    //     addCharacter(enemyCurrentPosition, enemyClass)
+    //     clearInterval(enemyMovementLeftAndDown)
+    //   }
+    // }, 1000);
+  //}
 
   
 document.addEventListener('keydown', characterMoveset)
