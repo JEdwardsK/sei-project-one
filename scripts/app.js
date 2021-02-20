@@ -111,6 +111,10 @@ function init() {
       removeCharacter(cellPosition,playerClass)
       window.alert('GAME OVER YOU LOSE')
     }
+    if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
+      removeCharacter(cellPosition,enemyClass)
+      removeCharacter(cellPosition,weaponClassBolt)
+      //!add explosion for short time then remove
 
     }
   });
