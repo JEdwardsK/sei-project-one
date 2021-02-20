@@ -104,10 +104,14 @@ function init() {
 
   cells.forEach(cell => {
     let cellPosition = cells.indexOf(cell)
+    const cellClass = cells[cellPosition].classList.value
   //   console.log (cells.indexOf(cell))
-    if (cells[cellPosition].classList.value === `${playerClass} ${enemyClass}`) {
+    if ( cellClass === `${playerClass} ${enemyClass}` || `${enemyClass} ${playerClass}`) {
       removeCharacter(cellPosition,enemyClass)
       removeCharacter(cellPosition,playerClass)
+      window.alert('GAME OVER YOU LOSE')
+    }
+
     }
   });
 document.addEventListener('keydown', characterMoveset)
