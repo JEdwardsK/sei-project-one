@@ -85,7 +85,6 @@ function init() {
             removeCharacter(cellPosition,enemyClass)
             removeCharacter(cellPosition,weaponClassBolt)
             //!add explosion for short time then remove
-            scoreCounter += scoreModifier01
             clearInterval(bolt)
           }
         });        

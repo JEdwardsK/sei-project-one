@@ -1,14 +1,29 @@
+/* background colour = #2e245d 
+
+
+*/
+
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  height: 100vh;
+  height: 1080px;
+  width:1920px;
   margin: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-image: url('/assets/background.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+
 }
 
 .grid-wrapper {
-  height: 100vh;
+  height: 800px;
+  width: 1200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,8 +37,8 @@ body {
   flex-wrap: wrap;
   height: 100%;
   justify-content: center;
-  height: 600px;
-  width: 600px;
+  height: 800px;
+  width: 1200px;
   border: 2px black;
 }
 
