@@ -55,7 +55,7 @@ function init() {
     } else if ((key === 37 || key === 18) && playerCurrentPosition % width !== 0) {
       playerCurrentPosition--
       addCharacter(playerCurrentPosition, playerClass)
-    } else{
+    } else {
       addCharacter(playerCurrentPosition, playerClass)
     } 
   }
