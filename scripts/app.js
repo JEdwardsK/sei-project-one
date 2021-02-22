@@ -29,13 +29,13 @@ function init() {
   //! **********************GAME START FUNCTIONS*****************************
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
-    const cell = document.createElement('div')
-    cell.innerText = i
-    grid.appendChild(cell)
-    cells.push(cell)
+      const cell = document.createElement('div')
+      cell.innerText = i
+      grid.appendChild(cell)
+      cells.push(cell)
     }
-  addCharacter(playerStartingPosition, playerClass)
-  addEnemyRow()
+    addCharacter(playerStartingPosition, playerClass)
+    addEnemyRow()
   }
   createGrid()
 
@@ -70,7 +70,7 @@ function init() {
       addCharacter(weaponCurrentPosition, weaponClassBolt)
       playerCurrentPosition += width
       let bolt = setInterval(() => {
-      removeCharacter(weaponCurrentPosition, weaponClassBolt)
+        removeCharacter(weaponCurrentPosition, weaponClassBolt)
         if (weaponCurrentPosition > width) {
           weaponCurrentPosition -= width
           addCharacter(weaponCurrentPosition, weaponClassBolt)
@@ -100,8 +100,8 @@ function init() {
   let groupPositions = []
   cells.forEach(cell => {
     if(cell.classList.value === enemyClass){
-    console.log(cells.indexOf(cell))
-    groupPositions.push(cells.indexOf(cell))
+      console.log(cells.indexOf(cell))
+      groupPositions.push(cells.indexOf(cell))
     }
   });
   console.log(groupPositions)
@@ -137,18 +137,18 @@ function init() {
   //       }
   //     }
   //   }, 1000);
-    // const enemyMovementLeftAndDown = setInterval(() => {
-    //   removeCharacter(enemyCurrentPosition, enemyClass)
-    //   if (enemyCurrentPosition % width !== 0) {
-    //     enemyCurrentPosition--
-    //     addCharacter(enemyCurrentPosition, enemyClass)
-    //     clearInterval(enemyMovementLeftAndDown)
-    //   }
-    // }, 1000);
+  // const enemyMovementLeftAndDown = setInterval(() => {
+  //   removeCharacter(enemyCurrentPosition, enemyClass)
+  //   if (enemyCurrentPosition % width !== 0) {
+  //     enemyCurrentPosition--
+  //     addCharacter(enemyCurrentPosition, enemyClass)
+  //     clearInterval(enemyMovementLeftAndDown)
+  //   }
+  // }, 1000);
   //}
 
   
-document.addEventListener('keydown', characterMoveset)
+  document.addEventListener('keydown', characterMoveset)
 
 
 
