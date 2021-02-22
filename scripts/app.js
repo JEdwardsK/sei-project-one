@@ -23,8 +23,22 @@ function init() {
   const enemyClass = 'enemyCharacter'
   const scoreModifier1 = 10
 
-  let scoreCounter = 0
-  
+  let scoreCounter = 1
+  let lifeCounter = 1
+  let currentLevel = 1
+
+  // // game info board variables
+  // const displayScore = document.querySelector('.displayScore')
+  // const displayLife = document.querySelector('.displayLife')
+  // const displayLevel = document.querySelector('.displayLevel')
+  // const displayPowerBar = document.querySelector('.displayPowerBar')
+  // const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
+
+  // //game information board innertext
+  // displayScore.innerText = `Score ${scoreCounter}`
+  // displayLife.innerText = `${lifeCounter} lives remaining`
+  // displayLevel.innerText = `Level: ${currentLevel}`
+  // displayeCurrentBonusWeapon.innerText = 'placeholder'
 
   //! **********************GAME START FUNCTIONS*****************************
   function createGrid() {
