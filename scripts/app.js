@@ -62,11 +62,12 @@ function init() {
   }
 
   function characterMovement(key) {
+
     removeCharacter(playerCurrentPosition, playerClass)
     if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
       playerCurrentPosition++
       addCharacter(playerCurrentPosition, playerClass)
-    } else if ((key === 37 || key === 18) && playerCurrentPosition % width !== 0) {
+    } else if ((key === 37 || key === 65) && playerCurrentPosition % width !== 0) {
       playerCurrentPosition--
       addCharacter(playerCurrentPosition, playerClass)
     } else {
@@ -77,7 +78,8 @@ function init() {
 
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
-    if (key === 39 || key === 68 || key === 37 || key === 18){
+    console.log(key)
+    if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
       weaponCurrentPosition = playerCurrentPosition -= width
@@ -161,7 +163,29 @@ function init() {
   // }, 1000);
   //}
 
-  
+  //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
+  /*OPTION 1 - positive counter
+   * 
+  function calculateEnemmySpeed() {
+    let enemyCount = 0
+    cells.forEach(cell => {
+      if (cell.classList === enemyClass){
+        enemyCount++
+      }  
+    });
+    console.log(enemyCount)
+    if( enemyCount > 10) {
+      //increase speed by to level two
+    }
+    if (enemyCount > 15) {
+      //increase speed to level three
+    }
+    if (enemyCount > 20) {
+      // speednincrease to max levvel
+    }
+  }
+
+  //? 
   document.addEventListener('keydown', characterMoveset)
 
 
