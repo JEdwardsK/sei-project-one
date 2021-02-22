@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = 34
+  const enemyStartingPosition = 0
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -49,7 +49,8 @@ function init() {
       cells.push(cell)
     }
     addCharacter(playerStartingPosition, playerClass)
-    addEnemyRow()
+    //addEnemyRow()
+    addCharacter(enemyStartingPosition, enemyClass)
   }
   createGrid()
 
@@ -62,7 +63,6 @@ function init() {
   }
 
   function characterMovement(key) {
-
     removeCharacter(playerCurrentPosition, playerClass)
     if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
       playerCurrentPosition++
@@ -113,15 +113,38 @@ function init() {
       addCharacter(i, enemyClass)
     }
   }
-  let groupPositions = []
-  cells.forEach(cell => {
-    if(cell.classList.value === enemyClass){
-      console.log(cells.indexOf(cell))
-      groupPositions.push(cells.indexOf(cell))
-    }
-  });
-  console.log(groupPositions)
-  console.log(typeof groupPositions[1])
+  let test
+  // let enemyMovement = setInterval(() => {
+  //   for (i = enemyCurrentPosition; i < cells.length; i++) {
+  //     removeCharacter(enemyCurrentPosition, enemyClass)
+  //     if ({let enemyPreviousPosition = enemyCurrentPosition
+  //     if (enemyPreviousPosition === (enemyCurrentPosition -= 1)) {
+  //       if(enemyCurrentPosition % 10 === 0) {
+  //         enemyCurrentPosition += 10
+  //         addCharacter(enemyCurrentPosition, enemyClass)
+  //       } else{
+  //         enemyCurrentPosition++
+  //         addCharacter(enemyCurrentPosition, enemyClass)
+  //       }
+  //     } else if (enemyPreviousPosition === (enemyCurrentPosition += 1)) {
+  //       enemyCurrentPosition++
+  //       addCharacter(enemyCurrentPosition, enemyCurrentPosition)
+  //     } else if (enemyPreviousPosition === (enemyCurrentPosition -= 10)) {
+  //       if (enemyCurrentPosition % width === 0)
+  //     }}
+  // }, interval);
+
+
+
+  // let groupPositions = []
+  // cells.forEach(cell => {
+  //   if(cell.classList.value === enemyClass){
+  //     console.log(cells.indexOf(cell))
+  //     groupPositions.push(cells.indexOf(cell))
+  //   }
+  // });
+  // console.log(groupPositions)
+  // console.log(typeof groupPositions[1])
 
 
 
@@ -164,8 +187,8 @@ function init() {
   //}
 
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
-  /*OPTION 1 - positive counter
-   * 
+  //? OPTION 1 - positive counter
+  /* 
   function calculateEnemmySpeed() {
     let enemyCount = 0
     cells.forEach(cell => {
@@ -184,8 +207,9 @@ function init() {
       // speednincrease to max levvel
     }
   }
-
-  //? 
+  */
+  //? p
+  //? OPTION 2 - NEGATIVE COUNTER
   document.addEventListener('keydown', characterMoveset)
 
 
