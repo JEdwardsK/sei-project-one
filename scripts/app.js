@@ -117,25 +117,30 @@ function init() {
   console.log('test point 1 =>', enemyPreviousPosition)
   let enemyMovement = setInterval(() => {
     cells.forEach(cell => {
-      
       if (cell.classList.value === enemyClass) {
+        console.log(`cell value at start => ${cells.indexOf(cell)}`)
+        removeCharacter(enemyCurrentPosition, enemyClass)
         if (enemyPreviousPosition === undefined){
-          removeCharacter(enemyCurrentPosition, enemyClass)
           console.log('test point 2 =>', enemyPreviousPosition)
           enemyPreviousPosition = enemyCurrentPosition
           enemyCurrentPosition++
           addCharacter(enemyCurrentPosition, enemyClass)
           console.log('test point 3 =>', enemyPreviousPosition)
           console.log('current position =>', enemyCurrentPosition)
-        } else if (enemyPreviousPosition === (enemyCurrentPosition -= 1)) {
+        } else if (enemyPreviousPosition === (enemyCurrentPosition - 1)) {
+          console.log('previous minus one(move right)')
           if (enemyCurrentPosition % 10 === 0) {
+            console.log('i fail at mod 10 = 0')
             enemyCurrentPosition += 10
             addCharacter(enemyCurrentPosition, enemyClass)
           } else {
+            console.log('i fail on the secnd move right')
             enemyCurrentPosition++
+            console.log(enemyCurrentPosition)
             addCharacter(enemyCurrentPosition, enemyClass)
           }
-        } else if (enemyPreviousPosition === (enemyCurrentPosition += 1)) {
+        } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
+          console.log('previous plus one (move left)')
           if (enemyCurrentPosition % width === (width - 1)) {
             enemyCurrentPosition += 10
             addCharacter(enemyCurrentPosition, enemyClass)
@@ -144,6 +149,7 @@ function init() {
             addCharacter(enemyCurrentPosition, enemyCurrentPosition)
           } 
         } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
+          console.log('previous plus 10 (move down')
           if (enemyCurrentPosition % width === 0) {
             enemyCurrentPosition++
             addCharacter(enemyCurrentPosition, enemyClass)
