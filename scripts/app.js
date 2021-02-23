@@ -21,6 +21,7 @@ function init() {
   let enemyStartingPosition = [45]
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
+  const weaponFireProbability = 3
   
   const enemyClass = 'enemyCharacter'
   const scoreModifier1 = 10
@@ -196,9 +197,51 @@ function init() {
   
   }
   function enemyWeaponFire() {
+    /**
+     * enemy fires a bolt
+     * bolt moves verticaally down
+     * if bolt hits player, player loses one life(shield)
+     * if player loses all life (life counter === 0, player loses run Game Over)
+     * interval boundary is floor
+     */
+    let timeid = 0
+    // let randomCalc = setInterval(() => {
+    //   let probabilityValue = parseInt((Math.random()) * weaponFireProbability) + 1
+    // }, 1000);
+    let randomCalc = 1
+    enemyCurrentPosition.forEach(enemy => {
+      const isEnemyClass = cells[enemy].classList.value === enemyClass
+      const enemyWeaponPosition = cells[enemy + width]
+      let newEnemyWeaponPosition = enemy + width
+      if (randomCalc === 1 && isEnemyClass) {
+        addCharacter((enemy + width), enemyWeaponBolt)
+        const useBoltWeapon = setInterval(() => {
+          removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+          if (newEnemyWeaponPosition < ((height - 1) * width)) {
+            console.log(newEnemyWeaponPosition)
+            newEnemyWeaponPosition += width
+            addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+          }
 
-  }
+        }, 1000)
+      }
+      
+    })
   
+  }
+ 
+
+  enemyWeaponFire ()
+
+      
+  //   enemyCurrentPosition.forEach(enemy => {
+  // }
+    
+  // if(newEnemyWeaponPosition = newEnemyWeaponPosition + width
+  // addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+  // if (newEnemyWeaponPosition >= ((height - 1) * width)) {
+  //   removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+  //   clearInterval(useBoltWeapon)
   // console.log('is floor', (height - 1) * width)
   
   // // let timer = 0
@@ -330,12 +373,11 @@ function init() {
   */
   //? p
   //? OPTION 2 - NEGATIVE COUNTER
-  enemyRemainingCheck()
+  //enemyRemainingCheck()
   
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
       const enemyCounter = enemyCurrentPosition.length
-      console.log(enemyCounter)
       if (enemyCounter === 0) {
         gameWin()
         clearInterval(enemyRemainingCheck)
