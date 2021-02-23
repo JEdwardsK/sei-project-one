@@ -182,7 +182,7 @@ function init() {
   
   }
 
-   enemyMovemnt()
+  // enemyMovemnt()
  
   // console.log('is floor', (height - 1) * width)
   
@@ -316,18 +316,20 @@ function init() {
   //? p
   //? OPTION 2 - NEGATIVE COUNTER
   document.addEventListener('keydown', characterMoveset)
+  enemyRemainingCheck()
+  
+  function enemyRemainingCheck() {
+    const enemyRemainingCheck = setInterval(() => {
+      let enemyCounter = enemyCurrentPosition.length
+      console.log(enemyCounter)
+      if (enemyCounter === 0) {
+        console.log('game over you win!')
+        clearInterval(enemyRemainingCheck)
+      }
+    }, 100);
 
-
-
-
-
-
-
-
-
-
-
-
+  }
+    
 
 
 
