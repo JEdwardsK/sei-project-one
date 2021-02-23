@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = [10, 11]
+  const enemyStartingPosition = [33,34,35,43,44,45]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -85,7 +85,7 @@ function init() {
       weaponCurrentPosition = playerCurrentPosition -= width
       addCharacter(weaponCurrentPosition, weaponClassBolt)
       playerCurrentPosition += width
-      let bolt = setInterval(() => {
+      const bolt = setInterval(() => {
         removeCharacter(weaponCurrentPosition, weaponClassBolt)
         if (weaponCurrentPosition > width) {
           weaponCurrentPosition -= width
@@ -95,7 +95,7 @@ function init() {
           clearInterval(bolt)
         }
         cells.forEach(cell => {
-          let cellPosition = cells.indexOf(cell)
+          const cellPosition = cells.indexOf(cell)
           const cellClass = cells[cellPosition].classList.value
           if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
             removeCharacter(cellPosition,enemyClass)
@@ -125,11 +125,11 @@ function init() {
   // ! Update the position
   // ! Add Classes Again
 
-  let timer = 0
+  //let timer = 0
   // right = 1, left = -1
   let direction = 1
 
-  let enemyMovement = setInterval(() => {
+  const enemyMovement = setInterval(() => {
     //*define edges
     const isOnEdge = cells.some((item, index) => {
       const hasEnemy = item.classList.value === enemyClass
