@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = [33]
+  const enemyStartingPosition = [10, 11, 12, 20, 21]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -126,30 +126,43 @@ function init() {
   // ! Add Classes Again
 
   let timer = 0
+  // right = 1, left = -1
+  let direction = 1
 
   let enemyMovement = setInterval(() => {
-    const left = - 1
-    const right = + 1
-    const down = + width
-    const up = - width
     console.log(testString)
-    enemyStartingPosition.forEach(enemy => {
+
+    const isOnEdge = cells.some((item, index) => {
+      const hasEnemy = item.classList.value === enemyClass;
+      const isEdge = direction === 1 ? (index % width === (width - 1)) : (index % width === 0)
+      if (hasEnemy && isEdge){
+        return true 
+      }
+    })
+    if (isOnEdge) {
+      enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
+      direction = - direction
+    }
+
+    // index % width === 0
+
+    enemyCurrentPosition.forEach((enemy, index) => {
       const enemyPosition = cells[enemy].classList.value
       if (enemyPosition === enemyClass) {
-        removeCharacter(enemy, enemyClass)
-        console.log ('before =>', enemy, 'after =>', enemy + right)
-        enemy = enemy + right
-        addCharacter(enemy, enemyClass)
+        // TODO: check if the index is between 0-length
+        if (enemyCurrentPosition[index] !== enemyCurrentPosition[index - 1]) {
+          removeCharacter(enemy, enemyClass)
+        }
+        const newEnemyPosition = enemy + direction
+        enemyCurrentPosition[index] = newEnemyPosition
+        addCharacter(newEnemyPosition, enemyClass)
+        console.log(enemyCurrentPosition)
       }
-      // if (enemy % width === (0 || (width - 1))) {
-      //   clearInterval(enemyMovement)
-      // }
-
-      
     });
+      // if (enemyCurrentPosition[enemyCurrentPosition.length - 1] )
     timer++
     if(timer === 5) {
-      clearInterval(enemyMovement)
+      // clearInterval(enemyMovement)
     }
   }, 1000);
   
