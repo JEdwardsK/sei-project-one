@@ -82,32 +82,35 @@ function init() {
     if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
-      weaponCurrentPosition = playerCurrentPosition -= width
-      addCharacter(weaponCurrentPosition, weaponClassBolt)
-      playerCurrentPosition += width
-      const bolt = setInterval(() => {
-        removeCharacter(weaponCurrentPosition, weaponClassBolt)
-        if (weaponCurrentPosition > width) {
-          weaponCurrentPosition -= width
-          addCharacter(weaponCurrentPosition, weaponClassBolt)
-        } else {
-          weaponCurrentPosition = weaponStartingPosition
-          clearInterval(bolt)
-        }
-        cells.forEach(cell => {
-          const cellPosition = cells.indexOf(cell)
-          const cellClass = cells[cellPosition].classList.value
-          if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
-            removeCharacter(cellPosition,enemyClass)
-            removeCharacter(cellPosition,weaponClassBolt)
-            //!add explosion for short time then remove
-            clearInterval(bolt)
-          }
-        })        
-      }, 75)
+      useWeapon()
     } 
   }
   
+  function useWeapon() {
+    weaponCurrentPosition = playerCurrentPosition -= width
+    addCharacter(weaponCurrentPosition, weaponClassBolt)
+    playerCurrentPosition += width
+    const bolt = setInterval(() => {
+      removeCharacter(weaponCurrentPosition, weaponClassBolt)
+      if (weaponCurrentPosition > width) {
+        weaponCurrentPosition -= width
+        addCharacter(weaponCurrentPosition, weaponClassBolt)
+      } else {
+        weaponCurrentPosition = weaponStartingPosition
+        clearInterval(bolt)
+      }
+      cells.forEach(cell => {
+        const cellPosition = cells.indexOf(cell)
+        const cellClass = cells[cellPosition].classList.value
+        if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
+          removeCharacter(cellPosition,enemyClass)
+          removeCharacter(cellPosition,weaponClassBolt)
+          //!add explosion for short time then remove
+          clearInterval(bolt)
+        }
+      })        
+    }, 75)
+  }
   function addEnemyRow(){
     enemyStartingPosition.forEach(enemy => {
       cells[enemy].classList.add(enemyClass)
@@ -125,57 +128,62 @@ function init() {
   // ! Update the position
   // ! Add Classes Again
 
-  //let timer = 0
-  // right = 1, left = -1
-  let direction = 1
+  // //let timer = 0
+  // // right = 1, left = -1
+  function enemyMovemnt() {
+    let direction = 1
 
-  const enemyMovement = setInterval(() => {
-    //*define edges
-    const isOnEdge = cells.some((item, index) => {
-      const hasEnemy = item.classList.value === enemyClass
-      const isEdge = direction === 1 ? (index % width === (width - 1)) : (index % width === 0)
-      if (hasEnemy && isEdge){
-        return true 
-      }
-    })
-    //*remove enemy
-    enemyCurrentPosition.forEach(eachEnemy => {
-      removeCharacter(eachEnemy, enemyClass)
-    })
-    //*move down if on edge
-    if (isOnEdge) {
-      console.log('Move down')
-      enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
-      direction = direction * -1
-      console.log(direction)
-    //*mutate array left or right
-    } else {
-      enemyCurrentPosition.forEach((enemy, index) => {
-        enemyCurrentPosition[index] = enemy + direction
+    const enemyMovement = setInterval(() => {
+      //*define edges
+      const isOnEdge = cells.some((item, index) => {
+        const hasEnemy = item.classList.value === enemyClass
+        const isEdge = direction === 1 ? (index % width === (width - 1)) : (index % width === 0)
+        if (hasEnemy && isEdge){
+          return true 
+        }
       })
-    }
-    //?add enemy back
-    enemyCurrentPosition.forEach(eachEnemy => {
-      addCharacter(eachEnemy, enemyClass)
-    })
-    const isOnFloor = cells.some((item, index) => {
-      const hasEnemy = item.classList.value === enemyClass
-      const isFloor = (height - 1) * width
-      if (index >= isFloor && hasEnemy) {
-        return true
+      //*remove enemy
+      enemyCurrentPosition.forEach(eachEnemy => {
+        removeCharacter(eachEnemy, enemyClass)
+      })
+      //*move down if on edge
+      if (isOnEdge) {
+        console.log('Move down')
+        enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
+        direction = direction * -1
+        console.log(direction)
+      //*mutate array left or right
+      } else {
+        enemyCurrentPosition.forEach((enemy, index) => {
+          enemyCurrentPosition[index] = enemy + direction
+        })
       }
-    })
-    if (isOnFloor) {
-      console.log('game over')
-      clearInterval(enemyMovement)
-    }
-  }, 400)
-
-  console.log('is floor', (height - 1) * width)
+      //*add enemy back
+      enemyCurrentPosition.forEach(eachEnemy => {
+        addCharacter(eachEnemy, enemyClass)
+      })
+      const isOnFloor = cells.some((item, index) => {
+        const hasEnemy = item.classList.value === enemyClass
+        const isFloor = (height - 1) * width
+        if (index >= isFloor && hasEnemy) {
+          return true
+        }
+      })
+      if (isOnFloor) {
+        console.log('game over')
+        clearInterval(enemyMovement)
+      }
+    }, 400)
   
-  // let timer = 0
-  // let enemyPreviousPosition
-  // console.log('test point 1 =>', enemyPreviousPosition)
+  }
+
+  //?enemyMovemnt()
+ 
+  // console.log('is floor', (height - 1) * width)
+  
+  // // let timer = 0
+  // // let enemyPreviousPosition
+  // // console.log('test point 1 =>', enemyPreviousPosition)
   // let enemyMovement = setInterval(() => {
   //   console.log('timer counter =>', timer)
   //   cells.forEach(cell => {
