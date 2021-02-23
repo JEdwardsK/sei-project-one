@@ -125,20 +125,7 @@ function init() {
   // ! Update the position
   // ! Add Classes Again
 
-  let enemyMovement = setInterval(() => {
-    const left = - 1
-    const right = + 1
-    const down = + width
-    const up = - width
-    console.log(testString)
-    enemyStartingPosition.forEach(enemy => {
-      if (cells[enemy].classList === enemyClass) {
-        console.log(enemy)
-      }
-      
-    });
-    
-  }, 1000);
+  
   
   // let timer = 0
   // let enemyPreviousPosition
