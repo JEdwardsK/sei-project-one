@@ -1,7 +1,7 @@
 function init() {
   const testString = 'i am a test string to test this works'
 
-  function getRandomIntInclusive(min, max) {
+  function randomNumber(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -24,7 +24,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  let enemyStartingPosition = [45]
+  let enemyStartingPosition = [13,14,15,16,3,4,5,6]
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
   const weaponFireProbability = 3
@@ -33,7 +33,7 @@ function init() {
   const scoreModifier1 = 10
 
   let scoreCounter = 0
-  let lifeCounter = 1
+  let lifeCounter = 2
   let currentLevel = 1
 
   // game info board variables
@@ -213,8 +213,7 @@ function init() {
      * interval boundary is floor
      */
     let timeid = 0
-          console.log (parseInt(((Math.random()) * weaponFireProbability))) + 1
-      
+    const randomCalc = randomNumber(1,weaponFireProbability)
 
     //let randomCalc = 1
     console.log(randomCalc)
@@ -236,7 +235,7 @@ function init() {
             if (cellValue === `${playerClass} ${enemyWeaponBolt}`) {
               console.log(lifeCounter)
               lifeCounter--
-              console.log(lifeCounter)
+              console.log('life  after hit =>', lifeCounter)
               console.log(cellValue)
               cellValue = playerClass
               console.log('hit')
@@ -253,7 +252,7 @@ function init() {
     })
   
   }
-  
+
   
   
   
