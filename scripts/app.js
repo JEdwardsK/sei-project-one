@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = 0
+  const enemyStartingPosition = [33,34,35,36,43,44,45,46]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -49,8 +49,8 @@ function init() {
       cells.push(cell)
     }
     addCharacter(playerStartingPosition, playerClass)
-    //addEnemyRow()
-    addCharacter(enemyStartingPosition, enemyClass)
+    addEnemyRow()
+    
   }
   createGrid()
 
@@ -61,6 +61,7 @@ function init() {
   function removeCharacter(position, character) {
     cells[position].classList.remove(character)
   }
+
 
   function characterMovement(key) {
     removeCharacter(playerCurrentPosition, playerClass)
@@ -108,63 +109,89 @@ function init() {
   }
   
   function addEnemyRow(){
-    for (let i = (enemyStartingPosition - 2); i <= (enemyStartingPosition + 2); i++) {
-      addCharacter(i, enemyClass)
+    enemyStartingPosition.forEach(enemy => {
+      cells[enemy].classList.add(enemyClass)
+    });
     }
-  }
+  
+  // ! Array of alien indexes
+  // ! On a timer
+  // ! Loop through each of the aliens
+  // ! Remove Class
+  // ! Change position
+  // ! Direction variable
+  // ! Using modulus/maths if ANY of the aliens have hit the edge - .some()?
+  // ! Change direction + Move down
+  // ! Update the position
+  // ! Add Classes Again
 
-  let timer = 0
-  let enemyPreviousPosition
-  console.log('test point 1 =>', enemyPreviousPosition)
   let enemyMovement = setInterval(() => {
-    console.log('timer counter =>', timer)
-    cells.forEach(cell => {
-      if (cell.classList.value === enemyClass) {
-        console.log(`cell value at start => ${cells.indexOf(cell)}`)
-        removeCharacter(enemyCurrentPosition, enemyClass)
-        if (enemyPreviousPosition === undefined){
-          console.log('test point 2 =>', enemyPreviousPosition)
-          enemyPreviousPosition = enemyCurrentPosition
-          enemyCurrentPosition++
-          addCharacter(enemyCurrentPosition, enemyClass)
-          console.log('test point 3 =>', enemyPreviousPosition)
-          console.log('current position =>', enemyCurrentPosition)
-        } else if (enemyPreviousPosition === (enemyCurrentPosition - 1)) {
-          console.log('previous minus one(move right)')
-          if (enemyCurrentPosition % 10 === 0) {
-            console.log('i fail at mod 10 = 0')
-            enemyCurrentPosition += 10
-            addCharacter(enemyCurrentPosition, enemyClass)
-          } else {
-            console.log('i fail on the secnd move right')
-            enemyCurrentPosition++
-            console.log(enemyCurrentPosition)
-            addCharacter(enemyCurrentPosition, enemyClass)
-            console.log('ive run through this line')
-          }
-        } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
-          console.log('previous plus one (move left)')
-          if (enemyCurrentPosition % width === (width - 1)) {
-            enemyCurrentPosition += 10
-            addCharacter(enemyCurrentPosition, enemyClass)
-          } else {
-            enemyCurrentPosition--
-            addCharacter(enemyCurrentPosition, enemyCurrentPosition)
-          } 
-        } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
-          console.log('previous plus 10 (move down')
-          if (enemyCurrentPosition % width === 0) {
-            enemyCurrentPosition++
-            addCharacter(enemyCurrentPosition, enemyClass)
-          } else if (enemyCurrentPosition % width === width - 1) {
-            enemyCurrentPosition--
-            addCharacter(enemyCurrentPosition, enemyClass)
-          }
-        }
+    const left = - 1
+    const right = + 1
+    const down = + width
+    const up = - width
+    console.log(testString)
+    enemyStartingPosition.forEach(enemy => {
+      if (cells[enemy].classList === enemyClass) {
+        console.log(enemy)
       }
-    }); 
-    timer === 5 ? clearInterval(enemyMovement) : timer++
+      
+    });
+    
   }, 1000);
+  
+  // let timer = 0
+  // let enemyPreviousPosition
+  // console.log('test point 1 =>', enemyPreviousPosition)
+  // let enemyMovement = setInterval(() => {
+  //   console.log('timer counter =>', timer)
+  //   cells.forEach(cell => {
+  //     if (cell.classList.value === enemyClass) {
+  //       console.log(`cell value at start => ${cells.indexOf(cell)}`)
+  //       removeCharacter(enemyCurrentPosition, enemyClass)
+  //       if (enemyPreviousPosition === undefined){
+  //         console.log('test point 2 =>', enemyPreviousPosition)
+  //         enemyPreviousPosition = enemyCurrentPosition
+  //         enemyCurrentPosition++
+  //         addCharacter(enemyCurrentPosition, enemyClass)
+  //         console.log('test point 3 =>', enemyPreviousPosition)
+  //         console.log('current position =>', enemyCurrentPosition)
+  //       } else if (enemyPreviousPosition === (enemyCurrentPosition - 1)) {
+  //         console.log('previous minus one(move right)')
+  //         if (enemyCurrentPosition % 10 === 0) {
+  //           console.log('i fail at mod 10 = 0')
+  //           enemyCurrentPosition += 10
+  //           addCharacter(enemyCurrentPosition, enemyClass)
+  //         } else {
+  //           console.log('i fail on the secnd move right')
+  //           enemyCurrentPosition++
+  //           console.log(enemyCurrentPosition)
+  //           addCharacter(enemyCurrentPosition, enemyClass)
+  //           console.log('ive run through this line')
+  //         }
+  //       } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
+  //         console.log('previous plus one (move left)')
+  //         if (enemyCurrentPosition % width === (width - 1)) {
+  //           enemyCurrentPosition += 10
+  //           addCharacter(enemyCurrentPosition, enemyClass)
+  //         } else {
+  //           enemyCurrentPosition--
+  //           addCharacter(enemyCurrentPosition, enemyCurrentPosition)
+  //         } 
+  //       } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
+  //         console.log('previous plus 10 (move down')
+  //         if (enemyCurrentPosition % width === 0) {
+  //           enemyCurrentPosition++
+  //           addCharacter(enemyCurrentPosition, enemyClass)
+  //         } else if (enemyCurrentPosition % width === width - 1) {
+  //           enemyCurrentPosition--
+  //           addCharacter(enemyCurrentPosition, enemyClass)
+  //         }
+  //       }
+  //     }
+  //   }); 
+  //   timer === 5 ? clearInterval(enemyMovement) : timer++
+  // }, 1000);
 
 
 
