@@ -18,8 +18,9 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  let enemyStartingPosition = [33,34,35,43,44,45]
+  let enemyStartingPosition = [45]
   let enemyCurrentPosition = enemyStartingPosition
+  const enemyWeaponBolt = 'enemyWeaponBolt'
   
   const enemyClass = 'enemyCharacter'
   const scoreModifier1 = 10
@@ -34,10 +35,12 @@ function init() {
   const displayLevel = document.querySelector('.displayLevel')
   const displayPowerBar = document.querySelector('.displayPowerBar')
   const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
+  const startButton = document.querySelector('.startButton')
+  const resetButton = document.querySelector('.resetButton')
 
   //game information board innertext
   displayScore.innerText = `Score ${scoreCounter}`
-  displayLife.innerText = `${lifeCounter} lives remaining`
+  displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
   displayLevel.innerText = `Level: ${currentLevel}`
   displayeCurrentBonusWeapon.innerText = 'placeholder'
 
@@ -48,6 +51,10 @@ function init() {
   }
   function gameWin() {
     window.alert(`GAME OVER, YOU WIN!!! You succesfully repelled the invading forces and live to fight another day... your final score is ${scoreCounter}`)
+  }
+
+  function resetGame() {
+    window.location.reload()
   }
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -129,20 +136,20 @@ function init() {
     })
   }
   
-  // ! Array of alien indexes
-  // ! On a timer
-  // ! Loop through each of the aliens
-  // ! Remove Class
-  // ! Change position
-  // ! Direction variable
-  // ! Using modulus/maths if ANY of the aliens have hit the edge - .some()?
-  // ! Change direction + Move down
-  // ! Update the position
-  // ! Add Classes Again
+  // Array of alien indexes
+  // On a timer
+  // Loop through each of the aliens
+  // Remove Class
+  // Change position
+  // Direction variable
+  // Using modulus/maths if ANY of the aliens have hit the edge - .some()?
+  // Change direction + Move down
+  // Update the position
+  // Add Classes Again
 
   // //let timer = 0
   // // right = 1, left = -1
-  function enemyMovemnt() {
+  function enemyMovementStart() {
     let direction = 1
 
     const enemyMovement = setInterval(() => {
@@ -188,9 +195,10 @@ function init() {
     }, 400)
   
   }
+  function enemyWeaponFire() {
 
-  // enemyMovemnt()
- 
+  }
+  
   // console.log('is floor', (height - 1) * width)
   
   // // let timer = 0
@@ -322,12 +330,11 @@ function init() {
   */
   //? p
   //? OPTION 2 - NEGATIVE COUNTER
-  document.addEventListener('keydown', characterMoveset)
   enemyRemainingCheck()
   
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
-      let enemyCounter = enemyCurrentPosition.length
+      const enemyCounter = enemyCurrentPosition.length
       console.log(enemyCounter)
       if (enemyCounter === 0) {
         gameWin()
@@ -336,14 +343,15 @@ function init() {
     }, 100)
   }
   
-
-
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  resetButton.addEventListener('click', resetGame)
+  startButton.addEventListener('click', enemyMovementStart)
+  document.addEventListener('keydown', characterMoveset)
 }
 
 window.addEventListener('DOMContentLoaded', init)
