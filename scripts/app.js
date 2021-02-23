@@ -113,26 +113,49 @@ function init() {
       addCharacter(i, enemyClass)
     }
   }
-  let test
-  // let enemyMovement = setInterval(() => {
-  //   for (i = enemyCurrentPosition; i < cells.length; i++) {
-  //     removeCharacter(enemyCurrentPosition, enemyClass)
-  //     if ({let enemyPreviousPosition = enemyCurrentPosition
-  //     if (enemyPreviousPosition === (enemyCurrentPosition -= 1)) {
-  //       if(enemyCurrentPosition % 10 === 0) {
-  //         enemyCurrentPosition += 10
-  //         addCharacter(enemyCurrentPosition, enemyClass)
-  //       } else{
-  //         enemyCurrentPosition++
-  //         addCharacter(enemyCurrentPosition, enemyClass)
-  //       }
-  //     } else if (enemyPreviousPosition === (enemyCurrentPosition += 1)) {
-  //       enemyCurrentPosition++
-  //       addCharacter(enemyCurrentPosition, enemyCurrentPosition)
-  //     } else if (enemyPreviousPosition === (enemyCurrentPosition -= 10)) {
-  //       if (enemyCurrentPosition % width === 0)
-  //     }}
-  // }, interval);
+  let enemyPreviousPosition
+  console.log('test point 1 =>', enemyPreviousPosition)
+  let enemyMovement = setInterval(() => {
+    cells.forEach(cell => {
+      
+      if (cell.classList.value === enemyClass) {
+        if (enemyPreviousPosition === undefined){
+          removeCharacter(enemyCurrentPosition, enemyClass)
+          console.log('test point 2 =>', enemyPreviousPosition)
+          enemyPreviousPosition = enemyCurrentPosition
+          enemyCurrentPosition++
+          addCharacter(enemyCurrentPosition, enemyClass)
+          console.log('test point 3 =>', enemyPreviousPosition)
+          console.log('current position =>', enemyCurrentPosition)
+        } else if (enemyPreviousPosition === (enemyCurrentPosition -= 1)) {
+          if (enemyCurrentPosition % 10 === 0) {
+            enemyCurrentPosition += 10
+            addCharacter(enemyCurrentPosition, enemyClass)
+          } else {
+            enemyCurrentPosition++
+            addCharacter(enemyCurrentPosition, enemyClass)
+          }
+        } else if (enemyPreviousPosition === (enemyCurrentPosition += 1)) {
+          if (enemyCurrentPosition % width === (width - 1)) {
+            enemyCurrentPosition += 10
+            addCharacter(enemyCurrentPosition, enemyClass)
+          } else {
+            enemyCurrentPosition--
+            addCharacter(enemyCurrentPosition, enemyCurrentPosition)
+          } 
+        } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
+          if (enemyCurrentPosition % width === 0) {
+            enemyCurrentPosition++
+            addCharacter(enemyCurrentPosition, enemyClass)
+          } else if (enemyCurrentPosition % width === width - 1) {
+            enemyCurrentPosition--
+            addCharacter(enemyCurrentPosition, enemyClass)
+          }
+        }
+      }
+    }); 
+    
+  }, 1000);
 
 
 
