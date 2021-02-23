@@ -78,7 +78,6 @@ function init() {
 
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
-    console.log(key)
     if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
@@ -113,9 +112,12 @@ function init() {
       addCharacter(i, enemyClass)
     }
   }
+
+  let timer = 0
   let enemyPreviousPosition
   console.log('test point 1 =>', enemyPreviousPosition)
   let enemyMovement = setInterval(() => {
+    console.log('timer counter =>', timer)
     cells.forEach(cell => {
       if (cell.classList.value === enemyClass) {
         console.log(`cell value at start => ${cells.indexOf(cell)}`)
@@ -138,6 +140,7 @@ function init() {
             enemyCurrentPosition++
             console.log(enemyCurrentPosition)
             addCharacter(enemyCurrentPosition, enemyClass)
+            console.log('ive run through this line')
           }
         } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
           console.log('previous plus one (move left)')
@@ -160,7 +163,7 @@ function init() {
         }
       }
     }); 
-    
+    timer === 5 ? clearInterval(enemyMovement) : timer++
   }, 1000);
 
 
