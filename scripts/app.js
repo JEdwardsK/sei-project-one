@@ -103,15 +103,15 @@ function init() {
             //!add explosion for short time then remove
             clearInterval(bolt)
           }
-        });        
-      }, 75);
+        })        
+      }, 75)
     } 
   }
   
   function addEnemyRow(){
     enemyStartingPosition.forEach(enemy => {
       cells[enemy].classList.add(enemyClass)
-    });
+    })
   }
   
   // ! Array of alien indexes
@@ -130,42 +130,48 @@ function init() {
   let direction = 1
 
   let enemyMovement = setInterval(() => {
+    //*define edges
     const isOnEdge = cells.some((item, index) => {
-      const hasEnemy = item.classList.value === enemyClass;
+      const hasEnemy = item.classList.value === enemyClass
       const isEdge = direction === 1 ? (index % width === (width - 1)) : (index % width === 0)
       if (hasEnemy && isEdge){
         return true 
       }
     })
+    //*remove enemy
     enemyCurrentPosition.forEach(eachEnemy => {
       removeCharacter(eachEnemy, enemyClass)
-    });
+    })
+    //*move down if on edge
     if (isOnEdge) {
       console.log('Move down')
       enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
       direction = direction * -1
-    
       console.log(direction)
-    }
-    else {
+    //*mutate array left or right
+    } else {
       enemyCurrentPosition.forEach((enemy, index) => {
-      enemyCurrentPosition[index] = enemy + direction
-    });
-  }
+        enemyCurrentPosition[index] = enemy + direction
+      })
+    }
+    //?add enemy back
     enemyCurrentPosition.forEach(eachEnemy => {
       addCharacter(eachEnemy, enemyClass)
-    });
-    const isOnFloor = cells.some((item, index) => {
-      const hasEnemy = item.classList.value === enemyClass;
-      const isFloor = (height - 1) * width
-      if (item >= isFloor && hasEnemy) {
-      clearInterval(enemyMovement)
-      }
-      
     })
-  }, 400);
+    const isOnFloor = cells.some((item, index) => {
+      const hasEnemy = item.classList.value === enemyClass
+      const isFloor = (height - 1) * width
+      if (index >= isFloor && hasEnemy) {
+        return true
+      }
+    })
+    if (isOnFloor) {
+      console.log('game over')
+      clearInterval(enemyMovement)
+    }
+  }, 400)
 
-  console.log('is floor', (height -1) * width)
+  console.log('is floor', (height - 1) * width)
   
   // let timer = 0
   // let enemyPreviousPosition
