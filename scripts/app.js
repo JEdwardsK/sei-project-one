@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = [33,34,35,36,43,44,45,46]
+  const enemyStartingPosition = [33]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -125,7 +125,33 @@ function init() {
   // ! Update the position
   // ! Add Classes Again
 
-  
+  let timer = 0
+
+  let enemyMovement = setInterval(() => {
+    const left = - 1
+    const right = + 1
+    const down = + width
+    const up = - width
+    console.log(testString)
+    enemyStartingPosition.forEach(enemy => {
+      const enemyPosition = cells[enemy].classList.value
+      if (enemyPosition === enemyClass) {
+        removeCharacter(enemy, enemyClass)
+        console.log ('before =>', enemy, 'after =>', enemy + right)
+        enemy = enemy + right
+        addCharacter(enemy, enemyClass)
+      }
+      // if (enemy % width === (0 || (width - 1))) {
+      //   clearInterval(enemyMovement)
+      // }
+
+      
+    });
+    timer++
+    if(timer === 5) {
+      clearInterval(enemyMovement)
+    }
+  }, 1000);
   
   // let timer = 0
   // let enemyPreviousPosition
