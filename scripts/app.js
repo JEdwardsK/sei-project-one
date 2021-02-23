@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = [10, 11, 12, 20, 21]
+  const enemyStartingPosition = [10, 11]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -112,7 +112,7 @@ function init() {
     enemyStartingPosition.forEach(enemy => {
       cells[enemy].classList.add(enemyClass)
     });
-    }
+  }
   
   // ! Array of alien indexes
   // ! On a timer
@@ -130,8 +130,6 @@ function init() {
   let direction = 1
 
   let enemyMovement = setInterval(() => {
-    console.log(testString)
-
     const isOnEdge = cells.some((item, index) => {
       const hasEnemy = item.classList.value === enemyClass;
       const isEdge = direction === 1 ? (index % width === (width - 1)) : (index % width === 0)
@@ -139,32 +137,28 @@ function init() {
         return true 
       }
     })
-    if (isOnEdge) {
-      enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
-      direction = - direction
-    }
-
-    // index % width === 0
-
-    enemyCurrentPosition.forEach((enemy, index) => {
-      const enemyPosition = cells[enemy].classList.value
-      if (enemyPosition === enemyClass) {
-        // TODO: check if the index is between 0-length
-        if (enemyCurrentPosition[index] !== enemyCurrentPosition[index - 1]) {
-          removeCharacter(enemy, enemyClass)
-        }
-        const newEnemyPosition = enemy + direction
-        enemyCurrentPosition[index] = newEnemyPosition
-        addCharacter(newEnemyPosition, enemyClass)
-        console.log(enemyCurrentPosition)
-      }
+    enemyCurrentPosition.forEach(eachEnemy => {
+      removeCharacter(eachEnemy, enemyClass)
     });
-      // if (enemyCurrentPosition[enemyCurrentPosition.length - 1] )
-    timer++
-    if(timer === 5) {
-      // clearInterval(enemyMovement)
+    if (isOnEdge) {
+      console.log('Move down')
+      enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
+      direction = direction * -1
+    
+      console.log(direction)
     }
-  }, 1000);
+    else {
+      enemyCurrentPosition.forEach((enemy, index) => {
+      enemyCurrentPosition[index] = enemy + direction
+    });
+  }
+    enemyCurrentPosition.forEach(eachEnemy => {
+      addCharacter(eachEnemy, enemyClass)
+    });
+    const isOnFloor = cells.some((item, index) => {
+
+    })
+  }, 400);
   
   // let timer = 0
   // let enemyPreviousPosition
