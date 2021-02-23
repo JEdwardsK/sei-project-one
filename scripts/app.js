@@ -24,7 +24,7 @@ function init() {
   const enemyClass = 'enemyCharacter'
   const scoreModifier1 = 10
 
-  let scoreCounter = 1
+  let scoreCounter = 0
   let lifeCounter = 1
   let currentLevel = 1
 
@@ -42,6 +42,13 @@ function init() {
   displayeCurrentBonusWeapon.innerText = 'placeholder'
 
   //! **********************GAME START FUNCTIONS*****************************
+
+  function gameOver(){
+    window.alert(`GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes... your final score is ${scoreCounter}`)
+  }
+  function gameWin() {
+    window.alert(`GAME OVER, YOU WIN!!! You succesfully repelled the invading forces and live to fight another day... your final score is ${scoreCounter}`)
+  }
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
@@ -175,7 +182,7 @@ function init() {
         }
       })
       if (isOnFloor) {
-        console.log('game over')
+        gameOver()
         clearInterval(enemyMovement)
       }
     }, 400)
@@ -323,13 +330,12 @@ function init() {
       let enemyCounter = enemyCurrentPosition.length
       console.log(enemyCounter)
       if (enemyCounter === 0) {
-        console.log('game over you win!')
+        gameWin()
         clearInterval(enemyRemainingCheck)
       }
-    }, 100);
-
+    }, 100)
   }
-    
+  
 
 
 
