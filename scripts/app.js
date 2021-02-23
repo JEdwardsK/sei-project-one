@@ -156,9 +156,16 @@ function init() {
       addCharacter(eachEnemy, enemyClass)
     });
     const isOnFloor = cells.some((item, index) => {
-
+      const hasEnemy = item.classList.value === enemyClass;
+      const isFloor = (height - 1) * width
+      if (item >= isFloor && hasEnemy) {
+      clearInterval(enemyMovement)
+      }
+      
     })
   }, 400);
+
+  console.log('is floor', (height -1) * width)
   
   // let timer = 0
   // let enemyPreviousPosition
