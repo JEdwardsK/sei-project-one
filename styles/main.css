@@ -13,7 +13,8 @@ body {
   width:1920px;
   margin: 0;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   /* background-image: url('/assets/background.png');
   background-repeat: no-repeat;
@@ -51,6 +52,7 @@ body {
   justify-content: center;
   align-items: center;
   border:2px solid black;
+  flex: 4;
 }
 
 .grid{
@@ -99,6 +101,16 @@ body {
 }
 
 .playerCharacterShielded{
+
+}
+
+
+.gameInfoBoard{
+border:2px solid black;
+height: 800px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 
 }
 

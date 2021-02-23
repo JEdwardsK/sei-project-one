@@ -4,6 +4,7 @@ function init() {
   //! ***************************** Variables ***************************** 
 
   const grid = document.querySelector('.grid')
+  //!width and height are attributed values as a percentsge of their containter in CSS
   const width = 20
   const height = 10
   const cellCount = width * height
@@ -106,6 +107,9 @@ function init() {
           removeCharacter(cellPosition,enemyClass)
           removeCharacter(cellPosition,weaponClassBolt)
           //!add explosion for short time then remove
+          console.log('pre', scoreCounter)
+          scoreCounter += scoreModifier1
+          console.log('post', scoreCounter)
           clearInterval(bolt)
         }
       })        
