@@ -18,8 +18,8 @@ body {
   align-items: center;
   /* background-image: url('/assets/background.png');
   background-repeat: no-repeat;
-  background-size: contain; */
-
+  background-size: contain; 
+*/
 }
 
 /******************** video background test *******************
@@ -71,7 +71,7 @@ body {
   border: 1px solid lightgrey;
   flex-grow: 1;
   height: 10%;
-  width: 5%;
+  width: 10%;
 }
 
 .playerCharacter{
@@ -107,10 +107,14 @@ body {
 
 .gameInfoBoard{
 border:2px solid black;
-height: 800px;
+height: 80px;
+width: 1200px;
 display: flex;
-flex-direction: column;
+flex-direction: row;
 justify-content: space-between;
 
 }
-
+.gameInfoBoard div {
+  border: 2px dotted red;
+  flex: 1;
+}

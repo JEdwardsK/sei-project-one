@@ -5,12 +5,12 @@ function init() {
 
   const grid = document.querySelector('.grid')
   //!width and height are attributed values as a percentsge of their containter in CSS
-  const width = 20
+  const width = 10
   const height = 10
   const cellCount = width * height
   const cells = []
 
-  const playerStartingPosition = 188
+  const playerStartingPosition = 94  
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
 
@@ -18,7 +18,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = [46,47,48,49,66,67,68,69]
+  let enemyStartingPosition = [33,34,35,43,44,45]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
@@ -28,18 +28,18 @@ function init() {
   let lifeCounter = 1
   let currentLevel = 1
 
-  // // game info board variables
-  // const displayScore = document.querySelector('.displayScore')
-  // const displayLife = document.querySelector('.displayLife')
-  // const displayLevel = document.querySelector('.displayLevel')
-  // const displayPowerBar = document.querySelector('.displayPowerBar')
-  // const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
+  // game info board variables
+  const displayScore = document.querySelector('.displayScore')
+  const displayLife = document.querySelector('.displayLife')
+  const displayLevel = document.querySelector('.displayLevel')
+  const displayPowerBar = document.querySelector('.displayPowerBar')
+  const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
 
-  // //game information board innertext
-  // displayScore.innerText = `Score ${scoreCounter}`
-  // displayLife.innerText = `${lifeCounter} lives remaining`
-  // displayLevel.innerText = `Level: ${currentLevel}`
-  // displayeCurrentBonusWeapon.innerText = 'placeholder'
+  //game information board innertext
+  displayScore.innerText = `Score ${scoreCounter}`
+  displayLife.innerText = `${lifeCounter} lives remaining`
+  displayLevel.innerText = `Level: ${currentLevel}`
+  displayeCurrentBonusWeapon.innerText = 'placeholder'
 
   //! **********************GAME START FUNCTIONS*****************************
   function createGrid() {
@@ -107,6 +107,7 @@ function init() {
           removeCharacter(cellPosition,enemyClass)
           removeCharacter(cellPosition,weaponClassBolt)
           //!add explosion for short time then remove
+          enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
           console.log('pre', scoreCounter)
           scoreCounter += scoreModifier1
           console.log('post', scoreCounter)
@@ -181,7 +182,7 @@ function init() {
   
   }
 
-  //?enemyMovemnt()
+   enemyMovemnt()
  
   // console.log('is floor', (height - 1) * width)
   
