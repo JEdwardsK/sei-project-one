@@ -218,10 +218,30 @@ function init() {
         const useBoltWeapon = setInterval(() => {
           removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
           if (newEnemyWeaponPosition < ((height - 1) * width)) {
-            console.log(newEnemyWeaponPosition)
             newEnemyWeaponPosition += width
             addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
           }
+          cells.forEach(cell => {
+            const cellPosition = cells.indexOf(cell)
+            let cellValue = cells[cellPosition].classList.value
+            if (cellValue === `${playerClass} ${enemyWeaponBolt}`) {
+              console.log(lifeCounter)
+              lifeCounter--
+              console.log(lifeCounter)
+              console.log(cellValue)
+              cellValue = playerClass
+              console.log('hit')
+              console.log(cellValue)
+            }
+            // const cellClass = cells[cellPosition].classList.value    
+            // console.log('cellposition', cellPosition)
+            // const isWeaponBolt = cellClass === enemyWeaponBolt
+            // console.log(cell)
+            // const isPlayerClass = cellClass === playerClass
+            // if (isWeaponBolt && isPlayerClass) {
+            //   console.log('hit')
+            // }
+          })
 
         }, 1000)
       }
@@ -229,6 +249,7 @@ function init() {
     })
   
   }
+  console.log(cells[94].classList.value)
  
 
   enemyWeaponFire ()
