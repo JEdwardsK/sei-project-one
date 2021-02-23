@@ -1,6 +1,12 @@
 function init() {
   const testString = 'i am a test string to test this works'
 
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
   //! ***************************** Variables ***************************** 
 
   const grid = document.querySelector('.grid')
@@ -136,6 +142,8 @@ function init() {
       cells[enemy].classList.add(enemyClass)
     })
   }
+
+
   
   // Array of alien indexes
   // On a timer
@@ -205,10 +213,11 @@ function init() {
      * interval boundary is floor
      */
     let timeid = 0
-    // let randomCalc = setInterval(() => {
-    //   let probabilityValue = parseInt((Math.random()) * weaponFireProbability) + 1
-    // }, 1000);
-    let randomCalc = 1
+          console.log (parseInt(((Math.random()) * weaponFireProbability))) + 1
+      
+
+    //let randomCalc = 1
+    console.log(randomCalc)
     enemyCurrentPosition.forEach(enemy => {
       const isEnemyClass = cells[enemy].classList.value === enemyClass
       const enemyWeaponPosition = cells[enemy + width]
@@ -232,27 +241,26 @@ function init() {
               cellValue = playerClass
               console.log('hit')
               console.log(cellValue)
+              if (lifeCounter === 0) {
+                gameOver()
+              }
             }
-            // const cellClass = cells[cellPosition].classList.value    
-            // console.log('cellposition', cellPosition)
-            // const isWeaponBolt = cellClass === enemyWeaponBolt
-            // console.log(cell)
-            // const isPlayerClass = cellClass === playerClass
-            // if (isWeaponBolt && isPlayerClass) {
-            //   console.log('hit')
-            // }
           })
-
+          
         }, 1000)
       }
       
     })
   
   }
-  console.log(cells[94].classList.value)
+  
+  
  
-
-  enemyWeaponFire ()
+  
+  const enemyWeaponeRandomFire = setInterval(() => {
+    enemyWeaponFire ()
+    
+  }, 2000) 
 
       
   //   enemyCurrentPosition.forEach(enemy => {
