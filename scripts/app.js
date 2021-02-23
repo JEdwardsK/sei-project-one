@@ -4,12 +4,12 @@ function init() {
   //! ***************************** Variables ***************************** 
 
   const grid = document.querySelector('.grid')
-  const width = 10
+  const width = 20
   const height = 10
   const cellCount = width * height
   const cells = []
 
-  const playerStartingPosition = 94
+  const playerStartingPosition = 188
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
 
@@ -17,7 +17,7 @@ function init() {
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const enemyStartingPosition = [33,34,35,43,44,45]
+  const enemyStartingPosition = [46,47,48,49,66,67,68,69]
   let enemyCurrentPosition = enemyStartingPosition
   
   const enemyClass = 'enemyCharacter'
