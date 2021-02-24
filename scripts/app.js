@@ -447,7 +447,7 @@ const splashScreen = document.querySelector('.splashScreen')
   displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
   displayLevel.innerText = `Level: ${currentLevel}`
   displayeCurrentBonusWeapon.innerText = 'placeholder'
-  splashVideo.addEventListener('ended',hideVideo)
+  //splashVideo.addEventListener('ended',hideVideo)
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)
   document.addEventListener('keydown', characterMoveset)
