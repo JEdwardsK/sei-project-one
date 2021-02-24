@@ -67,7 +67,10 @@ function init() {
 
 const splashScreen = document.querySelector('.splashScreen')  
 const homeButton = document.querySelector('.homeButton')
-
+const tutorialScreen = document.querySelector('.tutorialScreen')
+const gameOverScreen = document.querySelector('.gameOverScreen')
+const gameWinScreen = document.querySelector('gameWinScreen')
+const submitHighScore = document.querySelector('submitHighScore')
 displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
 displayLevel.innerText = `Level: ${currentLevel}`
 displayeCurrentBonusWeapon.innerText = 'placeholder'
@@ -297,7 +300,10 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
     splashScreen.classList.remove('hidden')
 
   }
-
+  toTutorial() {
+    splashScreen.classList.add ('hidden')
+    tutorialScreen.classList.remove('hidden')
+  }
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
   /* 

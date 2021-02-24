@@ -17,47 +17,73 @@
 <!-- <div class="arcadeVideo">
   <video src="/assets/open splash0001-0211.mp4" autoplay="true" id="splashVideo"></video>
 </div> -->
-<div class="splashScreen ">
-  <div class="splashScreenLeft">
-    <h2>i am the start screen!</h2>
-    <p>i am a dummy screen whilst you work out what you want to do with your styling!!</p>
-  </div>
-  <div class="startMenu">
-    <button class="startButtonHome" type="button">GAME START</button>
-    <button type="button" class="loadGameButton">GAME LOAD</button type="button">
-      <button type="button" class="highScoreButton">HIGHSCORES</button>
-      <button class="optionsButton" type="button">OPTIONS</button>
-  </div>
-</div>
-<div class="gameScreen hidden" >
-  <div class="gridWrapper">
-    <div class="grid"></div>
-  </div >
-  <div class="gameInfoBoard">
-    <div class="displayScore">
-      <h3>SCORE:</h3>
-      <p></p>
+  <section class="splashScreen">
+    <div class="splashScreenLeft">
+      <h2>i am the start screen!</h2>
+      <p>i am a dummy screen whilst you work out what you want to do with your styling!!</p>
     </div>
-    <div class="displayLife">
-      <h3>LIFE COUNT</h3>
-      <p></p>
+    <div class="startMenu">
+      <button class="startButtonHome" type="button">GAME START</button>
+      <button type="button" class="loadGameButton">GAME LOAD</button type="button">
+        <button type="button" class="highScoreButton">HIGHSCORES</button>
+        <button type= "button" class="tutorialButton"></button>
+        <button class="optionsButton" type="button">OPTIONS</button>
     </div>
-    <div class="displayLevel">
-      <h3>CURRENT LVL</h3>
-      <p></p>
+  </section>
+  <section class="gameScreen hidden" >
+    <div class="gridWrapper">
+      <div class="grid"></div>
+    </div >
+    <div class="gameInfoBoard">
+      <div class="displayScore">
+        <h3>SCORE:</h3>
+        <p></p>
+      </div>
+      <div class="displayLife">
+        <h3>LIFE COUNT</h3>
+        <p></p>
+      </div>
+      <div class="displayLevel">
+        <h3>CURRENT LVL</h3>
+        <p></p>
+      </div>
+      <div class="displayCurrentBonusWeapon">
+        <h3>BONUS WEAPON</h3>
+        <img src="" alt="image of active bonus weapon">
+      </div>
+      <div class="displayPowerBar"><h3>POWERING UP...</h3>
+        <progress class="powerBar" value="0" max="100"></progress>
+      </div>
+      <button type="button" class="startButton">Start Game</button>
+      <button type="button" class="resetButton">Reset Game</button>
+      <button class="returnHomeButton">Home</button>
     </div>
-    <div class="displayCurrentBonusWeapon">
-      <h3>BONUS WEAPON</h3>
-      <img src="" alt="image of active bonus weapon">
-    </div>
-    <div class="displayPowerBar"><h3>POWERING UP...</h3>
-      <progress class="powerBar" value="0" max="100"></progress>
-    </div>
-    <button type="button" class="startButton">Start Game</button>
-    <button type="button" class="resetButton">Reset Game</button>
+  </section>
+  <section class="tutorialScreen hidden">
+    <h1>tutorial screen</h1>
+    <p>welcome to the tutorial screen! here is where you will learn how to play the game
+    </p>
     <button class="returnHomeButton">Home</button>
-  </div>
-</div>
+  </section>
+  <section class="gameOverScreen hidden">
+    <h2>GAME OVER</h2>
+    <p></p>
+    <button type="resetButton">Let me try again...</button>
+    <button type="button" class="homeButton">i'm done, no more</button>
+  </section>
+  <section class="gameWinScreen hidden">
+    <h2>YOU WON</h2>
+    <p></p>
+    <button type="button" class="submitHighScore"></button>
+  </section>
+  <section class="highscoreScreen">
+    <h2>High scores</h2>
+    <p>enter your high scores</p>
+    <button type="submit">submit my score</button>
+    
+  </section>
+
+
 </body> 
-</html>
+</html>section
 
