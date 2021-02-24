@@ -49,6 +49,7 @@ function init() {
   
   // splashScreen selectors
   
+  const splashScreen = document.querySelector('.splashScreen')  
   const startButtonHome = document.querySelector('.startButtonHome')
   const loadGameButton = document.querySelector('.loadGameButton')
   const highScoreButton = document.querySelector('.highScoreButton')
@@ -56,43 +57,55 @@ function init() {
   const optionsButton = document.querySelector('.optionsButton')
   
 
-  //
+  //gameScreen selectors
+  const gameScreen = document.querySelector('.gameScreen')
+
   const displayScore = document.querySelector('.displayScore')
   const displayLife = document.querySelector('.displayLife')
   const displayLevel = document.querySelector('.displayLevel')
-  const displayPowerBar = document.querySelector('.displayPowerBar')
   const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
-  const startButton = document.querySelector('.startButton')
-  const resetButton = document.querySelector('.resetButton')
+
   const powerBar = document.querySelector('.powerBar')
-  const gameScreen = document.querySelector('.gameScreen')
+  const displayPowerBar = document.querySelector('.displayPowerBar')
   powerBar.max = powerUpCharge
 
-  const splashScreen = document.querySelector('.splashScreen')  
+  const startButton = document.querySelector('.startButton')
+  const resetButton = document.querySelector('.resetButton')
   const homeButton = document.querySelector('.homeButton')
+  
+  //gameOver and GameWin Selectors
   const gameOverScreen = document.querySelector('.gameOverScreen')
   const gameWinScreen = document.querySelector('gameWinScreen')
   const submitHighScore = document.querySelector('.submitHighScore')
   const returnHomeButton = document.querySelector('.returnHomeButton')
+
   displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
   displayLevel.innerText = `Level: ${currentLevel}`
   displayeCurrentBonusWeapon.innerText = 'placeholder'
   //! **********************GAME START FUNCTIONS*****************************
   
+  //splashVideo and splashScreen Functions
   function  hideVideo() {
     splashVideo.classList.add('hidden')
     splashScreen.classList.remove('hidden')
     
   }
-  function powerupTracker() {
-
-    if (isPowerupReady === powerUpCharge) {
-      isPowerupReady = 0
-      powerBar.value = 0
-      console.log(testString)
-    }
-
+  function gameStart() {
+    gameScreen.classList.remove('hidden')
+    splashScreen.classList.add('hidden')
   }
+  function loadGame() {
+    console.log('i need to load a game')
+  }
+  function toTutorial() {
+    splashScreen.classList.add('hidden')
+    tutorialScreen.classList.remove('hidden')
+  }
+
+
+
+
+//gameOver gameWin functions
 
   function gameOver(){
     window.alert(`GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes... your final score is ${scoreCounter}`)
@@ -104,11 +117,9 @@ function init() {
   function resetGame() {
     window.location.reload()
   }
-  function gameStart() {
-    gameScreen.classList.remove('hidden')
-    splashScreen.classList.add('hidden')
-  }
-  createGrid()
+  
+
+  //gameScreen functions - generate items
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
@@ -120,16 +131,20 @@ function init() {
     addEnemyRow()
     
   }
-
   function addCharacter(position, characterType) {
     cells[position].classList.add([characterType])
   }
-
   function removeCharacter(position, character) {
     cells[position].classList.remove(character)
   }
+  function addEnemyRow(){
+    enemyStartingPosition.forEach(enemy => {
+      cells[enemy].classList.add(enemyClass)
+    })
+  }
+  createGrid()
 
-
+  //gameScreen FUnctions - character functions
   function characterMovement(key) {
     removeCharacter(playerCurrentPosition, playerClass)
     if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
@@ -142,8 +157,6 @@ function init() {
       addCharacter(playerCurrentPosition, playerClass)
     } 
   }
-
-
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
     if (key === 39 || key === 68 || key === 37 || key === 65){
@@ -152,7 +165,6 @@ function init() {
       useWeapon()
     } 
   }
-  
   function useWeapon() {
     let weaponCurrentPosition = playerCurrentPosition -= width
     addCharacter(weaponCurrentPosition, weaponClassBolt)
@@ -187,11 +199,16 @@ function init() {
       })        
     }, 75)
   }
-  function addEnemyRow(){
-    enemyStartingPosition.forEach(enemy => {
-      cells[enemy].classList.add(enemyClass)
-    })
+  function powerupTracker() {
+
+    if (isPowerupReady === powerUpCharge) {
+      isPowerupReady = 0
+      powerBar.value = 0
+      console.log(testString)
+    }
+
   }
+  //gameScreen functions - enemy functions
   function enemyMovementStart() {
     let direction = 1
 
@@ -305,10 +322,7 @@ function init() {
     splashScreen.classList.remove('hidden')
 
   }
-  function toTutorial() {
-    splashScreen.classList.add('hidden')
-    tutorialScreen.classList.remove('hidden')
-  }
+  
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
   /* 
@@ -335,7 +349,7 @@ function init() {
   //? OPTION 2 - NEGATIVE COUNTER
   //enemyRemainingCheck()  
   
-
+  //splashScreen event listeners
   splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   
