@@ -11,12 +11,11 @@ function init() {
 
   const grid = document.querySelector('.grid')
   //!width and height are attributed values as a percentsge of their containter in CSS
-  const width = 10
-  const height = 10
+  const width = 20
+  const height = 20
   const cellCount = width * height
   const cells = []
-  
-  const playerStartingPosition = 91  
+  const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1  
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
   
@@ -266,7 +265,7 @@ function init() {
       })
     }
     const enemyWeaponeRandomFire = setInterval(() => {
-      enemyWeaponFire () 
+      enemyWeaponFire() 
       
     }, 2000) 
   }

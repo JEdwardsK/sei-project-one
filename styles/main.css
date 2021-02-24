@@ -76,8 +76,8 @@ body {
 .grid div {
   border: 1px solid lightgrey;
   flex-grow: 1;
-  height: 10%;
-  width: 10%;
+  height: 5%;
+  width: 5%;
 }
 
 .playerCharacter{
@@ -124,6 +124,8 @@ justify-content: space-between;
   border: 2px dotted red;
   flex: 1;
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .enemyWeaponBolt {
@@ -140,4 +142,9 @@ justify-content: space-between;
 h3 {
   margin: 0;
   text-align: center;
+}
+.gameInfoBoard p {
+  text-align: center;
+  font-size: 40px;
+  margin: 0;
 }
