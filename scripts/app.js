@@ -36,6 +36,7 @@ function init() {
   let lifeCounter = 2
   let currentLevel = 1
   let isPowerupReady = 0
+  const powerUpCharge = 4
   
   // game info board variables
   const displayScore = document.querySelector('.displayScore')
@@ -46,13 +47,19 @@ function init() {
   const startButton = document.querySelector('.startButton')
   const resetButton = document.querySelector('.resetButton')
   const powerBar = document.querySelector('.powerBar')
+  powerBar.max = powerUpCharge
 
   //game information board innertext
   
 
   //! **********************GAME START FUNCTIONS*****************************
   function powerupTracker() {
-    if (score)
+
+    if (isPowerupReady === powerUpCharge) {
+      isPowerupReady = 0
+      powerBar.value = 0
+      console.log(testString)
+    }
 
   }
 
@@ -132,10 +139,12 @@ function init() {
           removeCharacter(cellPosition,weaponClassBolt)
           //!add explosion for short time then remove
           enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
-          console.log('pre', scoreCounter)
+          console.log('pre', isPowerupReady)
           scoreCounter += scoreModifier1
           isPowerupReady++
-          console.log('post', scoreCounter)
+          powerBar.value++
+          console.log('post', isPowerupReady)
+          powerupTracker()
           enemyRemainingCheck()
           clearInterval(bolt)
         }
