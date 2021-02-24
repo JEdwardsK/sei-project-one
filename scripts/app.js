@@ -15,15 +15,15 @@ function init() {
   const height = 10
   const cellCount = width * height
   const cells = []
-
+  
   const playerStartingPosition = 91  
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
-
+  
   const weaponStartingPosition = playerCurrentPosition
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
-
+  
   let enemyStartingPosition = [13,14,15,16,3,4,5,6]
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
@@ -31,11 +31,12 @@ function init() {
   
   const enemyClass = 'enemyCharacter'
   const scoreModifier1 = 10
-
+  
   let scoreCounter = 0
   let lifeCounter = 2
   let currentLevel = 1
-
+  let isPowerupReady = 0
+  
   // game info board variables
   const displayScore = document.querySelector('.displayScore')
   const displayLife = document.querySelector('.displayLife')
@@ -44,11 +45,16 @@ function init() {
   const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
   const startButton = document.querySelector('.startButton')
   const resetButton = document.querySelector('.resetButton')
+  const powerBar = document.querySelector('.powerBar')
 
   //game information board innertext
   
 
   //! **********************GAME START FUNCTIONS*****************************
+  function powerupTracker() {
+    if (score)
+
+  }
 
   function gameOver(){
     window.alert(`GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes... your final score is ${scoreCounter}`)
@@ -128,6 +134,7 @@ function init() {
           enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
           console.log('pre', scoreCounter)
           scoreCounter += scoreModifier1
+          isPowerupReady++
           console.log('post', scoreCounter)
           enemyRemainingCheck()
           clearInterval(bolt)
@@ -411,10 +418,10 @@ function init() {
   
   
   
-  displayScore.innerText = `Score ${scoreCounter}`
-  displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-  displayLevel.innerText = `Level: ${currentLevel}`
-  displayeCurrentBonusWeapon.innerText = 'placeholder'
+  // displayScore.innerHTML = `Score ${scoreCounter}`
+  // displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
+  // displayLevel.innerText = `Level: ${currentLevel}`
+  // displayeCurrentBonusWeapon.innerText = 'placeholder'
   
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)

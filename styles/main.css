@@ -3,6 +3,11 @@
 
 */
 
+@font-face {
+  font-family: 'Arcade';
+  src: url('../assets/Arcade/Arcade Regular/Arcade Regular.ttf') format('truetype')
+}
+
 
 * {
   box-sizing: border-box;
@@ -16,6 +21,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'Arcade', sans-serif;
   /* background-image: url('/assets/background.png');
   background-repeat: no-repeat;
   background-size: contain; 
@@ -114,9 +120,10 @@ flex-direction: row;
 justify-content: space-between;
 
 }
-.gameInfoBoard div {
+.gameInfoBoard * {
   border: 2px dotted red;
   flex: 1;
+  font-size: 20px;
 }
 
 .enemyWeaponBolt {
@@ -124,4 +131,13 @@ justify-content: space-between;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
+}
+.displayPowerBar {
+  display: flex;
+  flex-direction: column;
+
+}
+h3 {
+  margin: 0;
+  text-align: center;
 }
