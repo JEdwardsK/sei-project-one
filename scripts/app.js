@@ -47,7 +47,16 @@ function init() {
   let isPowerupReady = 0
   const powerUpCharge = 4
   
-  // game info board variables
+  // splashScreen selectors
+  
+  const startButtonHome = document.querySelector('.startButtonHome')
+  const loadGameButton = document.querySelector('.loadGameButton')
+  const highScoreButton = document.querySelector('.highScoreButton')
+  const tutorialScreen = document.querySelector('.tutorialScreen')
+  const optionsButton = document.querySelector('.optionsButton')
+  
+
+  //
   const displayScore = document.querySelector('.displayScore')
   const displayLife = document.querySelector('.displayLife')
   const displayLevel = document.querySelector('.displayLevel')
@@ -56,16 +65,11 @@ function init() {
   const startButton = document.querySelector('.startButton')
   const resetButton = document.querySelector('.resetButton')
   const powerBar = document.querySelector('.powerBar')
-  const startButtonHome = document.querySelector('.startButtonHome')
-  const loadGameButton = document.querySelector('.loadGameButton')
-  const highScoreButton = document.querySelector('.highScoreButton')
-  const optionsButton = document.querySelector('.optionsButton')
   const gameScreen = document.querySelector('.gameScreen')
   powerBar.max = powerUpCharge
 
   const splashScreen = document.querySelector('.splashScreen')  
   const homeButton = document.querySelector('.homeButton')
-  const tutorialScreen = document.querySelector('.tutorialScreen')
   const gameOverScreen = document.querySelector('.gameOverScreen')
   const gameWinScreen = document.querySelector('gameWinScreen')
   const submitHighScore = document.querySelector('.submitHighScore')
@@ -103,8 +107,8 @@ function init() {
   function gameStart() {
     gameScreen.classList.remove('hidden')
     splashScreen.classList.add('hidden')
-    createGrid()
   }
+  createGrid()
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
