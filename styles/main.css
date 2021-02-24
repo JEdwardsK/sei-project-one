@@ -154,3 +154,13 @@ h3 {
 .hidden {
   display: none;
 }
+
+.splashScreen {
+  display:flex;
+  justify-content: center;
+}
+
+.startMenu {
+  display:flex;
+  flex-direction:column;
+}

@@ -25,12 +25,6 @@ function init() {
   //let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
-  const startButtonHome = document.querySelector('.startButonHome')
-  const loadGameButton = document.querySelector ('.loadGameButton')
-  const highScoreButton = document.querySelector('.highScoreButton')
-  const optionsButton ('.optionsButton')
-  
-  
   let enemyStartingPosition = []
   //*work out later
   function populateEnemyStart() {
@@ -64,9 +58,15 @@ function init() {
   const startButton = document.querySelector('.startButton')
   const resetButton = document.querySelector('.resetButton')
   const powerBar = document.querySelector('.powerBar')
+  const startButtonHome = document.querySelector('.startButonHome')
+  const loadGameButton = document.querySelector ('.loadGameButton')
+  const highScoreButton = document.querySelector('.highScoreButton')
+  const optionsButton ('.optionsButton')
+  const gameScreen = document.querySelector('.gameScreen')
   powerBar.max = powerUpCharge
 
 const splashScreen = document.querySelector('.splashScreen')  
+const homeButton = document.querySelector('.homeButton')
 
 displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
 displayLevel.innerText = `Level: ${currentLevel}`
@@ -99,6 +99,8 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
     window.location.reload()
   }
   function createGrid() {
+    splashScreen.classList.add('hidden')
+    gameScreen.classList.remove('hidden')
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
       cell.innerText = i
@@ -290,7 +292,11 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
       }
     }, 100)
   }
-  
+  returnHome(){
+    gameScreen.classList.add('hidden')
+    splashScreen.classList.remove('hidden')
+
+  }
 
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
@@ -320,6 +326,8 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
   
 
   //splashVideo.addEventListener('ended',hideVideo)
+  returnHomeButton.addEventListener('click', returnHome)
+  startButtonHome.addEventListener('click', createGrid)
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)
   document.addEventListener('keydown', characterMoveset)
