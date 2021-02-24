@@ -8,7 +8,7 @@ function init() {
   }
 
   //* ***************************** Variables ***************************** 
-
+  const splashVideo = document.querySelector('#splashVideo')
   const grid = document.querySelector('.grid')
   //*width and height are attributed values as a percentsge of their containter in CSS
   const width = 20
@@ -22,19 +22,19 @@ function init() {
   const numberOfEnemyRows = 5
   const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
-  let weaponCurrentPosition 
+  //let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
   
-  let enemyStartingPosition = [4,5,6,7,8,9,10,11,24,25,26,27,28,29,30,31,44,45,46,47,48,49,50,51,64,65,66,67,68,69,70,71,84,85,86,87,88,89,90,91]
+  let enemyStartingPosition = []
   //*work out later
-  // function populateEnemyStart() {
-  //   const startingNumbers = []
-  //   for (let i = 4; i <= (4 + enemyPerRow); i++) {
-  //     startingNumbers.push(i)
-  //   }
-  //   enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
-  // }
-  // populateEnemyStart()
+  function populateEnemyStart() {
+    const startingNumbers = []
+    for (let i = 4; i <= (4 + enemyPerRow); i++) {
+      startingNumbers.push(i)
+    }
+    enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
+  }
+  populateEnemyStart()
   console.log(enemyStartingPosition)
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
@@ -60,10 +60,15 @@ function init() {
   const powerBar = document.querySelector('.powerBar')
   powerBar.max = powerUpCharge
 
-  //game information board innertext
-  
+const splashScreen = document.querySelector('.splashScreen')  
 
   //! **********************GAME START FUNCTIONS*****************************
+  
+  function  hideVideo() {
+    splashVideo.classList.add('hidden')
+    splashScreen.classList.remove('hidden')
+    
+  }
   function powerupTracker() {
 
     if (isPowerupReady === powerUpCharge) {
@@ -77,7 +82,7 @@ function init() {
   function gameOver(){
     window.alert(`GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes... your final score is ${scoreCounter}`)
   }
-  function gameWin() {
+  function gameWin() { 
     window.alert(`GAME OVER, YOU WIN!!! You succesfully repelled the invading forces and live to fight another day... your final score is ${scoreCounter}`)
   }
 
@@ -130,7 +135,7 @@ function init() {
   }
   
   function useWeapon() {
-    weaponCurrentPosition = playerCurrentPosition -= width
+    let weaponCurrentPosition = playerCurrentPosition -= width
     addCharacter(weaponCurrentPosition, weaponClassBolt)
     playerCurrentPosition += width
     const bolt = setInterval(() => {
@@ -157,6 +162,7 @@ function init() {
           console.log('post', isPowerupReady)
           powerupTracker()
           enemyRemainingCheck()
+          displayScore.innerHTML = `Score ${scoreCounter}`
           clearInterval(bolt)
         }
       })        
@@ -236,9 +242,9 @@ function init() {
        * if player loses all life (life counter === 0, player loses run Game Over)
        * interval boundary is floor
        */
-      const randomCalc = randomNumber(1,weaponFireProbability)
+      //const randomCalc = randomNumber(1,weaponFireProbability)
   
-      //let randomCalc = 1
+      let randomCalc = 1
       console.log(randomCalc)
       enemyCurrentPosition.forEach(enemy => {
         const isEnemyClass = cells[enemy].classList.value === enemyClass
@@ -438,11 +444,10 @@ function init() {
   
   
   
-  // displayScore.innerHTML = `Score ${scoreCounter}`
-  // displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-  // displayLevel.innerText = `Level: ${currentLevel}`
-  // displayeCurrentBonusWeapon.innerText = 'placeholder'
-  
+  displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
+  displayLevel.innerText = `Level: ${currentLevel}`
+  displayeCurrentBonusWeapon.innerText = 'placeholder'
+  splashVideo.addEventListener('ended',hideVideo)
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)
   document.addEventListener('keydown', characterMoveset)
