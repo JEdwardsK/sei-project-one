@@ -24,6 +24,12 @@ function init() {
   const weaponStartingPosition = playerCurrentPosition
   //let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
+
+  const startButtonHome = document.querySelector('.startButonHome')
+  const loadGameButton = document.querySelector ('.loadGameButton')
+  const highScoreButton = document.querySelector('.highScoreButton')
+  const optionsButton ('.optionsButton')
+  
   
   let enemyStartingPosition = []
   //*work out later
@@ -62,6 +68,9 @@ function init() {
 
 const splashScreen = document.querySelector('.splashScreen')  
 
+displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
+displayLevel.innerText = `Level: ${currentLevel}`
+displayeCurrentBonusWeapon.innerText = 'placeholder'
   //! **********************GAME START FUNCTIONS*****************************
   
   function  hideVideo() {
@@ -173,22 +182,6 @@ const splashScreen = document.querySelector('.splashScreen')
       cells[enemy].classList.add(enemyClass)
     })
   }
-
-
-  
-  // Array of alien indexes
-  // On a timer
-  // Loop through each of the aliens
-  // Remove Class
-  // Change position
-  // Direction variable
-  // Using modulus/maths if ANY of the aliens have hit the edge - .some()?
-  // Change direction + Move down
-  // Update the position
-  // Add Classes Again
-
-  // //let timer = 0
-  // // right = 1, left = -1
   function enemyMovementStart() {
     let direction = 1
 
@@ -268,6 +261,7 @@ const splashScreen = document.querySelector('.splashScreen')
               if (cellValue === `${playerClass} ${enemyWeaponBolt}`) {
                 console.log(lifeCounter)
                 lifeCounter--
+                displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
                 console.log('life  after hit =>', lifeCounter)
                 console.log(cellValue)
                 cellValue = playerClass
@@ -287,6 +281,68 @@ const splashScreen = document.querySelector('.splashScreen')
       
     }, 2000) 
   }
+  function enemyRemainingCheck() {
+    const enemyRemainingCheck = setInterval(() => {
+      const enemyCounter = enemyCurrentPosition.length
+      if (enemyCounter === 0) {
+        gameWin()
+        clearInterval(enemyRemainingCheck)
+      }
+    }, 100)
+  }
+  
+
+  //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
+  //? OPTION 1 - positive counter
+  /* 
+  function calculateEnemmySpeed() {
+    let enemyCount = 0
+    cells.forEach(cell => {
+      if (cell.classList === enemyClass){
+        enemyCount++
+      }  
+    });
+    console.log(enemyCount)
+    if( enemyCount > 10) {
+      //increase speed by to level two
+    }
+    if (enemyCount > 15) {
+      //increase speed to level three
+    }
+    if (enemyCount > 20) {
+      // speednincrease to max levvel
+    }
+  }
+  */
+  //? p
+  //? OPTION 2 - NEGATIVE COUNTER
+  //enemyRemainingCheck()  
+  
+
+  //splashVideo.addEventListener('ended',hideVideo)
+  resetButton.addEventListener('click', resetGame)
+  startButton.addEventListener('click', enemyMovementStart)
+  document.addEventListener('keydown', characterMoveset)
+}
+
+window.addEventListener('DOMContentLoaded', init)
+
+
+
+  // Array of alien indexes
+  // On a timer
+  // Loop through each of the aliens
+  // Remove Class
+  // Change position
+  // Direction variable
+  // Using modulus/maths if ANY of the aliens have hit the edge - .some()?
+  // Change direction + Move down
+  // Update the position
+  // Add Classes Again
+
+  // //let timer = 0
+  // // right = 1, left = -1
+
 
       
   //   enemyCurrentPosition.forEach(enemy => {
@@ -403,54 +459,3 @@ const splashScreen = document.querySelector('.splashScreen')
   //   }
   // }, 1000);
   //}
-
-  //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
-  //? OPTION 1 - positive counter
-  /* 
-  function calculateEnemmySpeed() {
-    let enemyCount = 0
-    cells.forEach(cell => {
-      if (cell.classList === enemyClass){
-        enemyCount++
-      }  
-    });
-    console.log(enemyCount)
-    if( enemyCount > 10) {
-      //increase speed by to level two
-    }
-    if (enemyCount > 15) {
-      //increase speed to level three
-    }
-    if (enemyCount > 20) {
-      // speednincrease to max levvel
-    }
-  }
-  */
-  //? p
-  //? OPTION 2 - NEGATIVE COUNTER
-  //enemyRemainingCheck()
-  
-  function enemyRemainingCheck() {
-    const enemyRemainingCheck = setInterval(() => {
-      const enemyCounter = enemyCurrentPosition.length
-      if (enemyCounter === 0) {
-        gameWin()
-        clearInterval(enemyRemainingCheck)
-      }
-    }, 100)
-  }
-  
-  
-  
-  
-  
-  displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-  displayLevel.innerText = `Level: ${currentLevel}`
-  displayeCurrentBonusWeapon.innerText = 'placeholder'
-  //splashVideo.addEventListener('ended',hideVideo)
-  resetButton.addEventListener('click', resetGame)
-  startButton.addEventListener('click', enemyMovementStart)
-  document.addEventListener('keydown', characterMoveset)
-}
-
-window.addEventListener('DOMContentLoaded', init)
