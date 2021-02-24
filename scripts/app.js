@@ -8,21 +8,19 @@ function init() {
   }
 
   //* ***************************** Variables ***************************** 
-  const splashVideo = document.querySelector('#splashVideo')
+  const splashVideo = document.querySelector('.splashVideo')
   const grid = document.querySelector('.grid')
-  //*width and height are attributed values as a percentsge of their containter in CSS
   const width = 20
   const height = 20
   const cellCount = width * height
   const cells = []
   const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1  
-  let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
+  let playerCurrentPosition = playerStartingPosition
   const numberOfEnemies = 60
   const numberOfEnemyRows = 5
   const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
-  //let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
 
   let enemyStartingPosition = []
@@ -58,22 +56,23 @@ function init() {
   const startButton = document.querySelector('.startButton')
   const resetButton = document.querySelector('.resetButton')
   const powerBar = document.querySelector('.powerBar')
-  const startButtonHome = document.querySelector('.startButonHome')
-  const loadGameButton = document.querySelector ('.loadGameButton')
+  const startButtonHome = document.querySelector('.startButtonHome')
+  const loadGameButton = document.querySelector('.loadGameButton')
   const highScoreButton = document.querySelector('.highScoreButton')
-  const optionsButton ('.optionsButton')
+  const optionsButton = document.querySelector('.optionsButton')
   const gameScreen = document.querySelector('.gameScreen')
   powerBar.max = powerUpCharge
 
-const splashScreen = document.querySelector('.splashScreen')  
-const homeButton = document.querySelector('.homeButton')
-const tutorialScreen = document.querySelector('.tutorialScreen')
-const gameOverScreen = document.querySelector('.gameOverScreen')
-const gameWinScreen = document.querySelector('gameWinScreen')
-const submitHighScore = document.querySelector('submitHighScore')
-displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-displayLevel.innerText = `Level: ${currentLevel}`
-displayeCurrentBonusWeapon.innerText = 'placeholder'
+  const splashScreen = document.querySelector('.splashScreen')  
+  const homeButton = document.querySelector('.homeButton')
+  const tutorialScreen = document.querySelector('.tutorialScreen')
+  const gameOverScreen = document.querySelector('.gameOverScreen')
+  const gameWinScreen = document.querySelector('gameWinScreen')
+  const submitHighScore = document.querySelector('.submitHighScore')
+  const returnHomeButton = document.querySelector('.returnHomeButton')
+  displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
+  displayLevel.innerText = `Level: ${currentLevel}`
+  displayeCurrentBonusWeapon.innerText = 'placeholder'
   //! **********************GAME START FUNCTIONS*****************************
   
   function  hideVideo() {
@@ -101,9 +100,12 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
   function resetGame() {
     window.location.reload()
   }
-  function createGrid() {
-    splashScreen.classList.add('hidden')
+  function gameStart() {
     gameScreen.classList.remove('hidden')
+    splashScreen.classList.add('hidden')
+    createGrid()
+  }
+  function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
       cell.innerText = i
@@ -114,7 +116,6 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
     addEnemyRow()
     
   }
-  createGrid()
 
   function addCharacter(position, characterType) {
     cells[position].classList.add([characterType])
@@ -295,13 +296,13 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
       }
     }, 100)
   }
-  returnHome(){
+  function returnHome() {
     gameScreen.classList.add('hidden')
     splashScreen.classList.remove('hidden')
 
   }
-  toTutorial() {
-    splashScreen.classList.add ('hidden')
+  function toTutorial() {
+    splashScreen.classList.add('hidden')
     tutorialScreen.classList.remove('hidden')
   }
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
@@ -331,9 +332,10 @@ displayeCurrentBonusWeapon.innerText = 'placeholder'
   //enemyRemainingCheck()  
   
 
-  //splashVideo.addEventListener('ended',hideVideo)
+  splashVideo.addEventListener('ended',hideVideo)
+  startButtonHome.addEventListener('click', gameStart)
+  
   returnHomeButton.addEventListener('click', returnHome)
-  startButtonHome.addEventListener('click', createGrid)
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)
   document.addEventListener('keydown', characterMoveset)
@@ -343,133 +345,133 @@ window.addEventListener('DOMContentLoaded', init)
 
 
 
-  // Array of alien indexes
-  // On a timer
-  // Loop through each of the aliens
-  // Remove Class
-  // Change position
-  // Direction variable
-  // Using modulus/maths if ANY of the aliens have hit the edge - .some()?
-  // Change direction + Move down
-  // Update the position
-  // Add Classes Again
+// Array of alien indexes
+// On a timer
+// Loop through each of the aliens
+// Remove Class
+// Change position
+// Direction variable
+// Using modulus/maths if ANY of the aliens have hit the edge - .some()?
+// Change direction + Move down
+// Update the position
+// Add Classes Again
 
-  // //let timer = 0
-  // // right = 1, left = -1
+// //let timer = 0
+// // right = 1, left = -1
 
 
       
-  //   enemyCurrentPosition.forEach(enemy => {
-  // }
+//   enemyCurrentPosition.forEach(enemy => {
+// }
     
-  // if(newEnemyWeaponPosition = newEnemyWeaponPosition + width
-  // addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-  // if (newEnemyWeaponPosition >= ((height - 1) * width)) {
-  //   removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-  //   clearInterval(useBoltWeapon)
-  // console.log('is floor', (height - 1) * width)
+// if(newEnemyWeaponPosition = newEnemyWeaponPosition + width
+// addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+// if (newEnemyWeaponPosition >= ((height - 1) * width)) {
+//   removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+//   clearInterval(useBoltWeapon)
+// console.log('is floor', (height - 1) * width)
   
-  // // let timer = 0
-  // // let enemyPreviousPosition
-  // // console.log('test point 1 =>', enemyPreviousPosition)
-  // let enemyMovement = setInterval(() => {
-  //   console.log('timer counter =>', timer)
-  //   cells.forEach(cell => {
-  //     if (cell.classList.value === enemyClass) {
-  //       console.log(`cell value at start => ${cells.indexOf(cell)}`)
-  //       removeCharacter(enemyCurrentPosition, enemyClass)
-  //       if (enemyPreviousPosition === undefined){
-  //         console.log('test point 2 =>', enemyPreviousPosition)
-  //         enemyPreviousPosition = enemyCurrentPosition
-  //         enemyCurrentPosition++
-  //         addCharacter(enemyCurrentPosition, enemyClass)
-  //         console.log('test point 3 =>', enemyPreviousPosition)
-  //         console.log('current position =>', enemyCurrentPosition)
-  //       } else if (enemyPreviousPosition === (enemyCurrentPosition - 1)) {
-  //         console.log('previous minus one(move right)')
-  //         if (enemyCurrentPosition % 10 === 0) {
-  //           console.log('i fail at mod 10 = 0')
-  //           enemyCurrentPosition += 10
-  //           addCharacter(enemyCurrentPosition, enemyClass)
-  //         } else {
-  //           console.log('i fail on the secnd move right')
-  //           enemyCurrentPosition++
-  //           console.log(enemyCurrentPosition)
-  //           addCharacter(enemyCurrentPosition, enemyClass)
-  //           console.log('ive run through this line')
-  //         }
-  //       } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
-  //         console.log('previous plus one (move left)')
-  //         if (enemyCurrentPosition % width === (width - 1)) {
-  //           enemyCurrentPosition += 10
-  //           addCharacter(enemyCurrentPosition, enemyClass)
-  //         } else {
-  //           enemyCurrentPosition--
-  //           addCharacter(enemyCurrentPosition, enemyCurrentPosition)
-  //         } 
-  //       } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
-  //         console.log('previous plus 10 (move down')
-  //         if (enemyCurrentPosition % width === 0) {
-  //           enemyCurrentPosition++
-  //           addCharacter(enemyCurrentPosition, enemyClass)
-  //         } else if (enemyCurrentPosition % width === width - 1) {
-  //           enemyCurrentPosition--
-  //           addCharacter(enemyCurrentPosition, enemyClass)
-  //         }
-  //       }
-  //     }
-  //   }); 
-  //   timer === 5 ? clearInterval(enemyMovement) : timer++
-  // }, 1000);
+// // let timer = 0
+// // let enemyPreviousPosition
+// // console.log('test point 1 =>', enemyPreviousPosition)
+// let enemyMovement = setInterval(() => {
+//   console.log('timer counter =>', timer)
+//   cells.forEach(cell => {
+//     if (cell.classList.value === enemyClass) {
+//       console.log(`cell value at start => ${cells.indexOf(cell)}`)
+//       removeCharacter(enemyCurrentPosition, enemyClass)
+//       if (enemyPreviousPosition === undefined){
+//         console.log('test point 2 =>', enemyPreviousPosition)
+//         enemyPreviousPosition = enemyCurrentPosition
+//         enemyCurrentPosition++
+//         addCharacter(enemyCurrentPosition, enemyClass)
+//         console.log('test point 3 =>', enemyPreviousPosition)
+//         console.log('current position =>', enemyCurrentPosition)
+//       } else if (enemyPreviousPosition === (enemyCurrentPosition - 1)) {
+//         console.log('previous minus one(move right)')
+//         if (enemyCurrentPosition % 10 === 0) {
+//           console.log('i fail at mod 10 = 0')
+//           enemyCurrentPosition += 10
+//           addCharacter(enemyCurrentPosition, enemyClass)
+//         } else {
+//           console.log('i fail on the secnd move right')
+//           enemyCurrentPosition++
+//           console.log(enemyCurrentPosition)
+//           addCharacter(enemyCurrentPosition, enemyClass)
+//           console.log('ive run through this line')
+//         }
+//       } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
+//         console.log('previous plus one (move left)')
+//         if (enemyCurrentPosition % width === (width - 1)) {
+//           enemyCurrentPosition += 10
+//           addCharacter(enemyCurrentPosition, enemyClass)
+//         } else {
+//           enemyCurrentPosition--
+//           addCharacter(enemyCurrentPosition, enemyCurrentPosition)
+//         } 
+//       } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
+//         console.log('previous plus 10 (move down')
+//         if (enemyCurrentPosition % width === 0) {
+//           enemyCurrentPosition++
+//           addCharacter(enemyCurrentPosition, enemyClass)
+//         } else if (enemyCurrentPosition % width === width - 1) {
+//           enemyCurrentPosition--
+//           addCharacter(enemyCurrentPosition, enemyClass)
+//         }
+//       }
+//     }
+//   }); 
+//   timer === 5 ? clearInterval(enemyMovement) : timer++
+// }, 1000);
 
 
 
-  // let groupPositions = []
-  // cells.forEach(cell => {
-  //   if(cell.classList.value === enemyClass){
-  //     console.log(cells.indexOf(cell))
-  //     groupPositions.push(cells.indexOf(cell))
-  //   }
-  // });
-  // console.log(groupPositions)
-  // console.log(typeof groupPositions[1])
+// let groupPositions = []
+// cells.forEach(cell => {
+//   if(cell.classList.value === enemyClass){
+//     console.log(cells.indexOf(cell))
+//     groupPositions.push(cells.indexOf(cell))
+//   }
+// });
+// console.log(groupPositions)
+// console.log(typeof groupPositions[1])
 
 
 
-  // for (let i = 0; i < groupPositions.length; i++){
-  //   const enemyMovementRightAndDown =  setInterval(() => {
-  //     let currentIndex = groupPositions[i] 
-  //     removeCharacter(currentIndex, enemyClass)
-  //    // cells.forEach(cell => {
-  //       // let cellPosition = cells.indexOf(cell)
-  //       //const cellClass = cells[cellPosition].classList.value
-  //       // //!may cause problems if order change dependant on which class is added last, if so add || to catch reverse 
-  //       let cellClass = currentIndex.classList.value
-  //       if ( cellClass === `${playerClass} ${enemyClass}`) {
-  //         removeCharacter(currentIndex,enemyClass)
-  //         removeCharacter(currentIndex,playerClass)
-  //         clearInterval(enemyMovementRightAndDown)
-  //         window.alert('GAME OVER YOU LOSE')
-  //       }
-  //   //  });
-  //     for (let i = 0; i < groupPositions.length; i++){
-  //       removeCharacter(currentIndex, enemyClass)
-  //       if (currentIndex % width !== width - 1){
-  //         currentIndex++
-  //         addCharacter(currentIndex, enemyClass)
-  //       } else {
-  //         currentIndex += width
-  //         addCharacter(currentIndex, enemyClass)
-  //         clearInterval(enemyMovementRightAndDown)
-  //       }
-  //     }
-  //   }, 1000);
-  // const enemyMovementLeftAndDown = setInterval(() => {
-  //   removeCharacter(enemyCurrentPosition, enemyClass)
-  //   if (enemyCurrentPosition % width !== 0) {
-  //     enemyCurrentPosition--
-  //     addCharacter(enemyCurrentPosition, enemyClass)
-  //     clearInterval(enemyMovementLeftAndDown)
-  //   }
-  // }, 1000);
-  //}
+// for (let i = 0; i < groupPositions.length; i++){
+//   const enemyMovementRightAndDown =  setInterval(() => {
+//     let currentIndex = groupPositions[i] 
+//     removeCharacter(currentIndex, enemyClass)
+//    // cells.forEach(cell => {
+//       // let cellPosition = cells.indexOf(cell)
+//       //const cellClass = cells[cellPosition].classList.value
+//       // //!may cause problems if order change dependant on which class is added last, if so add || to catch reverse 
+//       let cellClass = currentIndex.classList.value
+//       if ( cellClass === `${playerClass} ${enemyClass}`) {
+//         removeCharacter(currentIndex,enemyClass)
+//         removeCharacter(currentIndex,playerClass)
+//         clearInterval(enemyMovementRightAndDown)
+//         window.alert('GAME OVER YOU LOSE')
+//       }
+//   //  });
+//     for (let i = 0; i < groupPositions.length; i++){
+//       removeCharacter(currentIndex, enemyClass)
+//       if (currentIndex % width !== width - 1){
+//         currentIndex++
+//         addCharacter(currentIndex, enemyClass)
+//       } else {
+//         currentIndex += width
+//         addCharacter(currentIndex, enemyClass)
+//         clearInterval(enemyMovementRightAndDown)
+//       }
+//     }
+//   }, 1000);
+// const enemyMovementLeftAndDown = setInterval(() => {
+//   removeCharacter(enemyCurrentPosition, enemyClass)
+//   if (enemyCurrentPosition % width !== 0) {
+//     enemyCurrentPosition--
+//     addCharacter(enemyCurrentPosition, enemyClass)
+//     clearInterval(enemyMovementLeftAndDown)
+//   }
+// }, 1000);
+//}
