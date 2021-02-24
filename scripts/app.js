@@ -7,10 +7,10 @@ function init() {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
-  //! ***************************** Variables ***************************** 
+  //* ***************************** Variables ***************************** 
 
   const grid = document.querySelector('.grid')
-  //!width and height are attributed values as a percentsge of their containter in CSS
+  //*width and height are attributed values as a percentsge of their containter in CSS
   const width = 20
   const height = 20
   const cellCount = width * height
@@ -18,12 +18,24 @@ function init() {
   const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1  
   let playerCurrentPosition = playerStartingPosition
   const playerClass = 'playerCharacter'
-  
+  const numberOfEnemies = 60
+  const numberOfEnemyRows = 5
+  const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
   let weaponCurrentPosition 
   const weaponClassBolt = 'weaponBolt'
   
-  let enemyStartingPosition = [13,14,15,16,3,4,5,6]
+  let enemyStartingPosition = [4,5,6,7,8,9,10,11,24,25,26,27,28,29,30,31,44,45,46,47,48,49,50,51,64,65,66,67,68,69,70,71,84,85,86,87,88,89,90,91]
+  //*work out later
+  // function populateEnemyStart() {
+  //   const startingNumbers = []
+  //   for (let i = 4; i <= (4 + enemyPerRow); i++) {
+  //     startingNumbers.push(i)
+  //   }
+  //   enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
+  // }
+  // populateEnemyStart()
+  console.log(enemyStartingPosition)
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
   const weaponFireProbability = 5
@@ -214,7 +226,7 @@ function init() {
         gameOver()
         clearInterval(enemyMovement)
       }
-    }, 400)
+    }, 800)
   
     function enemyWeaponFire() {
       /**
