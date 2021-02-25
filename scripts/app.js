@@ -341,8 +341,7 @@ function init() {
   function returnHome() {
     allSections.forEach(element => {
       element.classList.add('hidden')
-      console.log(element)
-    });
+    })
     splashScreen.classList.remove('hidden')
 
   }
@@ -388,9 +387,11 @@ function init() {
   document.addEventListener('keydown', characterMoveset)
 
   //univeral event listeners
-  f
+  returnHomeButton.forEach(element => {
+    element.addEventListener('click', returnHome)
+    
+  })
 
-  returnHomeButton.addEventListener('click', returnHome)
 }
 
 window.addEventListener('DOMContentLoaded', init)
