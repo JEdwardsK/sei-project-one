@@ -229,6 +229,10 @@ function init() {
             enemyRemainingCheck()
             displayScore.innerHTML = `Score ${scoreCounter}`
             clearInterval(bolt)
+          } else if (cellClass === `${weaponClassBolt} ${enemyWeaponBolt}` || cellClass === `${enemyWeaponBolt} ${weaponClassBolt}`) {
+            removeCharacter(cellPosition,enemyClass)
+            removeCharacter(cellPosition,weaponClassBolt)
+            soundExplosion.play()
           }
         })        
       }, 75)
@@ -243,6 +247,14 @@ function init() {
     }
 
   }
+  const removeExplosions = setInterval(() => {
+    cells.forEach(cell => {
+      let cellPosition = cells.indexOf(cell)
+      if (cell.classList.value === explosion) {
+        removeCharacter(cellPosition, explosion)
+      }
+    })
+  }, 1000)
   //gameScreen functions - enemy functions
   function enemyMovementStart() {
     let direction = 1
@@ -275,9 +287,10 @@ function init() {
       //*move down if on edge
       if (isOnEdge) {
         console.log('Move down')
-        enemyCurrentPosition = enemyCurrentPosition.map((item) => item + 10)
+        enemyCurrentPosition = enemyCurrentPosition.map((item) => item + height )
         direction = direction * -1
         console.log(direction)
+
       //*mutate array left or right
       } else {
         enemyCurrentPosition.forEach((enemy, index) => {
@@ -295,69 +308,76 @@ function init() {
           return true
         }
       })
-      if (isOnFloor) {
+      if (isOnFloor ) {
         gameOver()
         clearInterval(enemyMovement)
       }
     }, 1000)
   
-    function enemyWeaponFire() {
-      /**
-       * enemy fires a bolt
-       * bolt moves verticaally down
-       * if bolt hits player, player loses one life(shield)
-       * if player loses all life (life counter === 0, player loses run Game Over)
-       * interval boundary is floor
-       */
-      //const randomCalc = randomNumber(1,weaponFireProbability)
+    // function enemyWeaponFire() {
+    //   /**
+    //    * enemy fires a bolt
+    //    * bolt moves verticaally down
+    //    * if bolt hits player, player loses one life(shield)
+    //    * if player loses all life (life counter === 0, player loses run Game Over)
+    //    * interval boundary is floor
+    //    */
+    //   //const randomCalc = randomNumber(1,weaponFireProbability)
   
-      let randomCalc = 1
-      console.log(randomCalc)
-      enemyCurrentPosition.forEach(enemy => {
-        const isEnemyClass = cells[enemy].classList.value === enemyClass
-        const enemyWeaponPosition = cells[enemy + width]
-        let newEnemyWeaponPosition = enemy + width
-        if (randomCalc === 1 && isEnemyClass) {
-          addCharacter((enemy + width), enemyWeaponBolt)
-          const useBoltWeapon = setInterval(() => {
-            removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-            if (newEnemyWeaponPosition < ((height - 1) * width)) {
-              newEnemyWeaponPosition += width
-              addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-            }
-            cells.forEach(cell => {
-              const cellPosition = cells.indexOf(cell)
-              
-              const isEnemyInFront = cells[cellPosition * width].classList.value
-              console.log('isEnemyInfront', isEnemyInFront)
-              //cells[newEnemyWeaponPosition].classList.value === enemyClass
-  
-              if (cellValue === `${playerClass} ${enemyWeaponBolt}`) {
-                console.log(lifeCounter)
-                lifeCounter--
-                displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-                console.log('life  after hit =>', lifeCounter)
-                console.log(cellValue)
-                cellValue = playerClass
-                console.log('hit')
-                console.log(cellValue)
-                if (lifeCounter === 0) {
-                  gameOver()
-                }
-              }
-            })   
-          }, 1000)
-        }
-      })
-    }
-    // const enemyWeaponeRandomFire = setInterval(() => {
-    //   enemyWeaponFire() 
+    //   let randomCalc = 1
+    //   console.log(randomCalc)
+    //   let randomEnemyToFire = []
+    //   enemyCurrentPosition.forEach(enemy => {
+    //     console.log(enemy + width)
+    //     const isEnemyClass = cells[enemy].classList.value === enemyClass
+    //     const isNoEnemyinFront = cells[enemy + width].classList.value !== enemyClass
+    //     const enemyWeaponPosition = cells[enemy + width]
+    //     if (isEnemyClass && isNoEnemyinFront) {
+    //       randomEnemyToFire.push()
+    //     }
+    //   })
+    //   //const randomEnemyCalc = randomNumber(0,randomEnemyToFire.length)
+    //   let randomEnemyCalc = randomEnemyToFire[2]
+    //   let newEnemyWeaponPosition = randomEnemyCalc + width
+    //   addCharacter((randomEnemyCalc + width), enemyWeaponBolt)
+    //   const useBoltWeapon = setInterval(() => {
+    //     removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+    //     if (newEnemyWeaponPosition < ((height - 1) * width)) {
+    //       newEnemyWeaponPosition += width
+    //       addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+    //     }
+    //     cells.forEach(cell => {
+    //       const cellPosition = cells.indexOf(cell)
+    //       const isEnemyInFront = cells[cellPosition * width].classList.value
+    //       let cellClass = cells[cellPosition].classList.value
+    //       console.log('isEnemyInfront', isEnemyInFront)
+    //       //cells[newEnemyWeaponPosition].classList.value === enemyClass
+    //       if (cellClass === `${playerClass} ${enemyWeaponBolt}`) {
+    //         console.log(lifeCounter)
+    //         lifeCounter--
+    //         displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
+    //         console.log('life  after hit =>', lifeCounter)
+    //         console.log(cellClass)
+    //         cellClass = playerClass
+    //         console.log('hit')
+    //         console.log(cellClass)
+    //         if (lifeCounter === 0) {
+    //           gameOver()
+    //         }
+    //       }
+    //     })   
+    //   }, 1000)
+    // }
+    const enemyWeaponRandomFire = setInterval(() => {
+      enemyWeaponFire() 
       
-    // }, 2000) 
+    }, 2000) 
   }
+
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
       const enemyCounter = enemyCurrentPosition.length
+
       if (enemyCounter === 0) {
         gameWin()
         clearInterval(enemyRemainingCheck)
