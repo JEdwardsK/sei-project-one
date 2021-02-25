@@ -18,6 +18,8 @@ function init() {
   const soundMovement4 = document.querySelector('.soundMovement4')
   const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
   const startMenuMusic = document.querySelector('.startMenuMusic')
+  const soundUfo1 = document.querySelector('.soundUfo1')
+  const soundUfo2 = document.querySelector('.soundUfo2')
   // const soundExplosion = new Audio(src )
 
 
@@ -52,6 +54,7 @@ function init() {
   const weaponFireProbability = 5
   
   const enemyClass = 'enemyCharacter'
+  const ufoClass = 'ufoCharacter'
   const scoreModifier1 = 10
   
   let scoreCounter = 0
@@ -192,11 +195,14 @@ function init() {
   }
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
+    console.log(key)
     if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
       useWeapon('bolt')
-    } 
+    } else if (key === 80 && (isPowerupReady === powerUpCharge) ) {
+      useWeapon('bomb')
+    }
   }
   function useWeapon(weapon) {
     if (weapon === 'bolt') {
@@ -209,6 +215,7 @@ function init() {
         if (weaponCurrentPosition > width) {
           weaponCurrentPosition -= width
           addCharacter(weaponCurrentPosition, weaponClassBolt)
+          addCharacter(weaponCurrentPosition, weaponClassBolt)
         } else {
           weaponCurrentPosition = weaponStartingPosition
           clearInterval(bolt)
@@ -217,8 +224,10 @@ function init() {
           const cellPosition = cells.indexOf(cell)
           const cellClass = cells[cellPosition].classList.value
           if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
+            console.log(cellPosition - 1)
             removeCharacter(cellPosition,enemyClass)
             removeCharacter(cellPosition,weaponClassBolt)
+            
             soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
             enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
@@ -238,11 +247,50 @@ function init() {
           }
         })        
       }, 75)
+    } else if (weapon === 'bomb') {
+      let weaponCurrentPosition = playerCurrentPosition -= width
+      addCharacter(weaponCurrentPosition, weaponClassBomb)
+      soundBoltFire.play()
+      playerCurrentPosition += width
+      const Bomb = setInterval(() => {
+        removeCharacter(weaponCurrentPosition, weaponClassBomb)
+        if (weaponCurrentPosition > width) {
+          weaponCurrentPosition -= width
+          addCharacter(weaponCurrentPosition, weaponClassBomb)
+        } else {
+          weaponCurrentPosition = weaponStartingPosition
+          clearInterval(Bomb)
+        }
+        cells.forEach(cell => {
+          const cellPosition = cells.indexOf(cell)
+          const cellClass = cells[cellPosition].classList.value
+          if (cellClass === `${enemyClass} ${weaponClassBomb}` || cellClass === `${weaponClassBomb} ${enemyClass}`) {
+            removeCharacter(cellPosition,enemyClass)
+            removeCharacter(cellPosition,weaponClassBomb)
+            soundEnemyKilled.play()
+            addCharacter(cellPosition, explosion)
+            enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
+            console.log('pre', isPowerupReady)
+            scoreCounter += scoreModifier1
+            isPowerupReady++
+            powerBar.value++
+            console.log('post', isPowerupReady)
+            powerupTracker()
+            enemyRemainingCheck()
+            displayScore.innerHTML = scoreCounter
+            clearInterval(Bomb)
+          } else if (cellClass === `${weaponClassBomb} ${enemyWeaponBolt}` || cellClass === `${enemyWeaponBolt} ${weaponClassBomb}`) {
+            removeCharacter(cellPosition,enemyClass)
+            removeCharacter(cellPosition,weaponClassBomb)
+            soundExplosion.play()
+          }
+        })        
+      }, 75)
     }
   }
   function powerupTracker() {
 
-    if (isPowerupReady === powerUpCharge) {
+    if (isPowerupReady === powerUpCharge + 1) {
       isPowerupReady = 0
       powerBar.value = 0
       console.log(testString)
@@ -259,6 +307,7 @@ function init() {
   }, 1000)
   //gameScreen functions - enemy functions
   function enemyMovementStart() {
+    ufoAppears()
     let direction = 1
 
     let soundCounter = 0
@@ -405,6 +454,32 @@ function init() {
 
   }
   increaseSpeed()
+
+  function ufoAppears() {
+    const timerForAppearing = setInterval(() => {
+      ufoSoundCounter++
+      if (ufoSoundCounter === 1){
+        soundUfo1.play()
+      } else if (ufoSoundCounter === 2) {
+        soundUfo2.play()
+        ufoSoundCounter = 0
+      }
+      console.log(testString)
+      const ufoStartingPosition = width - 1
+      let ufoCurrentPosition = ufoStartingPosition
+      addCharacter(ufoStartingPosition, ufoClass)
+      const ufoSpeed = setInterval(() => {
+        removeCharacter(ufoCurrentPosition, ufoClass)
+        ufoCurrentPosition--
+        addCharacter(ufoCurrentPosition, ufoClass)
+        if (ufoCurrentPosition === 0) {
+          removeCharacter(ufoStartingPosition, ufoClass)
+          clearInterval(ufoSpeed)
+        }
+      }, 300);
+      
+    }, 12000);
+  }
   //universal functions
   function returnHome() {
     allSections.forEach(element => {
@@ -439,6 +514,11 @@ function init() {
     }
 
   }
+  let ufoSoundCounter = 0 
+
+
+
+  
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
   /* 

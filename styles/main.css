@@ -74,7 +74,13 @@ html {
   background-size: contain;
   background-position: center;
   cursor: none;
-
+}
+.ufoCharacter {
+  background-image: url('../assets/ufoBonus.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  cursor: none;
 }
 
 .weaponBolt{
@@ -106,6 +112,15 @@ html {
 
 .playerCharacterShielded{
 
+}
+
+.displayCurrentBonusWeapon div {
+  background-image: url('../assets/bomb.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  cursor: none;
 }
 
 .weaponBomb {
