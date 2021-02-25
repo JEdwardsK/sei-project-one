@@ -14,21 +14,28 @@ html {
 }
 * {
   box-sizing: border-box;
+  margin:0;
+  font-family: 'Arcade', sans-serif;
+  
+
 }
 
 body {
-  height: 1080px;
-  width:1920px;
+  width: 100vw;
+}
+.content {
+  height: 100vh;
+  max-width:100%;
   margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Arcade', sans-serif;
-  background-image: url('/assets/backgroundPlate.png');
+  background-image: url('../assets/backgroundPlate.png');
   background-repeat: no-repeat;
-  background-size: contain; 
+  background-size: cover; 
   background-color: black;
+  border: 2px solid green;
 }
 
 .grid-wrapper {
@@ -37,24 +44,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border:2px solid black;
+  border:2px solid rgb(255, 255, 255);
   flex: 4;
 }
 
 .grid{
   align-items: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2); */
   display: flex;
   flex-wrap: wrap;
   height: 100%;
   justify-content: center;
   height: 800px;
   width: 1200px;
-  border: 2px black;
+  /* border: 2px black; */
 }
 
 .grid div {
-  border: 1px solid lightgrey;
+  /* border: 1px solid lightgrey; */
   flex-grow: 1;
   height: 5%;
   width: 5%;
@@ -64,7 +71,8 @@ body {
   background-image: url('../assets/alienBlack.gif');
   background-repeat: no-repeat;
   background-size: contain;
-  cursor: pointer;
+  background-position: center;
+  cursor: none;
 
 }
 
@@ -72,21 +80,28 @@ body {
   background-image: url('../assets/laserBolt.png');
   background-repeat: no-repeat;
   background-size: contain;
-  cursor: pointer;
+  background-position: center;
+  cursor: none;
 }
 
 .enemyCharacter{
   background-image: url('../assets/alienYellow.gif');
   background-repeat: no-repeat;
   background-size: contain;
-  cursor: pointer;
+  cursor: none; 
+  background-position: center;
+  position: relative;
+
 }
 
-.explosion{
+.explosion {
   background-image: url('../assets/explosion.png');
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  cursor: pointer;
+  background-position: center;
+
+  cursor: none;
 }
 
 .playerCharacterShielded{
@@ -113,9 +128,10 @@ justify-content: space-between;
 
 .enemyWeaponBolt {
   background-image: url('../assets/laserBolt.png');
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  cursor: pointer;
+  cursor: none;
 }
 .displayPowerBar {
   display: flex;
@@ -144,7 +160,13 @@ h3 {
 }
 
 
-
+.gameScreen{
+  border: 2px solid red;
+  height: 650px;
+  width: 1271px;
+  position: absolute;
+  top: 30%;
+}
 
 
 .hidden {

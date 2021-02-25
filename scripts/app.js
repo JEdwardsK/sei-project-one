@@ -22,7 +22,7 @@ function init() {
   const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
   const weaponClassBolt = 'weaponBolt'
-
+  const explosion = 'explosion'
   let enemyStartingPosition = []
   //*work out later
   function populateEnemyStart() {
@@ -87,7 +87,7 @@ function init() {
   //optionsScreen selectiors
   const optionsScreen = document.querySelector('.optionsScreen')
   
-  //universal functions
+  //universal selectors
   const returnHomeButton = document.querySelectorAll('.returnHomeButton')
   const allSections = document.querySelectorAll('section')
   
@@ -142,7 +142,7 @@ function init() {
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-      cell.innerText = i
+      //cell.innerText = i
       grid.appendChild(cell)
       cells.push(cell)
     }
@@ -181,42 +181,44 @@ function init() {
     if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
-      useWeapon()
+      useWeapon('bolt')
     } 
   }
-  function useWeapon() {
-    let weaponCurrentPosition = playerCurrentPosition -= width
-    addCharacter(weaponCurrentPosition, weaponClassBolt)
-    playerCurrentPosition += width
-    const bolt = setInterval(() => {
-      removeCharacter(weaponCurrentPosition, weaponClassBolt)
-      if (weaponCurrentPosition > width) {
-        weaponCurrentPosition -= width
-        addCharacter(weaponCurrentPosition, weaponClassBolt)
-      } else {
-        weaponCurrentPosition = weaponStartingPosition
-        clearInterval(bolt)
-      }
-      cells.forEach(cell => {
-        const cellPosition = cells.indexOf(cell)
-        const cellClass = cells[cellPosition].classList.value
-        if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
-          removeCharacter(cellPosition,enemyClass)
-          removeCharacter(cellPosition,weaponClassBolt)
-          //!add explosion for short time then remove
-          enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
-          console.log('pre', isPowerupReady)
-          scoreCounter += scoreModifier1
-          isPowerupReady++
-          powerBar.value++
-          console.log('post', isPowerupReady)
-          powerupTracker()
-          enemyRemainingCheck()
-          displayScore.innerHTML = `Score ${scoreCounter}`
+  function useWeapon(weapon) {
+    if (weapon === 'bolt') {
+      let weaponCurrentPosition = playerCurrentPosition -= width
+      addCharacter(weaponCurrentPosition, weaponClassBolt)
+      playerCurrentPosition += width
+      const bolt = setInterval(() => {
+        removeCharacter(weaponCurrentPosition, weaponClassBolt)
+        if (weaponCurrentPosition > width) {
+          weaponCurrentPosition -= width
+          addCharacter(weaponCurrentPosition, weaponClassBolt)
+        } else {
+          weaponCurrentPosition = weaponStartingPosition
           clearInterval(bolt)
         }
-      })        
-    }, 75)
+        cells.forEach(cell => {
+          const cellPosition = cells.indexOf(cell)
+          const cellClass = cells[cellPosition].classList.value
+          if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
+            removeCharacter(cellPosition,enemyClass)
+            removeCharacter(cellPosition,weaponClassBolt)
+            addCharacter(cellPosition, explosion)
+            enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
+            console.log('pre', isPowerupReady)
+            scoreCounter += scoreModifier1
+            isPowerupReady++
+            powerBar.value++
+            console.log('post', isPowerupReady)
+            powerupTracker()
+            enemyRemainingCheck()
+            displayScore.innerHTML = `Score ${scoreCounter}`
+            clearInterval(bolt)
+          }
+        })        
+      }, 75)
+    }
   }
   function powerupTracker() {
 
@@ -373,7 +375,7 @@ function init() {
   //enemyRemainingCheck()  
   
   //splashScreen event listeners
-  splashVideo.addEventListener('ended',hideVideo)
+  //splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)
