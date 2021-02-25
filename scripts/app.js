@@ -375,7 +375,7 @@ function init() {
   //enemyRemainingCheck()  
   
   //splashScreen event listeners
-  //splashVideo.addEventListener('ended',hideVideo)
+  splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)

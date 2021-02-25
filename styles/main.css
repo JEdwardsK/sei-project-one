@@ -1,5 +1,5 @@
 /* background colour = #2e245d 
-
+transform rotate property
 
 */
 
@@ -20,12 +20,12 @@ html {
 
 }
 
-body {
+/* body {
   width: 100vw;
-}
+} */
 .content {
   height: 100vh;
-  max-width:100%;
+  width:100vw;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -34,13 +34,14 @@ body {
   background-image: url('../assets/backgroundPlate.png');
   background-repeat: no-repeat;
   background-size: cover; 
+  background-position: center;
   background-color: black;
   border: 2px solid green;
 }
 
 .grid-wrapper {
   height: 800px;
-  width: 1200px;
+  /* width: 1200px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +57,7 @@ body {
   height: 100%;
   justify-content: center;
   height: 800px;
-  width: 1200px;
+  /* width: 1200px; */
   /* border: 2px black; */
 }
 
@@ -64,7 +65,7 @@ body {
   /* border: 1px solid lightgrey; */
   flex-grow: 1;
   height: 5%;
-  width: 5%;
+  /* width: 5%; */
 }
 
 .playerCharacter{
@@ -112,7 +113,7 @@ body {
 .gameInfoBoard{
 border:2px solid black;
 height: 80px;
-width: 1200px;
+/* width: 1200px; */
 display: flex;
 flex-direction: row;
 justify-content: space-between;
@@ -163,9 +164,9 @@ h3 {
 .gameScreen{
   border: 2px solid red;
   height: 650px;
-  width: 1271px;
-  position: absolute;
-  top: 30%;
+  /* width: 1271px; */
+  /* position: absolute;
+  top: 30%; */
 }
 
 
