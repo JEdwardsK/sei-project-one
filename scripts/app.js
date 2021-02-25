@@ -29,8 +29,8 @@ function init() {
   const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1  
   const playerClass = 'playerCharacter'
   let playerCurrentPosition = playerStartingPosition
-  const numberOfEnemies = 30
-  const numberOfEnemyRows = 3
+  const numberOfEnemies = 60
+  const numberOfEnemyRows = 5
   const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
   const weaponClassBolt = 'weaponBolt'
@@ -42,7 +42,7 @@ function init() {
     for (let i = 4; i <= (4 + enemyPerRow); i++) {
       startingNumbers.push(i)
     }
-    enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3))]
+    enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
   }
   populateEnemyStart()
   console.log(enemyStartingPosition)
