@@ -53,7 +53,7 @@ function init() {
   const startButtonHome = document.querySelector('.startButtonHome')
   const loadGameButton = document.querySelector('.loadGameButton')
   const highScoreButton = document.querySelector('.highScoreButton')
-  const tutorialScreen = document.querySelector('.tutorialScreen')
+  const tutorialButton = document.querySelector('.tutorialButton')
   const optionsButton = document.querySelector('.optionsButton')
   
 
@@ -72,13 +72,25 @@ function init() {
   const startButton = document.querySelector('.startButton')
   const resetButton = document.querySelector('.resetButton')
   const homeButton = document.querySelector('.homeButton')
+
+  //tutorialScreen selectors
+  const tutorialScreen = document.querySelector('.tutorialScreen')
   
   //gameOver and GameWin Selectors
   const gameOverScreen = document.querySelector('.gameOverScreen')
-  const gameWinScreen = document.querySelector('gameWinScreen')
+  const gameWinScreen = document.querySelector('.gameWinScreen')
   const submitHighScore = document.querySelector('.submitHighScore')
-  const returnHomeButton = document.querySelector('.returnHomeButton')
-
+  
+  //highScoreScreen selectors
+  const highScoreScreen = document.querySelector('.highScoreScreen')
+  
+  //optionsScreen selectiors
+  const optionsScreen = document.querySelector('.optionsScreen')
+  
+  //universal functions
+  const returnHomeButton = document.querySelectorAll('.returnHomeButton')
+  const allSections = document.querySelectorAll('section')
+  
   displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
   displayLevel.innerText = `Level: ${currentLevel}`
   displayeCurrentBonusWeapon.innerText = 'placeholder'
@@ -101,7 +113,14 @@ function init() {
     splashScreen.classList.add('hidden')
     tutorialScreen.classList.remove('hidden')
   }
-
+  function toHighscore() {
+    splashScreen.classList.add('hidden')
+    highScoreScreen.classList.remove('hidden')
+  }
+  function toOptions() {
+    splashScreen.classList.add('hidden')
+    optionsScreen.classList.remove('hidden')
+  }
 
 
 
@@ -317,8 +336,13 @@ function init() {
       }
     }, 100)
   }
+
+  //universal functions
   function returnHome() {
-    gameScreen.classList.add('hidden')
+    allSections.forEach(element => {
+      element.classList.add('hidden')
+      console.log(element)
+    });
     splashScreen.classList.remove('hidden')
 
   }
@@ -352,11 +376,21 @@ function init() {
   //splashScreen event listeners
   splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
+  loadGameButton.addEventListener('click',loadGame)
+  tutorialButton.addEventListener('click', toTutorial)
+  optionsButton.addEventListener('click', toOptions)
+
+
   
-  returnHomeButton.addEventListener('click', returnHome)
+  //gameScreen event listeners
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)
   document.addEventListener('keydown', characterMoveset)
+
+  //univeral event listeners
+  f
+
+  returnHomeButton.addEventListener('click', returnHome)
 }
 
 window.addEventListener('DOMContentLoaded', init)
