@@ -17,6 +17,7 @@ function init() {
   const soundMovement3 = document.querySelector('.soundMovement3')
   const soundMovement4 = document.querySelector('.soundMovement4')
   const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
+  const startMenuMusic = document.querySelector('.startMenuMusic')
   // const soundExplosion = new Audio(src )
 
 
@@ -45,7 +46,6 @@ function init() {
     enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
   }
   populateEnemyStart()
-  console.log(enemyStartingPosition)
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
   const weaponFireProbability = 5
@@ -106,7 +106,7 @@ function init() {
   displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
   displayLevel.innerText = `Level: ${currentLevel}`
   displayeCurrentBonusWeapon.innerText = 'placeholder'
-  //! **********************GAME START FUNCTIONS*****************************
+  //* **********************GAME START FUNCTIONS*****************************
   
   //splashVideo and splashScreen Functions
   function  hideVideo() {
@@ -385,6 +385,24 @@ function init() {
     }, 100)
   }
 
+  function increaseSpeed() {
+    const speedFraction = 1000 / enemyStartingPosition.length
+    let speed = 1000
+    let compareLength = enemyStartingPosition.length
+    const reduceSpeedNumber = setInterval(() => {
+      if ((enemyCurrentPosition.length - 1) === compareLength) {
+        speed -= speedFraction
+        compareLength = enemyCurrentPosition.length
+        console.log('speed is now', speed)
+      }
+
+      if (speed === 0) {
+        clearInterval(reduceSpeedNumber)
+      }
+    }, 100)
+
+  }
+  increaseSpeed()
   //universal functions
   function returnHome() {
     allSections.forEach(element => {
@@ -393,7 +411,8 @@ function init() {
     splashScreen.classList.remove('hidden')
 
   }
-  
+  const splashIsHidden = splashScreen.classLlist.contains('hidden')
+  if ()
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
   /* 
