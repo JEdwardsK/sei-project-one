@@ -41,7 +41,7 @@ html {
 
 .grid-wrapper {
   height: 800px;
-  /* width: 1200px; */
+  width: 1200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,15 +57,15 @@ html {
   height: 100%;
   justify-content: center;
   height: 800px;
-  /* width: 1200px; */
-  /* border: 2px black; */
+  width: 1200px; 
+  border: 2px black;
 }
 
 .grid div {
   /* border: 1px solid lightgrey; */
   flex-grow: 1;
   height: 5%;
-  /* width: 5%; */
+  width: 5%;
 }
 
 .playerCharacter{
@@ -101,7 +101,6 @@ html {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-
   cursor: none;
 }
 
@@ -113,7 +112,7 @@ html {
 .gameInfoBoard{
 border:2px solid black;
 height: 80px;
-/* width: 1200px; */
+width: 1200px;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
@@ -163,10 +162,10 @@ h3 {
 
 .gameScreen{
   border: 2px solid red;
-  height: 650px;
-  /* width: 1271px; */
-  /* position: absolute;
-  top: 30%; */
+  height: auto;
+  transform: rotate3d(1, 0, 0, 45deg);
+  width: auto;
+  flex:1.3;
 }
 
 
