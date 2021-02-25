@@ -9,7 +9,14 @@ function init() {
 
   //* ***************************** Variables ***************************** 
   //audio variables(
-  const soundBoltFire = new Audio (); src('../assets/shoot.wav')
+  const soundBoltFire = document.querySelector('.soundBoltFire')
+  soundBoltFire
+  const soundExplosion = document.querySelector('.soundExplosion')
+  const soundMovement1  = document.querySelector('.soundMovement1')
+  const soundMovement2  = document.querySelector('.soundMovement2')
+  const soundMovement3 = document.querySelector('.soundMovement3')
+  const soundMovement4 = document.querySelector('.soundMovement4')
+  const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
   // const soundExplosion = new Audio(src )
 
 
@@ -22,8 +29,8 @@ function init() {
   const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1  
   const playerClass = 'playerCharacter'
   let playerCurrentPosition = playerStartingPosition
-  const numberOfEnemies = 60
-  const numberOfEnemyRows = 5
+  const numberOfEnemies = 30
+  const numberOfEnemyRows = 3
   const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
   const weaponClassBolt = 'weaponBolt'
@@ -35,7 +42,7 @@ function init() {
     for (let i = 4; i <= (4 + enemyPerRow); i++) {
       startingNumbers.push(i)
     }
-    enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
+    enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3))]
   }
   populateEnemyStart()
   console.log(enemyStartingPosition)
@@ -129,7 +136,7 @@ function init() {
 
   
 
-//gameOver gameWin functions
+  //gameOver gameWin functions
 
   function gameOver(){
     window.alert(`GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes... your final score is ${scoreCounter}`)
@@ -210,6 +217,7 @@ function init() {
           if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
             removeCharacter(cellPosition,enemyClass)
             removeCharacter(cellPosition,weaponClassBolt)
+            soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
             enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
             console.log('pre', isPowerupReady)
@@ -239,7 +247,19 @@ function init() {
   function enemyMovementStart() {
     let direction = 1
 
+    let soundCounter = 0
     const enemyMovement = setInterval(() => {
+      soundCounter++
+      if (soundCounter === 1){
+        soundMovement1.play()
+      } else if (soundCounter === 2) {
+        soundMovement2.play()
+      } else if (soundCounter === 3) {
+        soundMovement3.play()
+      } else if (soundCounter === 4) {
+        soundMovement4.play()
+        soundCounter = 0
+      }
       //*define edges
       const isOnEdge = cells.some((item, index) => {
         const hasEnemy = item.classList.value === enemyClass
@@ -279,7 +299,7 @@ function init() {
         gameOver()
         clearInterval(enemyMovement)
       }
-    }, 800)
+    }, 1000)
   
     function enemyWeaponFire() {
       /**
@@ -330,10 +350,10 @@ function init() {
         }
       })
     }
-    const enemyWeaponeRandomFire = setInterval(() => {
-      enemyWeaponFire() 
+    // const enemyWeaponeRandomFire = setInterval(() => {
+    //   enemyWeaponFire() 
       
-    }, 2000) 
+    // }, 2000) 
   }
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
