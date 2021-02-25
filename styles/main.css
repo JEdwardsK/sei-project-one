@@ -69,7 +69,7 @@ html {
 }
 
 .playerCharacter{
-  background-image: url('../assets/alienBlack.gif');
+  background-image: url('../assets/playerShip.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -108,6 +108,14 @@ html {
 
 }
 
+.weaponBomb {
+  background-image: url('../assets/bomb.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  cursor: none;
+}
 
 .gameInfoBoard{
 border:2px solid black;

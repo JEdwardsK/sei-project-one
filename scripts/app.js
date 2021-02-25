@@ -35,6 +35,7 @@ function init() {
   const enemyPerRow = numberOfEnemies / numberOfEnemyRows
   const weaponStartingPosition = playerCurrentPosition
   const weaponClassBolt = 'weaponBolt'
+  const weaponClassBomb = 'weaponBomb'
   const explosion = 'explosion'
   let enemyStartingPosition = []
   //*work out later
@@ -72,10 +73,9 @@ function init() {
   //gameScreen selectors
   const gameScreen = document.querySelector('.gameScreen')
 
-  const displayScore = document.querySelector('.displayScore')
-  const displayLife = document.querySelector('.displayLife')
-  const displayLevel = document.querySelector('.displayLevel')
-  const displayeCurrentBonusWeapon = document.querySelector('.displayCurrentBonusWeapon')
+  const displayScore = document.querySelector('.displayScore p')
+  const displayLife = document.querySelector('.displayLife p')
+  const displayLevel = document.querySelector('.displayLevel p')
 
   const powerBar = document.querySelector('.powerBar')
   const displayPowerBar = document.querySelector('.displayPowerBar')
@@ -102,10 +102,12 @@ function init() {
   //universal selectors
   const returnHomeButton = document.querySelectorAll('.returnHomeButton')
   const allSections = document.querySelectorAll('section')
+  const audioMuted = document.querySelector('.audioMuted')
+  const audioPlay = document.querySelector('.audioPlay')
+  const allAudioElements = document.querySelectorAll('audio')
   
-  displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-  displayLevel.innerText = `Level: ${currentLevel}`
-  displayeCurrentBonusWeapon.innerText = 'placeholder'
+  displayLife.innerText = lifeCounter
+  displayLevel.innerText = currentLevel
   //* **********************GAME START FUNCTIONS*****************************
   
   //splashVideo and splashScreen Functions
@@ -227,7 +229,7 @@ function init() {
             console.log('post', isPowerupReady)
             powerupTracker()
             enemyRemainingCheck()
-            displayScore.innerHTML = `Score ${scoreCounter}`
+            displayScore.innerHTML = scoreCounter
             clearInterval(bolt)
           } else if (cellClass === `${weaponClassBolt} ${enemyWeaponBolt}` || cellClass === `${enemyWeaponBolt} ${weaponClassBolt}`) {
             removeCharacter(cellPosition,enemyClass)
@@ -411,8 +413,32 @@ function init() {
     splashScreen.classList.remove('hidden')
 
   }
-  const splashIsHidden = splashScreen.classLlist.contains('hidden')
-  if ()
+
+  function playStartMusic() {
+    const splashIsHidden = splashScreen.classLlist.contains('hidden')
+    if (!splashIsHidden){
+      startMenuMusic.play()
+    }
+    if (splashIsHidden){
+      startMenuMusic.pause()
+    }
+  }
+
+  function controlAudio(event) {
+    console.log(event.target.classList)
+    const eventButton = event.target.classList
+    if (eventButton === 'audioMuted'){
+      allAudioElements.forEach(audio => {
+        audio = audio.muted = true
+      });
+    } else if (eventButton === 'audioPlay') {
+      allAudioElements.forEach(audio => {
+        audio.muted = false
+      });
+
+    }
+
+  }
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
   /* 
@@ -456,8 +482,12 @@ function init() {
   //univeral event listeners
   returnHomeButton.forEach(element => {
     element.addEventListener('click', returnHome)
-    
   })
+  audioMuted.addEventListener('click', controlAudio)
+  audioPlay.addEventListener('click', controlAudio)
+
+
+
 
 }
 
