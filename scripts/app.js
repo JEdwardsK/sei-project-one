@@ -138,7 +138,7 @@ function init() {
   function toOptions() {
     splashScreen.classList.add('hidden')
     optionsScreen.classList.remove('hidden')
-  }
+  
 
   
 
@@ -147,13 +147,13 @@ function init() {
   function gameOver() { 
     gameScreen.classList.add('hidden')
     gameOverScreen.classList.remove('hidden')
-    finalScore.replaceWith = `your final score is ${scoreCounter}`
+    finalScore.innerText = `Your final score is ${scoreCounter}`
   }
-  
+
   function gameWin() { 
     gameScreen.classList.add('hidden')
     gameWinScreen.classList.remove('hidden')
-    finalScore.replaceWith = `your final score is ${scoreCounter}`
+    finalScore.innerText = `Your final score is ${scoreCounter}`
   }
 
   function resetGame() {
