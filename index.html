@@ -22,7 +22,7 @@
   <audio src="/assets/audio/soundUfo2.wav" class="soundUfo2"></audio>
   <audio src="/assets/" class="startScreenMusic"></audio>
   <div class="content">
-  <section class="arcadeVideo hidden">
+  <section class="arcadeVideo">
     <video src="/assets/splashVideo.mp4" autoplay="true" class="splashVideo"></video>
   </section>
     <section class="splashScreen hidden">
@@ -35,7 +35,7 @@
           <button class="optionsButton" type="button">OPTIONS</button>
         </div>
     </section>
-    <section class="gameScreen " >
+    <section class="gameScreen hidden" >
       <div class="gridWrapper">
         <div class="grid"></div>
       </div >
@@ -54,7 +54,7 @@
         </div>
         <div class="displayCurrentBonusWeapon">
           <h3>BONUS</h3>
-          <p>BOMB</p>
+          <p></p>
         </div>
         <div class="displayPowerBar"><h3>POWERING UP...</h3>
           <progress class="powerBar" value="0" max="100"></progress>
@@ -70,9 +70,9 @@
       <button type="submit">submit my score</button>
       <button class="returnHomeButton">Home</button>
     </section>
-    <section class="tutorialScreen hidden ">
+    <section class="tutorialScreen hidden">
       <h1>HOW TO PLAY</h1>
-     <div class="tutorialScreenRight">
+    <div class="tutorialScreenRight">
         <div class="instructions">
           <p>the aim of the game is to prevent an invasion by destroying all of the invaders before they reach the ground. <br>
             If any of them make it to the ground, or touch the player, it's game over!<br></p>   
@@ -83,7 +83,7 @@
           <p><br>On occasion some fighters have observed fast moving ships scouting above. <br>If you see one, shoot it down! <br>They sometimes carry advanced shielding tech that can protect you from a round of enemy fire!</p>
         </div>
         <button class="returnHomeButton">Home</button>
-     </div>
+    </div>
     </section>
     <section class="optionsScreen hidden">
       <h1>OPTIONS SCREEN</h1>
@@ -98,7 +98,7 @@
           <p class="finalScore"></p>
         </div>
         <div class="loseScreenButtons">
-          <button type="button" class="resetGameButton">Let me try again...</button>
+          <button type="button" class="resetButton">Let me try again...</button>
           <button type="button" class="returnHomeButton">i'm done, no more</button>
         </div>
       </div>

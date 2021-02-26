@@ -10,7 +10,6 @@ function init() {
   //* ***************************** Variables ***************************** 
   //audio variables(
   const soundBoltFire = document.querySelector('.soundBoltFire')
-  soundBoltFire
   const soundExplosion = document.querySelector('.soundExplosion')
   const soundMovement1  = document.querySelector('.soundMovement1')
   const soundMovement2  = document.querySelector('.soundMovement2')
@@ -80,6 +79,7 @@ function init() {
   const displayLife = document.querySelector('.displayLife p')
   const displayLevel = document.querySelector('.displayLevel p')
 
+  const bonusDisplay = document.querySelector('.displayCurrentBonusWeapon p')
   const powerBar = document.querySelector('.powerBar')
   const displayPowerBar = document.querySelector('.displayPowerBar')
   powerBar.max = powerUpCharge
@@ -191,10 +191,10 @@ function init() {
   //gameScreen FUnctions - character functions
   function characterMovement(key) {
     removeCharacter(playerCurrentPosition, playerClass)
-    if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 1) {
+    if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 2) {
       playerCurrentPosition++
       addCharacter(playerCurrentPosition, playerClass)
-    } else if ((key === 37 || key === 65) && playerCurrentPosition % width !== 0) {
+    } else if ((key === 37 || key === 65) && playerCurrentPosition % width !== 1) {
       playerCurrentPosition--
       addCharacter(playerCurrentPosition, playerClass)
     } else {
@@ -297,10 +297,13 @@ function init() {
     }
   }
   function powerupTracker() {
-
+    if (isPowerupReady === powerUpCharge) {
+      bonusDisplay.innerText = 'BOMB'
+    }
     if (isPowerupReady === powerUpCharge + 1) {
       isPowerupReady = 0
       powerBar.value = 0
+      bonusDisplay.innerText = ' '
       console.log(testString)
     }
 
@@ -334,7 +337,7 @@ function init() {
       //*define edges
       const isOnEdge = cells.some((item, index) => {
         const hasEnemy = item.classList.value === enemyClass
-        const isEdge = direction === 1 ? (index % width === (width - 1)) : (index % width === 0)
+        const isEdge = direction === 1 ? (index % width === (width - 2)) : (index % width === 1)
         if (hasEnemy && isEdge){
           return true 
         }
@@ -374,66 +377,7 @@ function init() {
     }, 1000)
   }
   
-  // function enemyWeaponFire() {
-  //   /**
-  //    * enemy fires a bolt
-  //    * bolt moves verticaally down
-  //    * if bolt hits player, player loses one life(shield)
-  //    * if player loses all life (life counter === 0, player loses run Game Over)
-  //    * interval boundary is floor
-  //    */
-  //   //const randomCalc = randomNumber(1,weaponFireProbability)
   
-  //   let randomCalc = 1
-  //   console.log(randomCalc)
-  //   let randomEnemyToFire = []
-  //   enemyCurrentPosition.forEach(enemy => {
-  //     console.log(enemy + width)
-  //     const isEnemyClass = cells[enemy].classList.value === enemyClass
-  //     const isNoEnemyinFront = cells[enemy + width].classList.value !== enemyClass
-  //     const enemyWeaponPosition = cells[enemy + width]
-  //     if (isEnemyClass && isNoEnemyinFront) {
-  //       randomEnemyToFire.push()
-  //     }
-  //   })
-  //   //const randomEnemyCalc = randomNumber(0,randomEnemyToFire.length)
-  //   let randomEnemyCalc = randomEnemyToFire[2]
-  //   let newEnemyWeaponPosition = randomEnemyCalc + width
-  //   addCharacter((randomEnemyCalc + width), enemyWeaponBolt)
-  //   const useBoltWeapon = setInterval(() => {
-  //     removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-  //     if (newEnemyWeaponPosition < ((height - 1) * width)) {
-  //       newEnemyWeaponPosition += width
-  //       addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-  //     }
-  //     cells.forEach(cell => {
-  //       const cellPosition = cells.indexOf(cell)
-  //       const isEnemyInFront = cells[cellPosition * width].classList.value
-  //       let cellClass = cells[cellPosition].classList.value
-  //       console.log('isEnemyInfront', isEnemyInFront)
-  //       //cells[newEnemyWeaponPosition].classList.value === enemyClass
-  //       if (cellClass === `${playerClass} ${enemyWeaponBolt}`) {
-  //         console.log(lifeCounter)
-  //         lifeCounter--
-  //         displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-  //         console.log('life  after hit =>', lifeCounter)
-  //         console.log(cellClass)
-  //         cellClass = playerClass
-  //         console.log('hit')
-  //         console.log(cellClass)
-  //         if (lifeCounter === 0) {
-  //           gameOver()
-  //         }
-  //       }
-  //     })   
-  //   }, 1000)
-  // }
-  //   const enemyWeaponRandomFire = setInterval(() => {
-  //     enemyWeaponFire() 
-      
-  //   }, 2000) 
-  // }
-
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
       const enemyCounter = enemyCurrentPosition.length
@@ -463,8 +407,56 @@ function init() {
 
   }
   increaseSpeed()
+  function enemyWeaponFire() {
+    /**
+     * enemy fires a bolt
+     * bolt moves verticaally down
+     * if bolt hits player, player loses one life(shield)
+     * if player loses all life (life counter === 0, player loses run Game Over)
+     * interval boundary is floor
+     */
+    //const randomCalc = randomNumber(1,weaponFireProbability)
+
+    let randomCalc = 1
+    console.log(randomCalc)
+    enemyCurrentPosition.forEach(enemy => {
+      const isEnemyClass = cells[enemy].classList.value === enemyClass
+      const enemyWeaponPosition = cells[enemy + width]
+      let newEnemyWeaponPosition = enemy + width
+      if (randomCalc === 1 && isEnemyClass) {
+        addCharacter((enemy + width), enemyWeaponBolt)
+        const useBoltWeapon = setInterval(() => {
+          removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+          if (newEnemyWeaponPosition < ((height - 1) * width)) {
+            newEnemyWeaponPosition += width
+            addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+          }
+          cells.forEach(cell => {
+            const cellPosition = cells.indexOf(cell)
+            let cellValue = cell.classList.value
+            //cells[newEnemyWeaponPosition].classList.value === enemyClass
+
+            if ( cellValue === `${playerClass} ${enemyWeaponBolt}`) {
+              console.log(lifeCounter)
+              lifeCounter--
+              console.log('life  after hit =>', lifeCounter)
+              console.log(cellValue)
+              cellValue = playerClass
+              console.log('hit')
+              console.log(cellValue)
+              if (lifeCounter === 0) {
+                gameOver()
+              }
+            }
+          })   
+        }, 1000)
+      }
+    })
+  }
+ 
 
   function ufoAppears() {
+    let ufoSoundCounter = 0 
     const timerForAppearing = setInterval(() => {
       ufoSoundCounter++
       if (ufoSoundCounter === 1){
@@ -474,14 +466,14 @@ function init() {
         ufoSoundCounter = 0
       }
       console.log(testString)
-      const ufoStartingPosition = width - 1
+      const ufoStartingPosition = width - 2
       let ufoCurrentPosition = ufoStartingPosition
       addCharacter(ufoStartingPosition, ufoClass)
       const ufoSpeed = setInterval(() => {
         removeCharacter(ufoCurrentPosition, ufoClass)
         ufoCurrentPosition--
         addCharacter(ufoCurrentPosition, ufoClass)
-        if (ufoCurrentPosition === 0) {
+        if (ufoCurrentPosition === 1) {
           removeCharacter(ufoStartingPosition, ufoClass)
           clearInterval(ufoSpeed)
         }
@@ -523,7 +515,7 @@ function init() {
     }
 
   }
-  let ufoSoundCounter = 0 
+
 
 
 
@@ -552,10 +544,9 @@ function init() {
   */
   //? p
   //? OPTION 2 - NEGATIVE COUNTER
-  //enemyRemainingCheck()  
   
   //splashScreen event listeners
-  //splashVideo.addEventListener('ended',hideVideo)
+  splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   //loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)
@@ -582,136 +573,3 @@ function init() {
 }
 
 window.addEventListener('DOMContentLoaded', init)
-
-
-
-// Array of alien indexes
-// On a timer
-// Loop through each of the aliens
-// Remove Class
-// Change position
-// Direction variable
-// Using modulus/maths if ANY of the aliens have hit the edge - .some()?
-// Change direction + Move down
-// Update the position
-// Add Classes Again
-
-// //let timer = 0
-// // right = 1, left = -1
-
-
-      
-//   enemyCurrentPosition.forEach(enemy => {
-// }
-    
-// if(newEnemyWeaponPosition = newEnemyWeaponPosition + width
-// addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-// if (newEnemyWeaponPosition >= ((height - 1) * width)) {
-//   removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-//   clearInterval(useBoltWeapon)
-// console.log('is floor', (height - 1) * width)
-  
-// // let timer = 0
-// // let enemyPreviousPosition
-// // console.log('test point 1 =>', enemyPreviousPosition)
-// let enemyMovement = setInterval(() => {
-//   console.log('timer counter =>', timer)
-//   cells.forEach(cell => {
-//     if (cell.classList.value === enemyClass) {
-//       console.log(`cell value at start => ${cells.indexOf(cell)}`)
-//       removeCharacter(enemyCurrentPosition, enemyClass)
-//       if (enemyPreviousPosition === undefined){
-//         console.log('test point 2 =>', enemyPreviousPosition)
-//         enemyPreviousPosition = enemyCurrentPosition
-//         enemyCurrentPosition++
-//         addCharacter(enemyCurrentPosition, enemyClass)
-//         console.log('test point 3 =>', enemyPreviousPosition)
-//         console.log('current position =>', enemyCurrentPosition)
-//       } else if (enemyPreviousPosition === (enemyCurrentPosition - 1)) {
-//         console.log('previous minus one(move right)')
-//         if (enemyCurrentPosition % 10 === 0) {
-//           console.log('i fail at mod 10 = 0')
-//           enemyCurrentPosition += 10
-//           addCharacter(enemyCurrentPosition, enemyClass)
-//         } else {
-//           console.log('i fail on the secnd move right')
-//           enemyCurrentPosition++
-//           console.log(enemyCurrentPosition)
-//           addCharacter(enemyCurrentPosition, enemyClass)
-//           console.log('ive run through this line')
-//         }
-//       } else if (enemyPreviousPosition === (enemyCurrentPosition + 1)) {
-//         console.log('previous plus one (move left)')
-//         if (enemyCurrentPosition % width === (width - 1)) {
-//           enemyCurrentPosition += 10
-//           addCharacter(enemyCurrentPosition, enemyClass)
-//         } else {
-//           enemyCurrentPosition--
-//           addCharacter(enemyCurrentPosition, enemyCurrentPosition)
-//         } 
-//       } else if (enemyPreviousPosition === (enemyCurrentPosition += width)) {
-//         console.log('previous plus 10 (move down')
-//         if (enemyCurrentPosition % width === 0) {
-//           enemyCurrentPosition++
-//           addCharacter(enemyCurrentPosition, enemyClass)
-//         } else if (enemyCurrentPosition % width === width - 1) {
-//           enemyCurrentPosition--
-//           addCharacter(enemyCurrentPosition, enemyClass)
-//         }
-//       }
-//     }
-//   }); 
-//   timer === 5 ? clearInterval(enemyMovement) : timer++
-// }, 1000);
-
-
-
-// let groupPositions = []
-// cells.forEach(cell => {
-//   if(cell.classList.value === enemyClass){
-//     console.log(cells.indexOf(cell))
-//     groupPositions.push(cells.indexOf(cell))
-//   }
-// });
-// console.log(groupPositions)
-// console.log(typeof groupPositions[1])
-
-
-
-// for (let i = 0; i < groupPositions.length; i++){
-//   const enemyMovementRightAndDown =  setInterval(() => {
-//     let currentIndex = groupPositions[i] 
-//     removeCharacter(currentIndex, enemyClass)
-//    // cells.forEach(cell => {
-//       // let cellPosition = cells.indexOf(cell)
-//       //const cellClass = cells[cellPosition].classList.value
-//       // //!may cause problems if order change dependant on which class is added last, if so add || to catch reverse 
-//       let cellClass = currentIndex.classList.value
-//       if ( cellClass === `${playerClass} ${enemyClass}`) {
-//         removeCharacter(currentIndex,enemyClass)
-//         removeCharacter(currentIndex,playerClass)
-//         clearInterval(enemyMovementRightAndDown)
-//         window.alert('GAME OVER YOU LOSE')
-//       }
-//   //  });
-//     for (let i = 0; i < groupPositions.length; i++){
-//       removeCharacter(currentIndex, enemyClass)
-//       if (currentIndex % width !== width - 1){
-//         currentIndex++
-//         addCharacter(currentIndex, enemyClass)
-//       } else {
-//         currentIndex += width
-//         addCharacter(currentIndex, enemyClass)
-//         clearInterval(enemyMovementRightAndDown)
-//       }
-//     }
-//   }, 1000);
-// const enemyMovementLeftAndDown = setInterval(() => {
-//   removeCharacter(enemyCurrentPosition, enemyClass)
-//   if (enemyCurrentPosition % width !== 0) {
-//     enemyCurrentPosition--
-//     addCharacter(enemyCurrentPosition, enemyClass)
-//     clearInterval(enemyMovementLeftAndDown)
-//   }
-// }, 1000);
-
