@@ -229,18 +229,25 @@ h3 {
 }
 
 
-.gameScreen, .splashScreen, .tutorialScreen, .optionsScreen, .gameOverScreen, .gameWinScreen{
+.gameScreen, .splashScreen, .optionsScreen, .gameOverScreen, .gameWinScreen{
   height: auto;
   width: auto;
   rotate: x 45deg;
-  flex:0,.3 
+  border: 2px dotted red;
+}
+.tutorialScreen button{
+align-self:flex-end;
+flex: 1;
 }
 
-.splashScreen{
+.splashScreen, .tutorialScreen{
   display: flex;
   flex-direction: column;
 }
-
+.tutorialScreenRight {
+  display: flex;
+  flex-direction: row;
+}
 
 button:hover {
   background-color: black;
@@ -248,7 +255,12 @@ button:hover {
 } 
 
 
-
+.instructions {
+  flex-wrap: wrap;
+  text-align: justify;
+  flex:4;
+  font-size: 17px;
+}
 
 @keyframes startTitle {
 0% {
