@@ -125,7 +125,6 @@ function init() {
     splashScreen.classList.add('hidden')
   }
   function loadGame() {
-    console.log('i need to load a game')
   }
   function toTutorial() {
     splashScreen.classList.add('hidden')
@@ -203,7 +202,6 @@ function init() {
   }
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
-    console.log(key)
     if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
@@ -232,18 +230,15 @@ function init() {
           const cellPosition = cells.indexOf(cell)
           const cellClass = cells[cellPosition].classList.value
           if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
-            console.log(cellPosition - 1)
             removeCharacter(cellPosition,enemyClass)
             removeCharacter(cellPosition,weaponClassBolt)
             
             soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
             enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
-            console.log('pre', isPowerupReady)
             scoreCounter += scoreModifier1
             isPowerupReady++
             powerBar.value++
-            console.log('post', isPowerupReady)
             powerupTracker()
             enemyRemainingCheck()
             displayScore.innerHTML = scoreCounter
@@ -278,11 +273,9 @@ function init() {
             soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
             enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
-            console.log('pre', isPowerupReady)
             scoreCounter += scoreModifier1
             isPowerupReady++
             powerBar.value++
-            console.log('post', isPowerupReady)
             powerupTracker()
             enemyRemainingCheck()
             displayScore.innerHTML = scoreCounter
@@ -304,7 +297,6 @@ function init() {
       isPowerupReady = 0
       powerBar.value = 0
       bonusDisplay.innerText = ' '
-      console.log(testString)
     }
 
   }
@@ -348,10 +340,8 @@ function init() {
       })
       //*move down if on edge
       if (isOnEdge) {
-        console.log('Move down')
         enemyCurrentPosition = enemyCurrentPosition.map((item) => item + height )
         direction = direction * -1
-        console.log(direction)
 
         //*mutate array left or right
       } else {
@@ -397,7 +387,6 @@ function init() {
       if ((enemyCurrentPosition.length - 1) === compareLength) {
         speed -= speedFraction
         compareLength = enemyCurrentPosition.length
-        console.log('speed is now', speed)
       }
 
       if (speed === 0) {
@@ -418,7 +407,6 @@ function init() {
     //const randomCalc = randomNumber(1,weaponFireProbability)
 
     let randomCalc = 1
-    console.log(randomCalc)
     enemyCurrentPosition.forEach(enemy => {
       const isEnemyClass = cells[enemy].classList.value === enemyClass
       const enemyWeaponPosition = cells[enemy + width]
@@ -437,13 +425,8 @@ function init() {
             //cells[newEnemyWeaponPosition].classList.value === enemyClass
 
             if ( cellValue === `${playerClass} ${enemyWeaponBolt}`) {
-              console.log(lifeCounter)
               lifeCounter--
-              console.log('life  after hit =>', lifeCounter)
-              console.log(cellValue)
               cellValue = playerClass
-              console.log('hit')
-              console.log(cellValue)
               if (lifeCounter === 0) {
                 gameOver()
               }
@@ -465,7 +448,6 @@ function init() {
         soundUfo2.play()
         ufoSoundCounter = 0
       }
-      console.log(testString)
       const ufoStartingPosition = width - 2
       let ufoCurrentPosition = ufoStartingPosition
       addCharacter(ufoStartingPosition, ufoClass)
@@ -501,7 +483,6 @@ function init() {
   }
 
   function controlAudio(event) {
-    console.log(event.target.classList)
     const eventButton = event.target.classList
     if (eventButton === 'audioMuted'){
       allAudioElements.forEach(audio => {
@@ -530,7 +511,6 @@ function init() {
         enemyCount++
       }  
     });
-    console.log(enemyCount)
     if( enemyCount > 10) {
       //increase speed by to level two
     }
