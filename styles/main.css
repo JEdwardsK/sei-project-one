@@ -221,6 +221,7 @@ h3 {
 .splashScreen {
   display:flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .startMenu {
@@ -244,7 +245,7 @@ flex: 1;
   display: flex;
   flex-direction: column;
 }
-.tutorialScreenRight {
+.tutorialScreenRight, .winScreenContent {
   display: flex;
   flex-direction: row;
 }
@@ -262,15 +263,20 @@ button:hover {
   font-size: 17px;
 }
 
-@keyframes startTitle {
-0% {
-  width: 0ch;
-}
-100% {
-  width: 14ch;
-}
+.gameOverScreen p, .gameWinScreen p {
+  font-size: 22px;
 }
 
+.winScreenLeft, .winScreenButtons {
+  display: flex;
+  flex-direction: column;
+  font-size: 17px;
+  
+}
+.winScreenButtons button {
+  margin: 20px;
+  padding: 15px;
+}
 
 .hidden {
   display: none;
