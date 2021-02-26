@@ -245,7 +245,7 @@ flex: 1;
   display: flex;
   flex-direction: column;
 }
-.tutorialScreenRight, .winScreenContent {
+.tutorialScreenRight, .winScreenContent, .loseScreenContent {
   display: flex;
   flex-direction: row;
 }
@@ -260,20 +260,19 @@ button:hover {
   flex-wrap: wrap;
   text-align: justify;
   flex:4;
-  font-size: 17px;
 }
 
-.gameOverScreen p, .gameWinScreen p {
+.gameOverScreen p, .gameWinScreen p,  {
   font-size: 22px;
 }
 
-.winScreenLeft, .winScreenButtons {
+.winScreenLeft, .winScreenButtons, .loseScreenLeft, .loseScreenButtons {
   display: flex;
   flex-direction: column;
   font-size: 17px;
   
 }
-.winScreenButtons button {
+.winScreenButtons button, .loseScreenButtons button{
   margin: 20px;
   padding: 15px;
 }

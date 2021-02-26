@@ -90,14 +90,20 @@
       <p>i am the options screen! here you ccan change settings in the game to make it easier or more difficult, your choice</p>
       <button class="returnHomeButton">Home</button>
     </section>
-    <section class="gameOverScreen hidden">
+    <section class="gameOverScreen ">
       <h1>GAME OVER</h1>
-      <p>GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes...</p>
-      <p class="finalScore"></p>
-      <button type="button" class="resetGameButton">Let me try again...</button>
-      <button type="button" class="homeButton">i'm done, no more</button>
+      <div class="loseScreenContent">
+        <div class="loseScreenLeft">
+          <p>GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes...</p>
+          <p class="finalScore"></p>
+        </div>
+        <div class="loseScreenButtons">
+          <button type="button" class="resetGameButton">Let me try again...</button>
+          <button type="button" class="homeButton">i'm done, no more</button>
+        </div>
+      </div>
     </section>
-    <section class="gameWinScreen ">
+    <section class="gameWinScreen hidden">
       <h1>YOU WON</h1>
       <div class="winScreenContent">
         <div class="winScreenLeft">
