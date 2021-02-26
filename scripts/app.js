@@ -548,9 +548,9 @@ function init() {
   //splashScreen event listeners
   //splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
-  loadGameButton.addEventListener('click',loadGame)
+  //loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)
-  optionsButton.addEventListener('click', toOptions)
+  //optionsButton.addEventListener('click', toOptions)
 
 
   
