@@ -95,6 +95,7 @@ function init() {
   const gameOverScreen = document.querySelector('.gameOverScreen')
   const gameWinScreen = document.querySelector('.gameWinScreen')
   const submitHighScore = document.querySelector('.submitHighScore')
+  const finalScore = document.querySelector('.finalScore')
   
   //highScoreScreen selectors
   const highScoreScreen = document.querySelector('.highScoreScreen')
@@ -142,12 +143,17 @@ function init() {
   
 
   //gameOver gameWin functions
-
-  function gameOver(){
-    window.alert(`GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes... your final score is ${scoreCounter}`)
+  
+  function gameOver() { 
+    gameScreen.classList.add('hidden')
+    gameOverScreen.classList.remove('hidden')
+    finalScore.replaceWith = `your final score is ${scoreCounter}`
   }
+  
   function gameWin() { 
-    window.alert(`GAME OVER, YOU WIN!!! You succesfully repelled the invading forces and live to fight another day... your final score is ${scoreCounter}`)
+    gameScreen.classList.add('hidden')
+    gameWinScreen.classList.remove('hidden')
+    finalScore.replaceWith = `your final score is ${scoreCounter}`
   }
 
   function resetGame() {

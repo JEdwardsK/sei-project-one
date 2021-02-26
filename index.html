@@ -70,7 +70,7 @@
       <button type="submit">submit my score</button>
       <button class="returnHomeButton">Home</button>
     </section>
-    <section class="tutorialScreen ">
+    <section class="tutorialScreen hidden ">
       <h1>HOW TO PLAY</h1>
      <div class="tutorialScreenRight">
         <div class="instructions">
@@ -92,14 +92,17 @@
     </section>
     <section class="gameOverScreen hidden">
       <h2>GAME OVER</h2>
-      <p></p>
-      <button type="resetButton">Let me try again...</button>
+      <p>GAME OVER YOU LOSE!!! You failed to defend the base from the alien hordes...</p>
+      <p class="finalScore"></p>
+      <button type="button" class="resetGameButton">Let me try again...</button>
       <button type="button" class="homeButton">i'm done, no more</button>
     </section>
-    <section class="gameWinScreen hidden">
+    <section class="gameWinScreen ">
       <h2>YOU WON</h2>
-      <p></p>
-      <button type="button" class="submitHighScore"></button>
+      <p>GAME OVER, YOU WIN!!! You succesfully repelled the invading forces and live to fight another day... </p>
+      <p class="finalScore"></p>
+      <button type="button" class="submitHighScore">Submit Your Score</button>
+      <button class="returnHomeButton">Home</button>
     </section>
   </div>
 
