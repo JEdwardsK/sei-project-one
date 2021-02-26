@@ -138,6 +138,7 @@ function init() {
   function toOptions() {
     splashScreen.classList.add('hidden')
     optionsScreen.classList.remove('hidden')
+  }
   
 
     
@@ -349,7 +350,7 @@ function init() {
         direction = direction * -1
         console.log(direction)
 
-      //*mutate array left or right
+        //*mutate array left or right
       } else {
         enemyCurrentPosition.forEach((enemy, index) => {
           enemyCurrentPosition[index] = enemy + direction
@@ -371,66 +372,67 @@ function init() {
         clearInterval(enemyMovement)
       }
     }, 1000)
-  
-    // function enemyWeaponFire() {
-    //   /**
-    //    * enemy fires a bolt
-    //    * bolt moves verticaally down
-    //    * if bolt hits player, player loses one life(shield)
-    //    * if player loses all life (life counter === 0, player loses run Game Over)
-    //    * interval boundary is floor
-    //    */
-    //   //const randomCalc = randomNumber(1,weaponFireProbability)
-  
-    //   let randomCalc = 1
-    //   console.log(randomCalc)
-    //   let randomEnemyToFire = []
-    //   enemyCurrentPosition.forEach(enemy => {
-    //     console.log(enemy + width)
-    //     const isEnemyClass = cells[enemy].classList.value === enemyClass
-    //     const isNoEnemyinFront = cells[enemy + width].classList.value !== enemyClass
-    //     const enemyWeaponPosition = cells[enemy + width]
-    //     if (isEnemyClass && isNoEnemyinFront) {
-    //       randomEnemyToFire.push()
-    //     }
-    //   })
-    //   //const randomEnemyCalc = randomNumber(0,randomEnemyToFire.length)
-    //   let randomEnemyCalc = randomEnemyToFire[2]
-    //   let newEnemyWeaponPosition = randomEnemyCalc + width
-    //   addCharacter((randomEnemyCalc + width), enemyWeaponBolt)
-    //   const useBoltWeapon = setInterval(() => {
-    //     removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-    //     if (newEnemyWeaponPosition < ((height - 1) * width)) {
-    //       newEnemyWeaponPosition += width
-    //       addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-    //     }
-    //     cells.forEach(cell => {
-    //       const cellPosition = cells.indexOf(cell)
-    //       const isEnemyInFront = cells[cellPosition * width].classList.value
-    //       let cellClass = cells[cellPosition].classList.value
-    //       console.log('isEnemyInfront', isEnemyInFront)
-    //       //cells[newEnemyWeaponPosition].classList.value === enemyClass
-    //       if (cellClass === `${playerClass} ${enemyWeaponBolt}`) {
-    //         console.log(lifeCounter)
-    //         lifeCounter--
-    //         displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
-    //         console.log('life  after hit =>', lifeCounter)
-    //         console.log(cellClass)
-    //         cellClass = playerClass
-    //         console.log('hit')
-    //         console.log(cellClass)
-    //         if (lifeCounter === 0) {
-    //           gameOver()
-    //         }
-    //       }
-    //     })   
-    //   }, 1000)
-    // }
-    const enemyWeaponRandomFire = setInterval(() => {
-      enemyWeaponFire() 
-      
-    }, 2000) 
   }
+  
+  // function enemyWeaponFire() {
+  //   /**
+  //    * enemy fires a bolt
+  //    * bolt moves verticaally down
+  //    * if bolt hits player, player loses one life(shield)
+  //    * if player loses all life (life counter === 0, player loses run Game Over)
+  //    * interval boundary is floor
+  //    */
+  //   //const randomCalc = randomNumber(1,weaponFireProbability)
+  
+  //   let randomCalc = 1
+  //   console.log(randomCalc)
+  //   let randomEnemyToFire = []
+  //   enemyCurrentPosition.forEach(enemy => {
+  //     console.log(enemy + width)
+  //     const isEnemyClass = cells[enemy].classList.value === enemyClass
+  //     const isNoEnemyinFront = cells[enemy + width].classList.value !== enemyClass
+  //     const enemyWeaponPosition = cells[enemy + width]
+  //     if (isEnemyClass && isNoEnemyinFront) {
+  //       randomEnemyToFire.push()
+  //     }
+  //   })
+  //   //const randomEnemyCalc = randomNumber(0,randomEnemyToFire.length)
+  //   let randomEnemyCalc = randomEnemyToFire[2]
+  //   let newEnemyWeaponPosition = randomEnemyCalc + width
+  //   addCharacter((randomEnemyCalc + width), enemyWeaponBolt)
+  //   const useBoltWeapon = setInterval(() => {
+  //     removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+  //     if (newEnemyWeaponPosition < ((height - 1) * width)) {
+  //       newEnemyWeaponPosition += width
+  //       addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+  //     }
+  //     cells.forEach(cell => {
+  //       const cellPosition = cells.indexOf(cell)
+  //       const isEnemyInFront = cells[cellPosition * width].classList.value
+  //       let cellClass = cells[cellPosition].classList.value
+  //       console.log('isEnemyInfront', isEnemyInFront)
+  //       //cells[newEnemyWeaponPosition].classList.value === enemyClass
+  //       if (cellClass === `${playerClass} ${enemyWeaponBolt}`) {
+  //         console.log(lifeCounter)
+  //         lifeCounter--
+  //         displayLife.innerText = lifeCounter === 1 ? `${lifeCounter} life remaining` : `${lifeCounter} lives remaining`
+  //         console.log('life  after hit =>', lifeCounter)
+  //         console.log(cellClass)
+  //         cellClass = playerClass
+  //         console.log('hit')
+  //         console.log(cellClass)
+  //         if (lifeCounter === 0) {
+  //           gameOver()
+  //         }
+  //       }
+  //     })   
+  //   }, 1000)
+  // }
+  //   const enemyWeaponRandomFire = setInterval(() => {
+  //     enemyWeaponFire() 
+      
+  //   }, 2000) 
+  // }
 
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
@@ -497,7 +499,7 @@ function init() {
   }
 
   function playStartMusic() {
-    const splashIsHidden = splashScreen.classLlist.contains('hidden')
+    const splashIsHidden = splashScreen.classList.contains('hidden')
     if (!splashIsHidden){
       startMenuMusic.play()
     }
@@ -576,6 +578,7 @@ function init() {
 
 
 
+  
 }
 
 window.addEventListener('DOMContentLoaded', init)
@@ -711,4 +714,4 @@ window.addEventListener('DOMContentLoaded', init)
 //     clearInterval(enemyMovementLeftAndDown)
 //   }
 // }, 1000);
-//}
+
