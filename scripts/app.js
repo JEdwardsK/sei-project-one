@@ -140,6 +140,7 @@ function init() {
     optionsScreen.classList.remove('hidden')
   
 
+    
   
 
   //gameOver gameWin functions
