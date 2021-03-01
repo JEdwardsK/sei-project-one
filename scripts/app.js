@@ -64,12 +64,15 @@ function init() {
   
   // splashScreen selectors
   
+  const startPage = document.querySelector('.startPage')
+  const arcadeVideo = document.querySelector('.arcadeVideo')
   const splashScreen = document.querySelector('.splashScreen')  
   const startButtonHome = document.querySelector('.startButtonHome')
   const loadGameButton = document.querySelector('.loadGameButton')
   const highScoreButton = document.querySelector('.highScoreButton')
   const tutorialButton = document.querySelector('.tutorialButton')
   const optionsButton = document.querySelector('.optionsButton')
+
   
 
   //gameScreen selectors
@@ -139,7 +142,11 @@ function init() {
     optionsScreen.classList.remove('hidden')
   }
   
-
+  function removeStartPage() {
+    startPage.classList.add('hidden')
+    arcadeVideo.classList.remove('hidden')
+    splashVideo.play()
+  }
     
   
 
@@ -202,12 +209,15 @@ function init() {
   }
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
+    console.log(key)
     if (key === 39 || key === 68 || key === 37 || key === 65){
       characterMovement(key)
     } else if (key === 32){
       useWeapon('bolt')
     } else if (key === 80 && (isPowerupReady === powerUpCharge) ) {
       useWeapon('bomb')
+    //! } else if (key === 13) {
+    //!   removeStartPage()
     }
   }
   function useWeapon(weapon) {
@@ -526,7 +536,7 @@ function init() {
   //? OPTION 2 - NEGATIVE COUNTER
   
   //splashScreen event listeners
-  splashVideo.addEventListener('ended',hideVideo)
+  //!splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   //loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)

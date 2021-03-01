@@ -157,9 +157,6 @@ progress {
   cursor: none;
 }
 
-.playerCharacterShielded{
-
-}
 
 .displayCurrentBonusWeapon div {
   background-image: url('../assets/bomb.png');
@@ -217,7 +214,7 @@ h3 {
   margin: 0;
 }
 
-
+.arcadeVideo ()
 .splashScreen {
   display:flex;
   justify-content: center;
