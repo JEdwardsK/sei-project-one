@@ -7,7 +7,7 @@ function init() {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
-  //* ***************************** Variables ***************************** 
+  //* ***************************** Variables *****************************
   //audio variables(
   const soundBoltFire = document.querySelector('.soundBoltFire')
   const soundExplosion = document.querySelector('.soundExplosion')
@@ -16,10 +16,9 @@ function init() {
   const soundMovement3 = document.querySelector('.soundMovement3')
   const soundMovement4 = document.querySelector('.soundMovement4')
   const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
-  const startMenuMusic = document.querySelector('.startMenuMusic')
   const soundUfo1 = document.querySelector('.soundUfo1')
   const soundUfo2 = document.querySelector('.soundUfo2')
-  // const soundExplosion = new Audio(src )
+
 
 
   const splashVideo = document.querySelector('.splashVideo')
@@ -28,7 +27,7 @@ function init() {
   const height = 20
   const cellCount = width * height
   const cells = []
-  const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1  
+  const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1
   const playerClass = 'playerCharacter'
   let playerCurrentPosition = playerStartingPosition
   const numberOfEnemies = 60
@@ -51,29 +50,29 @@ function init() {
   let enemyCurrentPosition = enemyStartingPosition
   const enemyWeaponBolt = 'enemyWeaponBolt'
   const weaponFireProbability = 5
-  
+
   const enemyClass = 'enemyCharacter'
   const ufoClass = 'ufoCharacter'
   const scoreModifier1 = 10
-  
+
   let scoreCounter = 0
   let lifeCounter = 2
   let currentLevel = 1
   let isPowerupReady = 0
   const powerUpCharge = 4
-  
+
   // splashScreen selectors
-  
+
   const startPage = document.querySelector('.startPage')
   const arcadeVideo = document.querySelector('.arcadeVideo')
-  const splashScreen = document.querySelector('.splashScreen')  
+  const splashScreen = document.querySelector('.splashScreen')
   const startButtonHome = document.querySelector('.startButtonHome')
   const loadGameButton = document.querySelector('.loadGameButton')
   const highScoreButton = document.querySelector('.highScoreButton')
   const tutorialButton = document.querySelector('.tutorialButton')
   const optionsButton = document.querySelector('.optionsButton')
 
-  
+
 
   //gameScreen selectors
   const gameScreen = document.querySelector('.gameScreen')
@@ -93,35 +92,35 @@ function init() {
 
   //tutorialScreen selectors
   const tutorialScreen = document.querySelector('.tutorialScreen')
-  
+
   //gameOver and GameWin Selectors
   const gameOverScreen = document.querySelector('.gameOverScreen')
   const gameWinScreen = document.querySelector('.gameWinScreen')
   const submitHighScore = document.querySelector('.submitHighScore')
   const finalScore = document.querySelector('.finalScore')
-  
+
   //highScoreScreen selectors
   const highScoreScreen = document.querySelector('.highScoreScreen')
-  
+
   //optionsScreen selectiors
   const optionsScreen = document.querySelector('.optionsScreen')
-  
+
   //universal selectors
   const returnHomeButton = document.querySelectorAll('.returnHomeButton')
   const allSections = document.querySelectorAll('section')
   const audioMuted = document.querySelector('.audioMuted')
   const audioPlay = document.querySelector('.audioPlay')
   const allAudioElements = document.querySelectorAll('audio')
-  
+
   displayLife.innerText = lifeCounter
   displayLevel.innerText = currentLevel
   //* **********************GAME START FUNCTIONS*****************************
-  
+
   //splashVideo and splashScreen Functions
   function  hideVideo() {
     splashVideo.classList.add('hidden')
     splashScreen.classList.remove('hidden')
-    
+
   }
   function gameStart() {
     gameScreen.classList.remove('hidden')
@@ -141,24 +140,29 @@ function init() {
     splashScreen.classList.add('hidden')
     optionsScreen.classList.remove('hidden')
   }
-  
+
   function removeStartPage() {
     startPage.classList.add('hidden')
     arcadeVideo.classList.remove('hidden')
     splashVideo.play()
   }
-    
-  
+
+
 
   //gameOver gameWin functions
-  
-  function gameOver() { 
+
+  function gameOver() {
     gameScreen.classList.add('hidden')
     gameOverScreen.classList.remove('hidden')
     finalScore.innerText = `Your final score is ${scoreCounter}`
   }
+  function gameRestart() {
+    splashScreen.classList.add('hidden')
+    gameOverScreen.classList.add('hidden')
+    gameScreen.classList.remove('hidden')
+  }
 
-  function gameWin() { 
+  function gameWin() {
     gameScreen.classList.add('hidden')
     gameWinScreen.classList.remove('hidden')
     finalScore.innerText = `Your final score is ${scoreCounter}`
@@ -166,8 +170,9 @@ function init() {
 
   function resetGame() {
     window.location.reload()
+    gameRestart()
   }
-  
+
 
   //gameScreen functions - generate items
   function createGrid() {
@@ -179,7 +184,7 @@ function init() {
     }
     addCharacter(playerStartingPosition, playerClass)
     addEnemyRow()
-    
+
   }
   function addCharacter(position, characterType) {
     cells[position].classList.add([characterType])
@@ -205,7 +210,7 @@ function init() {
       addCharacter(playerCurrentPosition, playerClass)
     } else {
       addCharacter(playerCurrentPosition, playerClass)
-    } 
+    }
   }
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
@@ -214,8 +219,12 @@ function init() {
       characterMovement(key)
     } else if (key === 32){
       useWeapon('bolt')
-    } else if (key === 80 && (isPowerupReady === powerUpCharge) ) {
+    } else if (key === 80 && (isPowerupReady >= powerUpCharge) ) {
       useWeapon('bomb')
+      isPowerupReady = 0
+      powerBar.value = 0
+      bonusDisplay.innerText = ' '
+
     //! } else if (key === 13) {
     //!   removeStartPage()
     }
@@ -242,13 +251,15 @@ function init() {
           if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
             removeCharacter(cellPosition,enemyClass)
             removeCharacter(cellPosition,weaponClassBolt)
-            
+
             soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
             enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
             scoreCounter += scoreModifier1
-            isPowerupReady++
-            powerBar.value++
+            if (weapon === 'bolt') {
+              isPowerupReady++
+              powerBar.value++
+            }
             powerupTracker()
             enemyRemainingCheck()
             displayScore.innerHTML = scoreCounter
@@ -258,7 +269,7 @@ function init() {
             removeCharacter(cellPosition,weaponClassBolt)
             soundExplosion.play()
           }
-        })        
+        })
       }, 75)
     } else if (weapon === 'bomb') {
       let weaponCurrentPosition = playerCurrentPosition -= width
@@ -295,7 +306,7 @@ function init() {
             removeCharacter(cellPosition,weaponClassBomb)
             soundExplosion.play()
           }
-        })        
+        })
       }, 75)
     }
   }
@@ -303,11 +314,7 @@ function init() {
     if (isPowerupReady === powerUpCharge) {
       bonusDisplay.innerText = 'BOMB'
     }
-    if (isPowerupReady === powerUpCharge + 1) {
-      isPowerupReady = 0
-      powerBar.value = 0
-      bonusDisplay.innerText = ' '
-    }
+
 
   }
   const removeExplosions = setInterval(() => {
@@ -322,6 +329,7 @@ function init() {
   function enemyMovementStart() {
     ufoAppears()
     let direction = 1
+    soundBoltFire.play()
 
     let soundCounter = 0
     const enemyMovement = setInterval(() => {
@@ -341,7 +349,7 @@ function init() {
         const hasEnemy = item.classList.value === enemyClass
         const isEdge = direction === 1 ? (index % width === (width - 2)) : (index % width === 1)
         if (hasEnemy && isEdge){
-          return true 
+          return true
         }
       })
       //*remove enemy
@@ -376,8 +384,8 @@ function init() {
       }
     }, 1000)
   }
-  
-  
+
+
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
       const enemyCounter = enemyCurrentPosition.length
@@ -409,7 +417,7 @@ function init() {
   function enemyWeaponFire() {
     /**
      * enemy fires a bolt
-     * bolt moves verticaally down
+     * bolt moves vertically down
      * if bolt hits player, player loses one life(shield)
      * if player loses all life (life counter === 0, player loses run Game Over)
      * interval boundary is floor
@@ -441,15 +449,15 @@ function init() {
                 gameOver()
               }
             }
-          })   
+          })
         }, 1000)
       }
     })
   }
- 
+
 
   function ufoAppears() {
-    let ufoSoundCounter = 0 
+    let ufoSoundCounter = 0
     const timerForAppearing = setInterval(() => {
       ufoSoundCounter++
       if (ufoSoundCounter === 1){
@@ -469,9 +477,9 @@ function init() {
           removeCharacter(ufoStartingPosition, ufoClass)
           clearInterval(ufoSpeed)
         }
-      }, 300);
-      
-    }, 12000);
+      }, 300)
+
+    }, 12000)
   }
   //universal functions
   function returnHome() {
@@ -482,44 +490,35 @@ function init() {
 
   }
 
-  function playStartMusic() {
-    const splashIsHidden = splashScreen.classList.contains('hidden')
-    if (!splashIsHidden){
-      startMenuMusic.play()
-    }
-    if (splashIsHidden){
-      startMenuMusic.pause()
-    }
-  }
+  //! NOT IN USE - audio control
+  // function controlAudio(event) {
+  //   const eventButton = event.target.classList
+  //   if (eventButton === 'audioMuted'){
+  //     allAudioElements.forEach(audio => {
+  //       audio = audio.muted = true
+  //     })
+  //   } else if (eventButton === 'audioPlay') {
+  //     allAudioElements.forEach(audio => {
+  //       audio.muted = false
+  //     })
 
-  function controlAudio(event) {
-    const eventButton = event.target.classList
-    if (eventButton === 'audioMuted'){
-      allAudioElements.forEach(audio => {
-        audio = audio.muted = true
-      });
-    } else if (eventButton === 'audioPlay') {
-      allAudioElements.forEach(audio => {
-        audio.muted = false
-      });
+  //   }
 
-    }
-
-  }
+  // }
 
 
 
 
-  
+
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
-  /* 
+  /*
   function calculateEnemmySpeed() {
     let enemyCount = 0
     cells.forEach(cell => {
       if (cell.classList === enemyClass){
         enemyCount++
-      }  
+      }
     });
     if( enemyCount > 10) {
       //increase speed by to level two
@@ -534,16 +533,16 @@ function init() {
   */
   //? p
   //? OPTION 2 - NEGATIVE COUNTER
-  
+
   //splashScreen event listeners
-  //!splashVideo.addEventListener('ended',hideVideo)
+  splashVideo.addEventListener('ended',hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   //loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)
   //optionsButton.addEventListener('click', toOptions)
 
 
-  
+
   //gameScreen event listeners
   resetButton.addEventListener('click', resetGame)
   startButton.addEventListener('click', enemyMovementStart)
@@ -553,13 +552,14 @@ function init() {
   returnHomeButton.forEach(element => {
     element.addEventListener('click', returnHome)
   })
-  audioMuted.addEventListener('click', controlAudio)
-  audioPlay.addEventListener('click', controlAudio)
-
-
-
-
-  
+  //! NOT IN USE - audio control
+  // audioMuted.addEventListener('click', controlAudio)
+  // audioPlay.addEventListener('click', controlAudio)
 }
+
+
+
+
+
 
 window.addEventListener('DOMContentLoaded', init)

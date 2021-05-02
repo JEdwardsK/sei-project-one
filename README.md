@@ -36,7 +36,7 @@ i started of with place holder icons and images to render the actions, before im
 
 ### Design
 
-For the design, I attemted a retro arcade-style. I searched for space invaders icons using a image search engine and adjusted the colours where necessary using Preview on Mac.
+For the design, I attempted a retro arcade-style. I searched for space invaders icons using a image search engine and adjusted the colours where necessary using Preview on Mac.
 
 I also wanted to have the styling as though the game was being played on an arcade machine. For this i made a model arcade machine using Blender, and animated a short turnaround of  the model to be used on page load. I intended for the final frame to transition into the background image and frame the game's grid.
 
@@ -44,10 +44,12 @@ I also wanted to have the styling as though the game was being played on an arca
 Rather than having the game screen visible immeadiately, I made different screens:
 
 - a Home Screen
-- a Tutotrial Screen
-- Win/ Lose Screens
+- a Tutorial Screen
+- Win/ Lose State Screens
 - an Options Screen
 - Highscore and Load Game Screens
+
+The Highscore, Game Load and Options Screens did not have functionality by the end of the project, but were create to allow for expansion either as strech goals or in the future.
 
 ```
   function toTutorial() {
@@ -70,6 +72,12 @@ i attempted to add the following to the game:
 
 
 ## Known Errors
+  - cannot play video for opening splash screen
+  - no sound
+  - powerup (bomb) does not differ in functionality from regular weapon (weapon bolt)
+  - enemies shooting back
+  - enemies moving crazy at certain point
+  - mothership doesn't disappear
 
 
 ## Learning Outcomes
@@ -77,8 +85,16 @@ i attempted to add the following to the game:
 ### Wins
 
 ### Challenges
+#### Enemy Actions
 
-### Improvements
+##### Movement
+
+##### Weapon Fire
+### Improvements / Future Improvements
+  - differing enemy movement speed based on enemies remaining
+  - bonus levels
+  - saving data to local storage to allow for high score/ game continue
+  - havung options for game settings, such as difficulty, number of powerups, bonuses etc
 
 
 
