@@ -11,15 +11,13 @@ function init() {
   //audio variables(
   const soundBoltFire = document.querySelector('.soundBoltFire')
   const soundExplosion = document.querySelector('.soundExplosion')
-  const soundMovement1  = document.querySelector('.soundMovement1')
-  const soundMovement2  = document.querySelector('.soundMovement2')
+  const soundMovement1 = document.querySelector('.soundMovement1')
+  const soundMovement2 = document.querySelector('.soundMovement2')
   const soundMovement3 = document.querySelector('.soundMovement3')
   const soundMovement4 = document.querySelector('.soundMovement4')
   const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
   const soundUfo1 = document.querySelector('.soundUfo1')
   const soundUfo2 = document.querySelector('.soundUfo2')
-
-
 
   const splashVideo = document.querySelector('.splashVideo')
   const grid = document.querySelector('.grid')
@@ -27,7 +25,8 @@ function init() {
   const height = 20
   const cellCount = width * height
   const cells = []
-  const playerStartingPosition = parseInt((((height - 1) * width) + cellCount) / 2) - 1
+  const playerStartingPosition =
+    parseInt(((height - 1) * width + cellCount) / 2) - 1
   const playerClass = 'playerCharacter'
   let playerCurrentPosition = playerStartingPosition
   const numberOfEnemies = 60
@@ -41,10 +40,17 @@ function init() {
   //*work out later
   function populateEnemyStart() {
     const startingNumbers = []
-    for (let i = 4; i <= (4 + enemyPerRow); i++) {
+    for (let i = 4; i <= 4 + enemyPerRow; i++) {
       startingNumbers.push(i)
     }
-    enemyStartingPosition = [...startingNumbers, ...startingNumbers.map(x=> x + height), ...startingNumbers.map(x=> x + (2 * height)), ...startingNumbers.map(x=> x + (height * 3)), ...startingNumbers.map(x=> x + (4 * height)), ...startingNumbers.map(x=> x + (5 * height))]
+    enemyStartingPosition = [
+      ...startingNumbers,
+      ...startingNumbers.map((x) => x + height),
+      ...startingNumbers.map((x) => x + 2 * height),
+      ...startingNumbers.map((x) => x + height * 3),
+      ...startingNumbers.map((x) => x + 4 * height),
+      ...startingNumbers.map((x) => x + 5 * height),
+    ]
   }
   populateEnemyStart()
   let enemyCurrentPosition = enemyStartingPosition
@@ -72,8 +78,6 @@ function init() {
   const tutorialButton = document.querySelector('.tutorialButton')
   const optionsButton = document.querySelector('.optionsButton')
 
-
-
   //gameScreen selectors
   const gameScreen = document.querySelector('.gameScreen')
 
@@ -84,6 +88,7 @@ function init() {
   const bonusDisplay = document.querySelector('.displayCurrentBonusWeapon p')
   const powerBar = document.querySelector('.powerBar')
   const displayPowerBar = document.querySelector('.displayPowerBar')
+  const powerBarH3 = document.querySelector('.displayPowerBar h3')
   powerBar.max = powerUpCharge
 
   const startButton = document.querySelector('.startButton')
@@ -117,17 +122,15 @@ function init() {
   //* **********************GAME START FUNCTIONS*****************************
 
   //splashVideo and splashScreen Functions
-  function  hideVideo() {
+  function hideVideo() {
     splashVideo.classList.add('hidden')
     splashScreen.classList.remove('hidden')
-
   }
   function gameStart() {
     gameScreen.classList.remove('hidden')
     splashScreen.classList.add('hidden')
   }
-  function loadGame() {
-  }
+  function loadGame() {}
   function toTutorial() {
     splashScreen.classList.add('hidden')
     tutorialScreen.classList.remove('hidden')
@@ -146,8 +149,6 @@ function init() {
     arcadeVideo.classList.remove('hidden')
     splashVideo.play()
   }
-
-
 
   //gameOver gameWin functions
 
@@ -173,7 +174,6 @@ function init() {
     gameRestart()
   }
 
-
   //gameScreen functions - generate items
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -184,7 +184,6 @@ function init() {
     }
     addCharacter(playerStartingPosition, playerClass)
     addEnemyRow()
-
   }
   function addCharacter(position, characterType) {
     cells[position].classList.add([characterType])
@@ -192,8 +191,8 @@ function init() {
   function removeCharacter(position, character) {
     cells[position].classList.remove(character)
   }
-  function addEnemyRow(){
-    enemyStartingPosition.forEach(enemy => {
+  function addEnemyRow() {
+    enemyStartingPosition.forEach((enemy) => {
       cells[enemy].classList.add(enemyClass)
     })
   }
@@ -202,10 +201,16 @@ function init() {
   //gameScreen FUnctions - character functions
   function characterMovement(key) {
     removeCharacter(playerCurrentPosition, playerClass)
-    if ((key === 39 || key === 68) && playerCurrentPosition % width !== width - 2) {
+    if (
+      (key === 39 || key === 68) &&
+      playerCurrentPosition % width !== width - 2
+    ) {
       playerCurrentPosition++
       addCharacter(playerCurrentPosition, playerClass)
-    } else if ((key === 37 || key === 65) && playerCurrentPosition % width !== 1) {
+    } else if (
+      (key === 37 || key === 65) &&
+      playerCurrentPosition % width !== 1
+    ) {
       playerCurrentPosition--
       addCharacter(playerCurrentPosition, playerClass)
     } else {
@@ -215,23 +220,24 @@ function init() {
   function characterMoveset(keyPress) {
     const key = keyPress.keyCode
     console.log(key)
-    if (key === 39 || key === 68 || key === 37 || key === 65){
+    if (key === 39 || key === 68 || key === 37 || key === 65) {
       characterMovement(key)
-    } else if (key === 32){
+    } else if (key === 32) {
       useWeapon('bolt')
-    } else if (key === 80 && (isPowerupReady >= powerUpCharge) ) {
+    } else if (key === 80 && isPowerupReady >= powerUpCharge) {
       useWeapon('bomb')
       isPowerupReady = 0
       powerBar.value = 0
       bonusDisplay.innerText = ' '
+      powerBarH3.innerText = 'POWERING UP...'
 
-    //! } else if (key === 13) {
-    //!   removeStartPage()
+      //! } else if (key === 13) {
+      //!   removeStartPage()
     }
   }
   function useWeapon(weapon) {
     if (weapon === 'bolt') {
-      let weaponCurrentPosition = playerCurrentPosition -= width
+      let weaponCurrentPosition = (playerCurrentPosition -= width)
       addCharacter(weaponCurrentPosition, weaponClassBolt)
       soundBoltFire.play()
       playerCurrentPosition += width
@@ -245,16 +251,21 @@ function init() {
           weaponCurrentPosition = weaponStartingPosition
           clearInterval(bolt)
         }
-        cells.forEach(cell => {
+        cells.forEach((cell) => {
           const cellPosition = cells.indexOf(cell)
           const cellClass = cells[cellPosition].classList.value
-          if (cellClass === `${enemyClass} ${weaponClassBolt}` || cellClass === `${weaponClassBolt} ${enemyClass}`) {
-            removeCharacter(cellPosition,enemyClass)
-            removeCharacter(cellPosition,weaponClassBolt)
+          if (
+            cellClass === `${enemyClass} ${weaponClassBolt}` ||
+            cellClass === `${weaponClassBolt} ${enemyClass}`
+          ) {
+            removeCharacter(cellPosition, enemyClass)
+            removeCharacter(cellPosition, weaponClassBolt)
 
             soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
-            enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
+            enemyCurrentPosition = enemyCurrentPosition.filter(
+              (item) => item !== weaponCurrentPosition
+            )
             scoreCounter += scoreModifier1
             if (weapon === 'bolt') {
               isPowerupReady++
@@ -264,15 +275,18 @@ function init() {
             enemyRemainingCheck()
             displayScore.innerHTML = scoreCounter
             clearInterval(bolt)
-          } else if (cellClass === `${weaponClassBolt} ${enemyWeaponBolt}` || cellClass === `${enemyWeaponBolt} ${weaponClassBolt}`) {
-            removeCharacter(cellPosition,enemyClass)
-            removeCharacter(cellPosition,weaponClassBolt)
+          } else if (
+            cellClass === `${weaponClassBolt} ${enemyWeaponBolt}` ||
+            cellClass === `${enemyWeaponBolt} ${weaponClassBolt}`
+          ) {
+            removeCharacter(cellPosition, enemyClass)
+            removeCharacter(cellPosition, weaponClassBolt)
             soundExplosion.play()
           }
         })
       }, 75)
     } else if (weapon === 'bomb') {
-      let weaponCurrentPosition = playerCurrentPosition -= width
+      let weaponCurrentPosition = (playerCurrentPosition -= width)
       addCharacter(weaponCurrentPosition, weaponClassBomb)
       soundBoltFire.play()
       playerCurrentPosition += width
@@ -285,15 +299,20 @@ function init() {
           weaponCurrentPosition = weaponStartingPosition
           clearInterval(Bomb)
         }
-        cells.forEach(cell => {
+        cells.forEach((cell) => {
           const cellPosition = cells.indexOf(cell)
           const cellClass = cells[cellPosition].classList.value
-          if (cellClass === `${enemyClass} ${weaponClassBomb}` || cellClass === `${weaponClassBomb} ${enemyClass}`) {
-            removeCharacter(cellPosition,enemyClass)
-            removeCharacter(cellPosition,weaponClassBomb)
+          if (
+            cellClass === `${enemyClass} ${weaponClassBomb}` ||
+            cellClass === `${weaponClassBomb} ${enemyClass}`
+          ) {
+            removeCharacter(cellPosition, enemyClass)
+            removeCharacter(cellPosition, weaponClassBomb)
             soundEnemyKilled.play()
             addCharacter(cellPosition, explosion)
-            enemyCurrentPosition = enemyCurrentPosition.filter((item) => item !== weaponCurrentPosition)
+            enemyCurrentPosition = enemyCurrentPosition.filter(
+              (item) => item !== weaponCurrentPosition
+            )
             scoreCounter += scoreModifier1
             isPowerupReady++
             powerBar.value++
@@ -301,9 +320,12 @@ function init() {
             enemyRemainingCheck()
             displayScore.innerHTML = scoreCounter
             clearInterval(Bomb)
-          } else if (cellClass === `${weaponClassBomb} ${enemyWeaponBolt}` || cellClass === `${enemyWeaponBolt} ${weaponClassBomb}`) {
-            removeCharacter(cellPosition,enemyClass)
-            removeCharacter(cellPosition,weaponClassBomb)
+          } else if (
+            cellClass === `${weaponClassBomb} ${enemyWeaponBolt}` ||
+            cellClass === `${enemyWeaponBolt} ${weaponClassBomb}`
+          ) {
+            removeCharacter(cellPosition, enemyClass)
+            removeCharacter(cellPosition, weaponClassBomb)
             soundExplosion.play()
           }
         })
@@ -313,18 +335,17 @@ function init() {
   function powerupTracker() {
     if (isPowerupReady === powerUpCharge) {
       bonusDisplay.innerText = 'BOMB'
+      powerBarH3.innerText = 'READY TO FIRE'
     }
-
-
   }
-  const removeExplosions = setInterval(() => {
-    cells.forEach(cell => {
-      let cellPosition = cells.indexOf(cell)
+  setInterval(() => {
+    cells.forEach((cell) => {
+      const cellPosition = cells.indexOf(cell)
       if (cell.classList.value === explosion) {
         removeCharacter(cellPosition, explosion)
       }
     })
-  }, 1000)
+  }, 850)
   //gameScreen functions - enemy functions
   function enemyMovementStart() {
     ufoAppears()
@@ -334,7 +355,7 @@ function init() {
     let soundCounter = 0
     const enemyMovement = setInterval(() => {
       soundCounter++
-      if (soundCounter === 1){
+      if (soundCounter === 1) {
         soundMovement1.play()
       } else if (soundCounter === 2) {
         soundMovement2.play()
@@ -347,18 +368,19 @@ function init() {
       //*define edges
       const isOnEdge = cells.some((item, index) => {
         const hasEnemy = item.classList.value === enemyClass
-        const isEdge = direction === 1 ? (index % width === (width - 2)) : (index % width === 1)
-        if (hasEnemy && isEdge){
+        const isEdge =
+          direction === 1 ? index % width === width - 2 : index % width === 1
+        if (hasEnemy && isEdge) {
           return true
         }
       })
       //*remove enemy
-      enemyCurrentPosition.forEach(eachEnemy => {
+      enemyCurrentPosition.forEach((eachEnemy) => {
         removeCharacter(eachEnemy, enemyClass)
       })
       //*move down if on edge
       if (isOnEdge) {
-        enemyCurrentPosition = enemyCurrentPosition.map((item) => item + height )
+        enemyCurrentPosition = enemyCurrentPosition.map((item) => item + height)
         direction = direction * -1
 
         //*mutate array left or right
@@ -368,7 +390,7 @@ function init() {
         })
       }
       //*add enemy back
-      enemyCurrentPosition.forEach(eachEnemy => {
+      enemyCurrentPosition.forEach((eachEnemy) => {
         addCharacter(eachEnemy, enemyClass)
       })
       const isOnFloor = cells.some((item, index) => {
@@ -378,13 +400,12 @@ function init() {
           return true
         }
       })
-      if (isOnFloor ) {
+      if (isOnFloor) {
         gameOver()
         clearInterval(enemyMovement)
       }
     }, 1000)
   }
-
 
   function enemyRemainingCheck() {
     const enemyRemainingCheck = setInterval(() => {
@@ -402,7 +423,7 @@ function init() {
     let speed = 1000
     let compareLength = enemyStartingPosition.length
     const reduceSpeedNumber = setInterval(() => {
-      if ((enemyCurrentPosition.length - 1) === compareLength) {
+      if (enemyCurrentPosition.length - 1 === compareLength) {
         speed -= speedFraction
         compareLength = enemyCurrentPosition.length
       }
@@ -411,10 +432,9 @@ function init() {
         clearInterval(reduceSpeedNumber)
       }
     }, 100)
-
   }
-  increaseSpeed()
-  function enemyWeaponFire() {
+  // increaseSpeed()
+function enemyWeaponFire() {
     /**
      * enemy fires a bolt
      * bolt moves vertically down
@@ -425,24 +445,24 @@ function init() {
     //const randomCalc = randomNumber(1,weaponFireProbability)
 
     let randomCalc = 1
-    enemyCurrentPosition.forEach(enemy => {
+    enemyCurrentPosition.forEach((enemy) => {
       const isEnemyClass = cells[enemy].classList.value === enemyClass
       const enemyWeaponPosition = cells[enemy + width]
       let newEnemyWeaponPosition = enemy + width
       if (randomCalc === 1 && isEnemyClass) {
-        addCharacter((enemy + width), enemyWeaponBolt)
+        addCharacter(enemy + width, enemyWeaponBolt)
         const useBoltWeapon = setInterval(() => {
           removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
-          if (newEnemyWeaponPosition < ((height - 1) * width)) {
+          if (newEnemyWeaponPosition < (height - 1) * width) {
             newEnemyWeaponPosition += width
             addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
           }
-          cells.forEach(cell => {
+          cells.forEach((cell) => {
             const cellPosition = cells.indexOf(cell)
             let cellValue = cell.classList.value
             //cells[newEnemyWeaponPosition].classList.value === enemyClass
 
-            if ( cellValue === `${playerClass} ${enemyWeaponBolt}`) {
+            if (cellValue === `${playerClass} ${enemyWeaponBolt}`) {
               lifeCounter--
               cellValue = playerClass
               if (lifeCounter === 0) {
@@ -455,12 +475,11 @@ function init() {
     })
   }
 
-
   function ufoAppears() {
     let ufoSoundCounter = 0
     const timerForAppearing = setInterval(() => {
       ufoSoundCounter++
-      if (ufoSoundCounter === 1){
+      if (ufoSoundCounter === 1) {
         soundUfo1.play()
       } else if (ufoSoundCounter === 2) {
         soundUfo2.play()
@@ -478,16 +497,14 @@ function init() {
           clearInterval(ufoSpeed)
         }
       }, 300)
-
     }, 12000)
   }
   //universal functions
   function returnHome() {
-    allSections.forEach(element => {
+    allSections.forEach((element) => {
       element.classList.add('hidden')
     })
     splashScreen.classList.remove('hidden')
-
   }
 
   //! NOT IN USE - audio control
@@ -505,10 +522,6 @@ function init() {
   //   }
 
   // }
-
-
-
-
 
   //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
   //? OPTION 1 - positive counter
@@ -535,13 +548,11 @@ function init() {
   //? OPTION 2 - NEGATIVE COUNTER
 
   //splashScreen event listeners
-  splashVideo.addEventListener('ended',hideVideo)
+  splashVideo.addEventListener('ended', hideVideo)
   startButtonHome.addEventListener('click', gameStart)
   //loadGameButton.addEventListener('click',loadGame)
   tutorialButton.addEventListener('click', toTutorial)
   //optionsButton.addEventListener('click', toOptions)
-
-
 
   //gameScreen event listeners
   resetButton.addEventListener('click', resetGame)
@@ -549,17 +560,12 @@ function init() {
   document.addEventListener('keydown', characterMoveset)
 
   //univeral event listeners
-  returnHomeButton.forEach(element => {
+  returnHomeButton.forEach((element) => {
     element.addEventListener('click', returnHome)
   })
   //! NOT IN USE - audio control
   // audioMuted.addEventListener('click', controlAudio)
   // audioPlay.addEventListener('click', controlAudio)
 }
-
-
-
-
-
 
 window.addEventListener('DOMContentLoaded', init)
