@@ -72,7 +72,7 @@ The game's setup was handled by  the following functions:
 - `addCharacter(position, characterType)` to handle the placement of the player character
 - `enemyRow()` to handle the creation of the enemy characters, using `addCharacter()` in a loop to generate multiple enemies in formation
 
-As seen above, I called the `addCharacter()` and `enemyRow()` functions inside the `createGrid()` function so they would run together. alternatively, as seperate `gameCreate()` function could have handled all three.
+As seen above, I called the `addCharacter()` and `enemyRow()` functions inside the `createGrid()` function so they would run together. alternatively, as separate `gameCreate()` function could have handled all three.
 
 #### Player movement
 
@@ -81,7 +81,7 @@ I wanted to allow the player to move either through the directional arrows or WA
 Movement was handled by three functions:
 - `addCharacter(position, characterType)` handled adding the class 'playerCharacter' (this function was reusable for all charactertypes)
 - `removeCharacter(position, character)` handled removing the player class
-- `characterMovement(key)` run with an event listener to act based on certain keypresses. If the player pressed the left arrow or 'A' they moved left, and right if they pressed the right arrow or the 'D' key, upto the boundaries of the grid.
+- `characterMovement(key)` run with an event listener to act based on certain keypresses. If the player pressed the left arrow or 'A' they moved left, and right if they pressed the right arrow or the 'D' key, up to the boundaries of the grid.
 
 #### Player actions
 
@@ -119,7 +119,7 @@ The following functions were used to achieve the above considerations:
 - `removeCharacter(position, character)`
 - `enemyRemainingCheck()`
 
-The collision was inside `characterMovset()`. When a `<div>` had `class="weaponBolt enemyClass"` this was a hit. When this occurred, both classes were removed and a new class `explosion` was assigned.
+The collision was inside `characterMoveset()`. When a `<div>` had `class="weaponBolt enemyClass"` this was a hit. When this occurred, both classes were removed and a new class `explosion` was assigned.
 
 The enemy had to be removed permanently. As the aliens were part of an array, this was achieved by filtering out that position from the array
 
@@ -152,13 +152,13 @@ For the design, I attempted a retro arcade-style. I searched for space invaders 
 
 I also wanted to style the background as though the game was being played on an arcade machine. For this i made a model arcade machine using Blender, and animated a short turnaround of  the model to be used on page load.
 
-<div><video src="./assets/splashVideo.mp4" alt="Arcade machine animation" autoplay loop width="300"></div>
+<div><video src="./assets/splashVideo.mp4" alt="Arcade machine animation" controls loop width="300"></div>
 
 I intended for the final frame to transition into the background image and frame the game's grid.
 
 <img src="./assets/backgroundPlate.png" alt="arcade background plate" width="300">
 
-<img src="./assets/readME/homeAndPlateDemo.png" alt="homescreen screenshot with arcade machine plate" width="300">
+<img src="./assets/readME/homeAndPlateDemo.png" alt="home screen screenshot with arcade machine plate" width="300">
 However I couldn't get the video to play and had problems with the positioning to contain the game screen
 <img src="./assets/readME/positioningFail.png" alt="screenshot of positioning error on game page with plate" width="300">
 
@@ -171,7 +171,7 @@ Rather than having the game screen visible immediately, I made different screens
 - an Options Screen
 - Highscore and Load Game Screens
 
-<img src="./assets/readME/homeScreen.png" alt="homescreen screenshot" width="300">
+<img src="./assets/readME/homeScreen.png" alt="home screen screenshot" width="300">
 
 The Highscore, Game Load and Options Screens did not have functionality by the end of the project, but were created to allow for expansion either as stretch goals or in the future.
 
@@ -285,13 +285,9 @@ function increaseSpeed() {
  - no sound
  - enemies shooting back
  - enemies moving crazy at certain point
- - mothership doesn't disappear
+ - UFO doesn't disappear, multiple appear on screen
+ - game
 
-## Future Improvements
- - differing enemy movement speed based on enemies remaining
- - bonus levels
- - saving data to local storage to allow for high score/ game continue
- - having options for game settings, such as difficulty, number of powerups, bonuses etc
 
 ## Learning Outcomes
 
@@ -303,6 +299,13 @@ Overall I gained more confidence and understanding of the technologies learnt, a
 To highlight two, the first was with using media, audio and video. During development I used the  Live Share extension in VSCode, neglecting to check for regularly in the browser. When it came to deployment, I only then realised issues with my implementation
 
 Another problem was with scaling problems. Things would work at their most simple state, but ensuring that the code is written in a way that it holds when scaled. For example, if during testing I made the  initial grid a 10x10 square, or only tried weapon use with one enemy
+
+### Future Improvements
+ - differing enemy movement speed based on enemies remaining
+ - bonus levels
+ - saving data to local storage to allow for high score/ game continue
+ - having options for game settings, such as difficulty, number of powerups, bonuses etc
+
 
 
 
