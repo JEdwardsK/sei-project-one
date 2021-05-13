@@ -66,6 +66,7 @@ function init() {
   let currentLevel = 1
   let isPowerupReady = 0
   const powerUpCharge = 4
+  let stopGame = true
 
   // splashScreen selectors
 
@@ -153,6 +154,7 @@ function init() {
   //gameOver gameWin functions
 
   function gameOver() {
+    stopGame = true
     gameScreen.classList.add('hidden')
     gameOverScreen.classList.remove('hidden')
     finalScore.innerText = `Your final score is ${scoreCounter}`
@@ -200,6 +202,8 @@ function init() {
 
   //gameScreen FUnctions - character functions
   function characterMovement(key) {
+    if (stopGame) return
+
     removeCharacter(playerCurrentPosition, playerClass)
     if (
       (key === 39 || key === 68) &&
@@ -218,6 +222,8 @@ function init() {
     }
   }
   function characterMoveset(keyPress) {
+    if (stopGame) return
+
     const key = keyPress.keyCode
     console.log(key)
     if (key === 39 || key === 68 || key === 37 || key === 65) {
@@ -236,6 +242,8 @@ function init() {
     }
   }
   function useWeapon(weapon) {
+    if (stopGame) return
+
     if (weapon === 'bolt') {
       let weaponCurrentPosition = (playerCurrentPosition -= width)
       addCharacter(weaponCurrentPosition, weaponClassBolt)
@@ -347,13 +355,21 @@ function init() {
     })
   }, 850)
   //gameScreen functions - enemy functions
+  function setStartGame() {
+    stopGame = false
+    enemyMovementStart()
+  }
   function enemyMovementStart() {
+    if (stopGame) return
+
     ufoAppears()
     let direction = 1
     soundBoltFire.play()
 
     let soundCounter = 0
     const enemyMovement = setInterval(() => {
+      if (stopGame) clearInterval(enemyMovement)
+
       soundCounter++
       if (soundCounter === 1) {
         soundMovement1.play()
@@ -434,7 +450,7 @@ function init() {
     }, 100)
   }
   // increaseSpeed()
-function enemyWeaponFire() {
+  function enemyWeaponFire() {
     /**
      * enemy fires a bolt
      * bolt moves vertically down
@@ -476,8 +492,12 @@ function enemyWeaponFire() {
   }
 
   function ufoAppears() {
+    if (stopGame) return
+
     let ufoSoundCounter = 0
     const timerForAppearing = setInterval(() => {
+          if (stopGame) clearInterval(timerForAppearing)
+
       ufoSoundCounter++
       if (ufoSoundCounter === 1) {
         soundUfo1.play()
@@ -556,7 +576,7 @@ function enemyWeaponFire() {
 
   //gameScreen event listeners
   resetButton.addEventListener('click', resetGame)
-  startButton.addEventListener('click', enemyMovementStart)
+  startButton.addEventListener('click', setStartGame)
   document.addEventListener('keydown', characterMoveset)
 
   //univeral event listeners

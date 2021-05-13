@@ -8,6 +8,10 @@ The goal of this project was to create a grid-based JavaScript game. The game I 
 1) The player should be able to clear at least one wave of aliens
 2) The player's score should be displayed at the end of the game
 
+
+  [<img width="1423" src="./assets/readME/spaceInvadersReadMELink.png" alt="Link to deployed Space Invaders Project">]("https://jedwardsk.github.io/sei-project-one/")
+  ><small>Click the image for a link to the deployed project</small>
+
 ## Technologies Used
 - HTML5
 - CSS3
