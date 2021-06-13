@@ -264,7 +264,7 @@ button:hover {
   flex:4;
 }
 
-.gameOverScreen p, .gameWinScreen p,  {
+.gameOverScreen p, .gameWinScreen p {
   font-size: 22px;
 }
 
