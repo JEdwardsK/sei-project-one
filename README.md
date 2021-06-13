@@ -288,9 +288,9 @@ function increaseSpeed() {
  - cannot play video for opening splash screen
  - no sound
  - enemies shooting back
- - enemies moving crazy at certain point
+ - enemies moving crazy at certain point (UPDATE: FIXED, problem occurs due to focus still being on start button afterwards))
  - UFO doesn't disappear, multiple appear on screen
- - game
+
 
 
 ## Learning Outcomes
