@@ -1,4 +1,4 @@
-function init() {
+const init = () => {
   //#region  //* DOCUMENT SELECTORS
   //#region  //* GAME SCREEN SELECTORS
   const gameScreen = document.querySelector('.gameScreen')
@@ -106,7 +106,35 @@ function init() {
   const classBomb = 'weaponBomb'
   //#endregion
 
-  //#region FUNCTION DECLARATIONS
+  //#region //* FUNCTION DECLARATIONS
+
+  /**
+   * Returns a random number between the parameters `min` and `max`, inclusive
+   * @param {number} min
+   * @param {number} max
+   * @returns number
+   */
+  const randomNumber = (min, max) => {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
+  //! not in use yet, trying to automate the placement of centred enemy formation based on defined number of enemies in enemyNumber variable
+  function populateEnemyStart() {
+    const startingNumbers = []
+    for (let i = 4; i <= 4 + enemyPerRow; i++) {
+      startingNumbers.push(i)
+    }
+    enemyStartingPosition = [
+      ...startingNumbers,
+      ...startingNumbers.map((x) => x + height),
+      ...startingNumbers.map((x) => x + 2 * height),
+      ...startingNumbers.map((x) => x + height * 3),
+      ...startingNumbers.map((x) => x + 4 * height),
+      ...startingNumbers.map((x) => x + 5 * height),
+    ]
+  }
 
   /**
    * Generates the grid and defines its boundaries, updating the `leftBoundary`, `rightBoundary`, `bottomBoundary` and `topBoundary` variables.
@@ -182,68 +210,121 @@ function init() {
   /**
    * This function listens for key inputs from the user and takes a particular action based on the `keyCode` value. Handles player movement and weapon fire
    */
-  const playerAction = (event) => {
-    console.log(event.keyCode)
-    const { keyCode: key } = event
+  const playerMovement = (key) => {
     const isLeftBoundary = playerCurrentPosition % width === width - 1
     const isRightBoundary = playerCurrentPosition % width === 0
-    const weaponStartingPosition = playerCurrentPosition - height
-    const useWeapon = () => {
-      let weaponCurrentPosition = weaponStartingPosition
-      changeCellClasslist(classBolt, weaponCurrentPosition)
-      soundBoltFire.play()
-      const shoot = setInterval(() => {
-        changeCellClasslist(classBolt, weaponCurrentPosition)
-        weaponCurrentPosition -= width
-        if (weaponCurrentPosition < width - 1) {
-          clearInterval(shoot)
-        } else {
-          changeCellClasslist(classBolt, weaponCurrentPosition)
-        }
-        if (weaponCurrentPosition === 130) {
-          console.log(
-            cells[weaponCurrentPosition].classList.contains(classEnemy)
-          )
-        }
-        if (isCollision(weaponCurrentPosition)) {
-          console.log('hit')
-          clearInterval(shoot)
-        }
-      }, 100)
-    }
     // left arrow or 'a'
-    if (key === 39 || (key === 65 && !isLeftBoundary)) {
+    if (key === 39 || (key === 68 && !isLeftBoundary)) {
       changeCellClasslist(classPlayer, playerCurrentPosition)
       playerCurrentPosition += 1
       changeCellClasslist(classPlayer, playerCurrentPosition)
       // right arrow or 'd'
-    } else if (key === 37 || (key === 68 && !isRightBoundary)) {
+    } else if (key === 37 || (key === 65 && !isRightBoundary)) {
       changeCellClasslist(classPlayer, playerCurrentPosition)
       playerCurrentPosition -= 1
       changeCellClasslist(classPlayer, playerCurrentPosition)
-    } else if (key === 32) {
-      useWeapon()
-    } else if (key === 13) {
-      enemyMovement()
     }
   }
 
   /**
-   * takes a cell position and determines whether there has been a collision at the given at that cell
+   * runs weapon interval action based on `weapon` parameter
+   * @param {string} weaponType player weapon type, either `'bolt'` or `'bomb'`
+   */
+  const useWeapon = (weaponType) => {
+    const weaponStartingPosition = playerCurrentPosition - height
+    let weaponCurrentPosition = weaponStartingPosition
+    let weapon = classBolt
+    let sound = soundBoltFire
+    if (weaponType === 'bomb') {
+      weapon = classBomb
+      sound = soundExplosion
+    }
+    changeCellClasslist(weapon, weaponCurrentPosition)
+    sound.play()
+    const shoot = setInterval(() => {
+      changeCellClasslist(weapon, weaponCurrentPosition)
+      weaponCurrentPosition -= width
+      if (weaponCurrentPosition < width - 1) {
+        clearInterval(shoot)
+      } else {
+        changeCellClasslist(weapon, weaponCurrentPosition)
+      }
+      if (weaponCurrentPosition === 130) {
+        console.log(cells[weaponCurrentPosition].classList.contains(classEnemy))
+      }
+      if (isCollision(weaponCurrentPosition, weaponType)) {
+        clearInterval(shoot)
+        scoreCounter += scoreModifier1
+        if (weaponType === 'bolt') {
+          isPowerUpReady++
+          powerBar.value++
+        }
+        powerUpTracker()
+        // enemyRemainingCheck()
+        displayScore.innerHTML = scoreCounter
+      }
+    }, 100)
+  }
+  /** Updates display to indicate whether power up is ready */
+  const powerUpTracker = () => {
+    if (isPowerUpReady === powerUpCharge) {
+      bonusDisplay.innerText = 'BOMB'
+      powerBarH3.innerText = 'READY TO FIRE'
+    }
+  }
+  /**checks whether all enemies  */
+  const enemyRemainingCheck = () => {
+    console.log('enemycheck', enemyPosition.length)
+    if (enemyPosition.length === 0) {
+      gameOver('win')
+      clearInterval(enemyRemainingCheck)
+    }
+    // const enemyRemainingCheck = setInterval(() => {
+    //   const enemyCounter = enemyCurrentPosition.length
+
+    //   if (enemyCounter === 0) {
+    //     gameEnd('win')
+    //     clearInterval(enemyRemainingCheck)
+    //   }
+    // }, 100)
+  }
+  /**
+   * takes a cell position and determines whether there has been a collision at the given at that cell. Additionally takes an optional `weaponType` parameter. If the weapon type is `'bomb'`, the collision will result in an area explosion. If null, will default to single enemy collision
    * @param {number} position cell position
+   * @param {string} collisionType weapon type, `'bomb'` if null will default to single enemy collision
    * @returns {boolean} if true, a collision occurred
    */
-  const isCollision = (position) => {
+  const isCollision = (position, collisionType) => {
     const enemy = cells[position].classList.contains(classEnemy)
     const weapon =
       cells[position].classList.contains(classBolt) ||
       cells[position].classList.contains(classBomb)
     const player = cells[position].classList.contains(classPlayer)
+    const bombArea = [
+      position - 1 - width,
+      position - width,
+      position - width + 1,
+      position - 1,
+      position,
+      position + 1,
+    ]
+
     if (enemy && weapon) {
-      changeCellClasslist(classCollision, position)
       soundEnemyKilled.play()
+      switch (collisionType) {
+        case 'bomb':
+          bombArea.forEach((position) => {
+
+            changeCellClasslist(classCollision, position)
+
+          })
+          break
+        default:
+          changeCellClasslist(classCollision, position)
+          break
+      }
       return true
-    }
+    } else return false
   }
 
   /**
@@ -251,7 +332,6 @@ function init() {
    */
   const enemyMovement = () => {
     let soundCounter = 0
-    let count = 1
     let direction = 1
     let isAlreadyInBoundary = false
     const allMove = (movement) => {
@@ -265,11 +345,8 @@ function init() {
         changeCellClasslist(classEnemy, enemy)
       })
     }
-
     const movement = setInterval(() => {
-      //change direction on edge
-      count++
-
+      gameEnd && clearInterval(movement)
       soundCounter++
       if (soundCounter === 1) {
         soundMovement1.play()
@@ -290,6 +367,7 @@ function init() {
       enemyPosition = enemyPosition.filter(
         (position) => !cells[position].classList.contains(classCollision)
       )
+      enemyRemainingCheck()
       cells.forEach((cell) => {
         cell.classList.remove(classCollision)
       })
@@ -310,9 +388,31 @@ function init() {
     }, 1000)
   }
 
+  /**
+   * Assigns the class hidden to all screens, then removes the class hidden from the Element `screen`.
+   * @param {Element} screen the screen to display
+   */
+  const toggleScreen = (screen) => {
+    allSections.forEach((section) => {
+      if (!section.classList.contains('hidden')) {
+        section.classList.add('hidden')
+      }
+    })
+    screen.classList.remove('hidden')
+  }
+  /**
+   * Handles end of game, navigates to Game Win/Over screen based on `state` parameter.
+   * @param {string} state either `'win'` or `'lose'`
+   */
+  const gameOver = (state) => {
+    gameEnd = true
+    if (state === 'win') toggleScreen(gameWinScreen)
+    else if (state === 'lose') toggleScreen(gameOverScreen)
+    finalScore.innerText = `Your final score is ${scoreCounter}`
+  }
   //#endregion
 
-  //#region //* functions called from event listeners
+  //#region //* FUNCTIONS CALLED BY EVENT LISTENERS
   /**
    * Loads the gameboard. runs the functions `createGameBoard` and
     `generateStartingPositions`
@@ -327,9 +427,487 @@ function init() {
    */
   const gameStart = () => {
     enemyMovement()
+    startButton.disabled = true
   }
   gameLoad()
+
+  const playerAction = (event) => {
+    console.log(event.keyCode)
+    const { keyCode: key } = event
+    const movementKeys = [37, 39, 65, 68]
+
+    if (movementKeys.includes(key)) playerMovement(key)
+    else if (key === 32) useWeapon('bolt')
+    else if (key === 80 && isPowerUpReady >= powerUpCharge) {
+      useWeapon('bomb')
+      isPowerUpReady = 0
+      powerBar.value = 0
+      bonusDisplay.innerText = ' '
+      powerBarH3.innerText = 'POWERING UP...'
+    }
+  }
+  //#endregion
+  //#region //* EVENT LISTENERS
   document.addEventListener('keydown', playerAction)
-  // startButton.addEventListener('click', gameStart)
+  startButton.addEventListener('click', gameStart)
+  // splashVideo.addEventListener('ended', hideVideo)
+  startButtonHome.addEventListener('click', gameStart)
+  //loadGameButton.addEventListener('click',loadGame)
+  tutorialButton.addEventListener('click', toTutorial)
+  //optionsButton.addEventListener('click', toOptions)
+
+  //gameScreen event listeners
+  resetButton.addEventListener('click', resetGame)
+  startButton.addEventListener('click', setStartGame)
+  document.addEventListener('keydown', characterMoveset)
+
+  //universal event listeners
+  returnHomeButton.forEach((element) => {
+    element.addEventListener('click', returnHome)
+  })
+
+  //#endregion
+  // //* **********************GAME START FUNCTIONS*****************************
+
+  // //splashVideo and splashScreen Functions
+  //#region //! splash screen functions, need to amend, rewritten into new function toggleScreen, delete after testing
+  // function hideVideo() {
+  //   splashVideo.classList.add('hidden')
+  //   splashScreen.classList.remove('hidden')
+  // }
+  // function gameStart() {
+  //   gameScreen.classList.remove('hidden')
+  //   splashScreen.classList.add('hidden')
+  // }
+  // function loadGame() {}
+  // function toTutorial() {
+  //   splashScreen.classList.add('hidden')
+  //   tutorialScreen.classList.remove('hidden')
+  // }
+  // function toHighscore() {
+  //   splashScreen.classList.add('hidden')
+  //   highScoreScreen.classList.remove('hidden')
+  // }
+  // function toOptions() {
+  //   splashScreen.classList.add('hidden')
+  //   optionsScreen.classList.remove('hidden')
+  // }
+
+  // function removeStartPage() {
+  //   startPage.classList.add('hidden')
+  //   arcadeVideo.classList.remove('hidden')
+  //   splashVideo.play()
+  // }
+  //#endregion
+  // //gameOver gameWin functions
+
+  //#region //! old code not needed, delete after testing
+  // function gameRestart() {
+  //   splashScreen.classList.add('hidden')
+  //   gameOverScreen.classList.add('hidden')
+  //   gameScreen.classList.remove('hidden')
+  // }
+
+  // function resetGame() {
+  //   window.location.reload()
+  //   gameRestart()
+  // }
+
+  // //gameScreen functions - generate items
+  // function createGrid() {
+  //   for (let i = 0; i < cellCount; i++) {
+  //     const cell = document.createElement('div')
+  //     // cell.innerText = i
+  //     grid.appendChild(cell)
+  //     cells.push(cell)
+  //   }
+  //   addCharacter(playerStartingPosition, playerClass)
+  //   addEnemyRow()
+  // }
+  // function addCharacter(position, characterType) {
+  //   cells[position].classList.add([characterType])
+  // }
+  // function removeCharacter(position, character) {
+  //   cells[position].classList.remove(character)
+  // }
+  // function addEnemyRow() {
+  //   enemyStartingPosition.forEach((enemy) => {
+  //     cells[enemy].classList.add(enemyClass)
+  //   })
+  // }
+  // createGrid()
+
+  // //gameScreen FUnctions - character functions
+  // function characterMovement(key) {
+  //   if (stopGame) return
+
+  //   removeCharacter(playerCurrentPosition, playerClass)
+  //   if (
+  //     (key === 39 || key === 68) &&
+  //     playerCurrentPosition % width !== width - 2
+  //   ) {
+  //     playerCurrentPosition++
+  //     addCharacter(playerCurrentPosition, playerClass)
+  //   } else if (
+  //     (key === 37 || key === 65) &&
+  //     playerCurrentPosition % width !== 1
+  //   ) {
+  //     playerCurrentPosition--
+  //     addCharacter(playerCurrentPosition, playerClass)
+  //   } else {
+  //     addCharacter(playerCurrentPosition, playerClass)
+  //   }
+  // }
+  // function characterMoveset(keyPress) {
+  //   if (stopGame) return
+
+  //   const key = keyPress.keyCode
+  //   console.log(key)
+  //   if (key === 39 || key === 68 || key === 37 || key === 65) {
+  //     characterMovement(key)
+  //   } else if (key === 32) {
+  //     useWeapon('bolt')
+  //   } else if (key === 80 && isPowerUpReady >= powerUpCharge) {
+  //     useWeapon('bomb')
+  //     isPowerUpReady = 0
+  //     powerBar.value = 0
+  //     bonusDisplay.innerText = ' '
+  //     powerBarH3.innerText = 'POWERING UP...'
+
+  //     //! } else if (key === 13) {
+  //     //!   removeStartPage()
+  //   }
+  // }
+  // function useWeapon(weapon) {
+  //   if (stopGame) return
+
+  //   if (weapon === 'bolt') {
+  //     let weaponCurrentPosition = (playerCurrentPosition -= width)
+  //     addCharacter(weaponCurrentPosition, weaponClassBolt)
+  //     soundBoltFire.play()
+  //     playerCurrentPosition += width
+  //     const bolt = setInterval(() => {
+  //       removeCharacter(weaponCurrentPosition, weaponClassBolt)
+  //       if (weaponCurrentPosition > width) {
+  //         weaponCurrentPosition -= width
+  //         addCharacter(weaponCurrentPosition, weaponClassBolt)
+  //         addCharacter(weaponCurrentPosition, weaponClassBolt)
+  //       } else {
+  //         weaponCurrentPosition = weaponStartingPosition
+  //         clearInterval(bolt)
+  //       }
+  //       cells.forEach((cell) => {
+  //         const cellPosition = cells.indexOf(cell)
+  //         const cellClass = cells[cellPosition].classList.value
+  //         if (
+  //           cellClass === `${enemyClass} ${weaponClassBolt}` ||
+  //           cellClass === `${weaponClassBolt} ${enemyClass}`
+  //         ) {
+  //           removeCharacter(cellPosition, enemyClass)
+  //           removeCharacter(cellPosition, weaponClassBolt)
+
+  //           soundEnemyKilled.play()
+  //           addCharacter(cellPosition, explosion)
+  //           enemyCurrentPosition = enemyCurrentPosition.filter(
+  //             (item) => item !== weaponCurrentPosition
+  //           )
+  //           scoreCounter += scoreModifier1
+  //           if (weapon === 'bolt') {
+  //             isPowerUpReady++
+  //             powerBar.value++
+  //           }
+  //           powerUpTracker()
+  //           enemyRemainingCheck()
+  //           displayScore.innerHTML = scoreCounter
+  //           clearInterval(bolt)
+  //         } else if (
+  //           cellClass === `${weaponClassBolt} ${enemyWeaponBolt}` ||
+  //           cellClass === `${enemyWeaponBolt} ${weaponClassBolt}`
+  //         ) {
+  //           removeCharacter(cellPosition, enemyClass)
+  //           removeCharacter(cellPosition, weaponClassBolt)
+  //           soundExplosion.play()
+  //         }
+  //       })
+  //     }, 75)
+  //   } else if (weapon === 'bomb') {
+  //     let weaponCurrentPosition = (playerCurrentPosition -= width)
+  //     addCharacter(weaponCurrentPosition, weaponClassBomb)
+  //     soundBoltFire.play()
+  //     playerCurrentPosition += width
+  //     const Bomb = setInterval(() => {
+  //       removeCharacter(weaponCurrentPosition, weaponClassBomb)
+  //       if (weaponCurrentPosition > width) {
+  //         weaponCurrentPosition -= width
+  //         addCharacter(weaponCurrentPosition, weaponClassBomb)
+  //       } else {
+  //         weaponCurrentPosition = weaponStartingPosition
+  //         clearInterval(Bomb)
+  //       }
+  //       cells.forEach((cell) => {
+  //         const cellPosition = cells.indexOf(cell)
+  //         const cellClass = cells[cellPosition].classList.value
+  //         if (
+  //           cellClass === `${enemyClass} ${weaponClassBomb}` ||
+  //           cellClass === `${weaponClassBomb} ${enemyClass}`
+  //         ) {
+  //           removeCharacter(cellPosition, enemyClass)
+  //           removeCharacter(cellPosition, weaponClassBomb)
+  //           soundEnemyKilled.play()
+  //           addCharacter(cellPosition, explosion)
+  //           enemyCurrentPosition = enemyCurrentPosition.filter(
+  //             (item) => item !== weaponCurrentPosition
+  //           )
+  //           scoreCounter += scoreModifier1
+  //           isPowerUpReady++
+  //           powerBar.value++
+  //           powerUpTracker()
+  //           enemyRemainingCheck()
+  //           displayScore.innerHTML = scoreCounter
+  //           clearInterval(Bomb)
+  //         } else if (
+  //           cellClass === `${weaponClassBomb} ${enemyWeaponBolt}` ||
+  //           cellClass === `${enemyWeaponBolt} ${weaponClassBomb}`
+  //         ) {
+  //           removeCharacter(cellPosition, enemyClass)
+  //           removeCharacter(cellPosition, weaponClassBomb)
+  //           soundExplosion.play()
+  //         }
+  //       })
+  //     }, 75)
+  //   }
+  // }
+  // function powerUpTracker() {
+  //   if (isPowerUpReady === powerUpCharge) {
+  //     bonusDisplay.innerText = 'BOMB'
+  //     powerBarH3.innerText = 'READY TO FIRE'
+  //   }
+  // }
+  // setInterval(() => {
+  //   cells.forEach((cell) => {
+  //     const cellPosition = cells.indexOf(cell)
+  //     if (cell.classList.value === explosion) {
+  //       removeCharacter(cellPosition, explosion)
+  //     }
+  //   })
+  // }, 850)
+  // //gameScreen functions - enemy functions
+  // function setStartGame() {
+  //   stopGame = false
+  //   enemyMovementStart()
+  // }
+  // function enemyMovementStart() {
+  //   if (stopGame) return
+
+  //   ufoAppears()
+  //   let direction = 1
+  //   soundBoltFire.play()
+
+  //   let soundCounter = 0
+  //   const enemyMovement = setInterval(() => {
+  //     if (stopGame) clearInterval(enemyMovement)
+
+  //     soundCounter++
+  //     if (soundCounter === 1) {
+  //       soundMovement1.play()
+  //     } else if (soundCounter === 2) {
+  //       soundMovement2.play()
+  //     } else if (soundCounter === 3) {
+  //       soundMovement3.play()
+  //     } else if (soundCounter === 4) {
+  //       soundMovement4.play()
+  //       soundCounter = 0
+  //     }
+  //     //*define edges
+  //     const isOnEdge = cells.some((item, index) => {
+  //       const hasEnemy = item.classList.value === enemyClass
+  //       const isEdge =
+  //         direction === 1 ? index % width === width - 2 : index % width === 1
+  //       if (hasEnemy && isEdge) {
+  //         return true
+  //       }
+  //     })
+  //     //*remove enemy
+  //     enemyCurrentPosition.forEach((eachEnemy) => {
+  //       removeCharacter(eachEnemy, enemyClass)
+  //     })
+  //     //*move down if on edge
+  //     if (isOnEdge) {
+  //       enemyCurrentPosition = enemyCurrentPosition.map((item) => item + height)
+  //       direction = direction * -1
+
+  //       //*mutate array left or right
+  //     } else {
+  //       enemyCurrentPosition.forEach((enemy, index) => {
+  //         enemyCurrentPosition[index] = enemy + direction
+  //       })
+  //     }
+  //     //*add enemy back
+  //     enemyCurrentPosition.forEach((eachEnemy) => {
+  //       addCharacter(eachEnemy, enemyClass)
+  //     })
+  //     const isOnFloor = cells.some((item, index) => {
+  //       const hasEnemy = item.classList.value === enemyClass
+  //       const isFloor = (height - 1) * width
+  //       if (index >= isFloor && hasEnemy) {
+  //         return true
+  //       }
+  //     })
+  //     if (isOnFloor) {
+  //       gameOver()
+  //       clearInterval(enemyMovement)
+  //     }
+  //   }, 1000)
+  // }
+
+  // function enemyRemainingCheck() {
+  //   const enemyRemainingCheck = setInterval(() => {
+  //     const enemyCounter = enemyCurrentPosition.length
+
+  //     if (enemyCounter === 0) {
+  //       gameWin()
+  //       clearInterval(enemyRemainingCheck)
+  //     }
+  //   }, 100)
+  // }
+
+  // function increaseSpeed() {
+  //   const speedFraction = 1000 / enemyStartingPosition.length
+  //   let speed = 1000
+  //   let compareLength = enemyStartingPosition.length
+  //   const reduceSpeedNumber = setInterval(() => {
+  //     if (enemyCurrentPosition.length - 1 === compareLength) {
+  //       speed -= speedFraction
+  //       compareLength = enemyCurrentPosition.length
+  //     }
+
+  //     if (speed === 0) {
+  //       clearInterval(reduceSpeedNumber)
+  //     }
+  //   }, 100)
+  // }
+  // // increaseSpeed()
+  // function enemyWeaponFire() {
+  //   /**
+  //    * enemy fires a bolt
+  //    * bolt moves vertically down
+  //    * if bolt hits player, player loses one life(shield)
+  //    * if player loses all life (life counter === 0, player loses run Game Over)
+  //    * interval boundary is floor
+  //    */
+  //   //const randomCalc = randomNumber(1,weaponFireProbability)
+
+  //   let randomCalc = 1
+  //   enemyCurrentPosition.forEach((enemy) => {
+  //     const isEnemyClass = cells[enemy].classList.value === enemyClass
+  //     const enemyWeaponPosition = cells[enemy + width]
+  //     let newEnemyWeaponPosition = enemy + width
+  //     if (randomCalc === 1 && isEnemyClass) {
+  //       addCharacter(enemy + width, enemyWeaponBolt)
+  //       const useBoltWeapon = setInterval(() => {
+  //         removeCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+  //         if (newEnemyWeaponPosition < (height - 1) * width) {
+  //           newEnemyWeaponPosition += width
+  //           addCharacter(newEnemyWeaponPosition, enemyWeaponBolt)
+  //         }
+  //         cells.forEach((cell) => {
+  //           const cellPosition = cells.indexOf(cell)
+  //           let cellValue = cell.classList.value
+  //           //cells[newEnemyWeaponPosition].classList.value === enemyClass
+
+  //           if (cellValue === `${playerClass} ${enemyWeaponBolt}`) {
+  //             lifeCounter--
+  //             cellValue = playerClass
+  //             if (lifeCounter === 0) {
+  //               gameOver()
+  //             }
+  //           }
+  //         })
+  //       }, 1000)
+  //     }
+  //   })
+  // }
+
+  // function ufoAppears() {
+  //   if (stopGame) return
+
+  //   let ufoSoundCounter = 0
+  //   const timerForAppearing = setInterval(() => {
+  //         if (stopGame) clearInterval(timerForAppearing)
+
+  //     ufoSoundCounter++
+  //     if (ufoSoundCounter === 1) {
+  //       soundUfo1.play()
+  //     } else if (ufoSoundCounter === 2) {
+  //       soundUfo2.play()
+  //       ufoSoundCounter = 0
+  //     }
+  //     const ufoStartingPosition = width - 2
+  //     let ufoCurrentPosition = ufoStartingPosition
+  //     addCharacter(ufoStartingPosition, ufoClass)
+  //     const ufoSpeed = setInterval(() => {
+  //       removeCharacter(ufoCurrentPosition, ufoClass)
+  //       ufoCurrentPosition--
+  //       addCharacter(ufoCurrentPosition, ufoClass)
+  //       if (ufoCurrentPosition === 1) {
+  //         removeCharacter(ufoStartingPosition, ufoClass)
+  //         clearInterval(ufoSpeed)
+  //       }
+  //     }, 300)
+  //   }, 12000)
+  // }
+  // //universal functions
+  // function returnHome() {
+  //   allSections.forEach((element) => {
+  //     element.classList.add('hidden')
+  //   })
+  //   splashScreen.classList.remove('hidden')
+  // }
+
+  // //! NOT IN USE - audio control
+  // // function controlAudio(event) {
+  // //   const eventButton = event.target.classList
+  // //   if (eventButton === 'audioMuted'){
+  // //     allAudioElements.forEach(audio => {
+  // //       audio = audio.muted = true
+  // //     })
+  // //   } else if (eventButton === 'audioPlay') {
+  // //     allAudioElements.forEach(audio => {
+  // //       audio.muted = false
+  // //     })
+
+  // //   }
+
+  // // }
+
+  // //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
+  // //? OPTION 1 - positive counter
+  // /*
+  // function calculateEnemySpeed() {
+  //   let enemyCount = 0
+  //   cells.forEach(cell => {
+  //     if (cell.classList === enemyClass){
+  //       enemyCount++
+  //     }
+  //   });
+  //   if( enemyCount > 10) {
+  //     //increase speed by to level two
+  //   }
+  //   if (enemyCount > 15) {
+  //     //increase speed to level three
+  //   }
+  //   if (enemyCount > 20) {
+  //     // speednincrease to max level
+  //   }
+  // }
+  // */
+  // //? p
+  // //? OPTION 2 - NEGATIVE COUNTER
+
+  // //splashScreen event listeners
+
+  // //! NOT IN USE - audio control
+  // // audioMuted.addEventListener('click', controlAudio)
+  // // audioPlay.addEventListener('click', controlAudio)
 }
 window.addEventListener('DOMContentLoaded', init)
