@@ -51,8 +51,6 @@ const init = () => {
   const returnHomeButton = document.querySelectorAll('.returnHomeButton')
   const navigationButton = document.querySelectorAll('.navigationButton')
   const allSections = document.querySelectorAll('section')
-  const audioMuted = document.querySelector('.audioMuted')
-  const audioPlay = document.querySelector('.audioPlay')
   const allAudioElements = document.querySelectorAll('audio')
   //#endregion
   //#endregion
@@ -89,11 +87,11 @@ const init = () => {
 
   //* enemy variables
   // can be amended to increase the number of enemies in a row, and the number of rows in the starting formation.
-  const enemyFirstRow = [62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73]
+  const enemyFirstRow = []
   const numberOfRows = 5
-  const weaponFireProbability = 5
-  // const numberOfEnemies = 60
-  // const enemyPerRow = numberOfEnemies / numberOfEnemyRows
+
+  const numberOfEnemies = 60
+  const enemyPerRow = numberOfEnemies / numberOfRows
 
   // do not adjust, the `enemyPosition` variable will be populated by a function based on the `numberOfRowsFunction`
   let enemyPosition = []
@@ -103,6 +101,7 @@ const init = () => {
   const classUFO = 'ufoCharacter'
   const classBolt = 'weaponBolt'
   const classEnemy = 'enemyCharacter'
+  const classEnemyBolt = 'enemyWeaponBolt'
   const classCollision = 'explosion'
   const classBomb = 'weaponBomb'
   //#endregion
@@ -124,9 +123,7 @@ const init = () => {
   //! not in use yet, trying to automate the placement of centred enemy formation based on defined number of enemies in enemyNumber variable
   function populateEnemyStart() {
     const startingNumbers = []
-    for (let i = 4; i <= 4 + enemyPerRow; i++) {
-      startingNumbers.push(i)
-    }
+
     enemyStartingPosition = [
       ...startingNumbers,
       ...startingNumbers.map((x) => x + height),
@@ -179,6 +176,10 @@ const init = () => {
     })
     //#endregion
     // add enemy rows and assign class
+
+    for (let i = 4; i <= 4 + enemyPerRow; i++) {
+      enemyFirstRow.push(i)
+    }
     const empty = []
     for (let i = 1; i <= numberOfEnemyRows; i++) {
       const row = enemyFirstRow.map((cell) => cell + i * 20)
@@ -229,10 +230,11 @@ const init = () => {
 
   /**
    * runs weapon interval action based on `weapon` parameter
-   * @param {string} weaponType player weapon type, either `'bolt'` or `'bomb'`
+   * @param {string} weaponType player weapon type, either `'bolt'`, `'bomb'`, `'enemy'`
    */
   const useWeapon = (weaponType) => {
-    const weaponStartingPosition = playerCurrentPosition - height
+    let weaponMovement = -width
+    let weaponStartingPosition = playerCurrentPosition - width
     let weaponCurrentPosition = weaponStartingPosition
     let weapon = classBolt
     let sound = soundBoltFire
@@ -244,14 +246,11 @@ const init = () => {
     sound.play()
     const shoot = setInterval(() => {
       changeCellClasslist(weapon, weaponCurrentPosition)
-      weaponCurrentPosition -= width
+      weaponCurrentPosition += weaponMovement
       if (weaponCurrentPosition < width - 1) {
         clearInterval(shoot)
       } else {
         changeCellClasslist(weapon, weaponCurrentPosition)
-      }
-      if (weaponCurrentPosition === 130) {
-        console.log(cells[weaponCurrentPosition].classList.contains(classEnemy))
       }
       if (isCollision(weaponCurrentPosition, weaponType)) {
         clearInterval(shoot)
@@ -357,6 +356,7 @@ const init = () => {
         soundMovement4.play()
         soundCounter = 0
       }
+      // enemyWeaponFire(enemyPosition)
       const isInBoundary =
         enemyPosition.some((item) => rightBoundary.includes(item)) ||
         enemyPosition.some((item) => leftBoundary.includes(item))
@@ -388,7 +388,7 @@ const init = () => {
   }
 
   /**
-   * Assigns the class hidden to all screens, then removes the class hidden from the Element `screen`.
+   * Assigns the class hidden to all screens, then removes the class hidden from the Element `screen`. The screen is selected based on the button's value.
    * @param {Element} display the screen to display
    */
   const toggleScreen = (event) => {
@@ -411,6 +411,27 @@ const init = () => {
     else if (state === 'lose') toggleScreen(gameOverScreen)
     finalScore.innerText = `Your final score is ${scoreCounter}`
   }
+  /**
+   * Takes an array `enemyPosition` and randomly fires weapon from on of the positions from the array.
+   * @param {number[]} enemyPosition array of enemy cell positions
+   */
+  const enemyWeaponFire = (enemyPosition) => {
+    const number = randomNumber(0, enemyPosition.length - 1)
+    console.log('random number', number)
+    let weaponCurrentPosition = enemyPosition[number]
+    const shoot = setInterval(() => {
+      changeCellClasslist(classEnemyBolt, weaponCurrentPosition)
+      weaponCurrentPosition += width
+      if (weaponCurrentPosition >= cellCount) {
+        clearInterval(shoot)
+      } else {
+        changeCellClasslist(classEnemyBolt, weaponCurrentPosition)
+      }
+      // if (isCollision(weaponCurrentPosition, weaponType)) {
+      //   clearInterval(shoot)
+      // }
+    }, 700)
+  }
   //#endregion
 
   //#region //* FUNCTIONS CALLED BY EVENT LISTENERS
@@ -430,6 +451,7 @@ const init = () => {
    */
   const gameStart = () => {
     enemyMovement()
+    // enemyWeaponFire()
     startButton.disabled = true
   }
   gameLoad()
@@ -449,14 +471,11 @@ const init = () => {
       powerBarH3.innerText = 'POWERING UP...'
     }
   }
-  allSections.forEach((section) => {
-    console.log(section.classList)
-  })
   //#endregion
+
   //#region //* EVENT LISTENERS
   document.addEventListener('keydown', playerAction)
   startButton.addEventListener('click', gameStart)
-  // splashVideo.addEventListener('ended', hideVideo)
   navigationButton.forEach((button) => {
     button.addEventListener('click', toggleScreen)
   })
@@ -752,6 +771,7 @@ const init = () => {
   // }
   //#endregion
 
+  //#region //! old code delete after testing
   // function enemyRemainingCheck() {
   //   const enemyRemainingCheck = setInterval(() => {
   //     const enemyCounter = enemyCurrentPosition.length
@@ -762,7 +782,9 @@ const init = () => {
   //     }
   //   }, 100)
   // }
+  //#endregion
 
+  //#region //! increaseSpeed and enemyfire old
   // function increaseSpeed() {
   //   const speedFraction = 1000 / enemyStartingPosition.length
   //   let speed = 1000
@@ -819,6 +841,7 @@ const init = () => {
   //     }
   //   })
   // }
+  //#endregion
 
   // function ufoAppears() {
   //   if (stopGame) return
@@ -848,58 +871,5 @@ const init = () => {
   //     }, 300)
   //   }, 12000)
   // }
-  // //universal functions
-  // function returnHome() {
-  //   allSections.forEach((element) => {
-  //     element.classList.add('hidden')
-  //   })
-  //   splashScreen.classList.remove('hidden')
-  // }
-
-  // //! NOT IN USE - audio control
-  // // function controlAudio(event) {
-  // //   const eventButton = event.target.classList
-  // //   if (eventButton === 'audioMuted'){
-  // //     allAudioElements.forEach(audio => {
-  // //       audio = audio.muted = true
-  // //     })
-  // //   } else if (eventButton === 'audioPlay') {
-  // //     allAudioElements.forEach(audio => {
-  // //       audio.muted = false
-  // //     })
-
-  // //   }
-
-  // // }
-
-  // //? **************THOUGHTS ON HOW TO CALC SPEED INCREASE BASED ON ENEMY COUNT***************
-  // //? OPTION 1 - positive counter
-  // /*
-  // function calculateEnemySpeed() {
-  //   let enemyCount = 0
-  //   cells.forEach(cell => {
-  //     if (cell.classList === enemyClass){
-  //       enemyCount++
-  //     }
-  //   });
-  //   if( enemyCount > 10) {
-  //     //increase speed by to level two
-  //   }
-  //   if (enemyCount > 15) {
-  //     //increase speed to level three
-  //   }
-  //   if (enemyCount > 20) {
-  //     // speednincrease to max level
-  //   }
-  // }
-  // */
-  // //? p
-  // //? OPTION 2 - NEGATIVE COUNTER
-
-  // //splashScreen event listeners
-
-  // //! NOT IN USE - audio control
-  // // audioMuted.addEventListener('click', controlAudio)
-  // // audioPlay.addEventListener('click', controlAudio)
 }
 window.addEventListener('DOMContentLoaded', init)
