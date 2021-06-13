@@ -133,9 +133,8 @@ function init() {
     const weaponStartingPosition = playerCurrentPosition - height
     const useWeapon = () => {
       let weaponCurrentPosition = weaponStartingPosition
-      let count = -2
-      soundBoltFire.play()
       changeCellClasslist(classBolt, weaponCurrentPosition)
+      soundBoltFire.play()
       const shoot = setInterval(() => {
         changeCellClasslist(classBolt, weaponCurrentPosition)
         weaponCurrentPosition -= width
@@ -156,12 +155,12 @@ function init() {
       }, 100)
     }
     // left arrow or 'a'
-    if (key === 39 && !isLeftBoundary) {
+    if (key === 39 || (key === 65 && !isLeftBoundary)) {
       changeCellClasslist(classPlayer, playerCurrentPosition)
       playerCurrentPosition += 1
       changeCellClasslist(classPlayer, playerCurrentPosition)
       // right arrow or 'd'
-    } else if (key === 37 && !isRightBoundary) {
+    } else if (key === 37 || (key === 68 && !isRightBoundary)) {
       changeCellClasslist(classPlayer, playerCurrentPosition)
       playerCurrentPosition -= 1
       changeCellClasslist(classPlayer, playerCurrentPosition)
@@ -188,18 +187,6 @@ function init() {
       soundEnemyKilled.play()
       return true
     }
-
-    // changeCellClasslist(classBolt, position)
-    // changeCellClasslist(classEnemy, position)
-    // changeCellClasslist(classCollision, position)
-    // switch (type) {
-    //   case 'enemy2weapon':
-    //     return enemy && weapon
-    //   case 'enemy2player':
-    //     return enemy && player
-    //   default:
-    //     return false
-    // }
   }
 
   /**

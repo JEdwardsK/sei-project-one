@@ -1,13 +1,19 @@
-function init() {
+const init = () => {
+  //#region  Document selectors
+  //elements
+  const grid = document.querySelector('.grid')
+  const bonusDisplay = document.querySelector('.displayCurrentBonusWeapon p')
+  const powerBar = document.querySelector('.powerBar')
+  const displayPowerBar = document.querySelector('.displayPowerBar')
+  const powerBarH3 = document.querySelector('.displayPowerBar h3')
+  powerBar.max = powerUpCharge
 
-  function randomNumber(min, max) {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
+  const resetButton = document.querySelector('.resetButton')
+  const homeButton = document.querySelector('.homeButton')
+  const startButton = document.querySelector('.startButton')
 
-  //* ***************************** Variables *****************************
-  //audio variables(
+  //sounds
+  // const splashVideo = document.querySelector('.splashVideo')
   const soundBoltFire = document.querySelector('.soundBoltFire')
   const soundExplosion = document.querySelector('.soundExplosion')
   const soundMovement1 = document.querySelector('.soundMovement1')
@@ -19,22 +25,70 @@ function init() {
   const soundUfo2 = document.querySelector('.soundUfo2')
   const startButton = document.querySelector('.startButton')
 
-  const splashVideo = document.querySelector('.splashVideo')
-  const grid = document.querySelector('.grid')
-  const width = 20
+  //#endregion
+
+  //#region VARIABLES
+
+  //* grid variables
+  // adjustable variables. height may break due to css styling percentages for `.cell div`
   const height = 20
-  const cellCount = width * height
+  let lifeCounter = 2
+  let currentLevel = 1
+  const powerUpCharge = 4
+  const scoreModifier1 = 10
+
+
+  // do not adjust, the empty arrays will have numbers pushed into them in later functions
+  const width = height
+  const cellCount = height * width
   const cells = []
-  const playerClass = 'playerCharacter'
-  const numberOfEnemies = 60
-  const numberOfEnemyRows = 5
-  const enemyPerRow = numberOfEnemies / numberOfEnemyRows
-  // const weaponStartingPosition = playerCurrentPosition
-  const weaponClassBolt = 'weaponBolt'
-  const weaponClassBomb = 'weaponBomb'
-  const explosion = 'explosion'
-  let enemyStartingPosition = []
-  //*work out later
+  const leftBoundary = []
+  const rightBoundary = [cellCount - 1]
+  const bottomBoundary = []
+  const topBoundary = []
+  let scoreCounter = 0
+  let isPowerupReady = 0
+
+  //* player variables
+  // the starting player position should always be in the centre of the bottom row on the game board.
+  const playerStartingPosition = 390
+  let playerCurrentPosition = playerStartingPosition
+
+  //* enemy variables
+  // can be amended to increase the number of enemies in a row, and the number of rows in the starting formation.
+  const enemyFirstRow = [62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73]
+  const numberOfRows = 5
+  const weaponFireProbability = 5
+  // const numberOfEnemies = 60
+  // const enemyPerRow = numberOfEnemies / numberOfEnemyRows
+
+  // do not adjust, the `enemyPosition` variable will be populated by a function based on the `numberOfRowsFunction`
+  let enemyPosition = []
+
+  // className variables, used for updating element classLists, do not adjust.
+  const classPlayer = 'playerCharacter'
+  const classUFO = 'ufoCharacter'
+  const classBolt = 'weaponBolt'
+  const classEnemy = 'enemyCharacter'
+  const classCollision = 'explosion'
+  const classBomb = 'weaponBomb'
+  //#endregion
+
+  //#region FUNCTION DECLARATIONS
+
+  /**
+   * Returns a random number between the parameters `min` and `max`, inclusive
+   * @param {number} min
+   * @param {number} max
+   * @returns number
+   */
+  const randomNumber = (min, max) => {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
+  //! not in use yet, trying to automate the placement of centred enemy formation based on defined number of enemies in enemyNumber variable
   function populateEnemyStart() {
     const startingNumbers = []
     for (let i = 4; i <= 4 + enemyPerRow; i++) {
@@ -49,77 +103,38 @@ function init() {
       ...startingNumbers.map((x) => x + 5 * height),
     ]
   }
-  populateEnemyStart()
-  let enemyCurrentPosition = enemyStartingPosition
-  const enemyWeaponBolt = 'enemyWeaponBolt'
-  const weaponFireProbability = 5
-
-  const enemyClass = 'enemyCharacter'
-  const ufoClass = 'ufoCharacter'
-  const scoreModifier1 = 10
-
-  let scoreCounter = 0
-  let lifeCounter = 2
-  let currentLevel = 1
-  let isPowerupReady = 0
-  const powerUpCharge = 4
-
-  //*imported code from reworked
-
-
-  const playerStartingPosition = 390
-  let playerCurrentPosition = playerStartingPosition
-  let enemyPosition = []
-  const enemyFirstRow = [63, 64, 65, 66, 67, 68, 69, 70, 71, 72]
-  const leftBoundary = []
-  const rightBoundary = [cellCount - 1]
-  const bottomBoundary = []
-  const topBoundary = []
-  const isCollision = (position, type) => {
-    const enemy = cells[position].classList.contains(enemyClass)
-    const weapon = cells[position].classList.contains('bolt')
-    const player = cells[position].classList.contains(playerClass)
-    switch (type) {
-      case 'enemy2weapon':
-        return enemy && weapon
-      case 'enemy2player':
-        return enemy && player
-      default:
-        return false
-    }
-  }
-  //#region //* define boundaries
-  for (let i = 0; i < cellCount; i += height) {
-    leftBoundary.push(i)
-    if (i - 1 > 0) rightBoundary.push(i - 1)
-  }
-  for (let i = cellCount - 1; i >= width * (height - 1); i--) {
-    bottomBoundary.push(i)
-  }
-  for (let i = 0; i < width; i++) {
-    topBoundary.push(i)
-  }
-  //#endregion
-
-
-  // make the grid
-  for (let i = 0; i < cellCount; i++) {
-    const cell = document.createElement('div')
-    cell.innerText = i
-    grid.appendChild(cell)
-    cells.push(cell)
-  }
-  // add player and enemy starting positions
 
   /**
-   * This function will accept a number for the number of rows of enemies that you wish to populate. It assigns the character and enemy classes to the cell positions specified by the variables `playerStartingPosition` and `enemyFirstRow`
-   * @param {number} enemyRowCount
+   * Generates the grid and defines its boundaries, updating the `leftBoundary`, `rightBoundary`, `bottomBoundary` and `topBoundary` variables.
    */
-  const addStartingPositions = (enemyRowCount) => {
-    // add player position
-    cells[playerStartingPosition].classList.add(playerClass)
+  const createGameBoard = () => {
+    // generate the grid. assigns child div elements to the grid element, based on the `cellCount` variable
+    for (let i = 0; i < cellCount; i++) {
+      const cell = document.createElement('div')
+      cell.innerText = i
+      grid.appendChild(cell)
+      cells.push(cell)
+    }
+    //define boundaries
+    for (let i = 0; i < cellCount; i += height) {
+      leftBoundary.push(i)
+      if (i - 1 > 0) rightBoundary.push(i - 1)
+    }
+    for (let i = cellCount - 1; i >= width * (height - 1); i--) {
+      bottomBoundary.push(i)
+    }
+    for (let i = 0; i < width; i++) {
+      topBoundary.push(i)
+    }
+  }
 
-    //#region //!boundary class, delete on tidy up
+  /**
+   * adds the starting positions for all of the characters. Assigns the `playerClass` to the cell at `playerStartingPosition`. Updates `enemyPosition` to include extra rows based on the `numberOfEnemyRows`
+   * @param {number} numberOfEnemyRows
+   */
+  const generateStartingPositions = (numberOfEnemyRows) => {
+    cells[playerStartingPosition].classList.add(classPlayer)
+    //#region //! DELETE AFTER TESTING - assigns visual class to check right cells are selected for each boundary, not required after testing
     leftBoundary.forEach((position) => {
       cells[position].classList.add('boundary')
     })
@@ -130,39 +145,31 @@ function init() {
       cells[position].classList.add('bottom')
     })
     //#endregion
-
-    // add enemy positions
+    // add enemy rows and assign class
     const empty = []
-    for (let i = 1; i <= enemyRowCount; i++) {
+    for (let i = 1; i <= numberOfEnemyRows; i++) {
       const row = enemyFirstRow.map((cell) => cell + i * 20)
       empty.push(row)
     }
     enemyPosition = empty.flat()
     enemyPosition.forEach((enemy) => {
-      cells[enemy].classList.add(enemyClass)
+      cells[enemy].classList.add(classEnemy)
     })
   }
-  addStartingPositions(3)
-  // function to add/remove  character class from cell
+
   /**
    * This function takes a string and either adds or removes the string from the classList of the cell div at the given position
    * @param {string} character the class name
    * @param {number} position the cell position
    */
   const changeCellClasslist = (character, position) => {
-  // switch (type) {
-  //   case 'add':
-  //     cells[position].classList.add(character)
-  //     break
-  //   case 'remove':
-  //     cells[position].classList.remove(character)
-  //     break
-  //     default:
-  //       break
-  //     }
-    cells[position].classList.contains(character)
-      ? cells[position].classList.remove(character)
-      : cells[position].classList.add(character)
+    if (character === classCollision) {
+      cells[position].classList = classCollision
+    } else {
+      cells[position].classList.contains(character)
+        ? cells[position].classList.remove(character)
+        : cells[position].classList.add(character)
+    }
   }
 
   /**
@@ -176,81 +183,104 @@ function init() {
     const weaponStartingPosition = playerCurrentPosition - height
     const useWeapon = () => {
       let weaponCurrentPosition = weaponStartingPosition
-      let count = -2
-      changeCellClasslist('bolt', weaponCurrentPosition)
+      changeCellClasslist(classBolt, weaponCurrentPosition)
+      soundBoltFire.play()
       const shoot = setInterval(() => {
-        changeCellClasslist('bolt', weaponCurrentPosition)
+        changeCellClasslist(classBolt, weaponCurrentPosition)
         weaponCurrentPosition -= width
         if (weaponCurrentPosition < width - 1) {
           clearInterval(shoot)
         } else {
-          changeCellClasslist('bolt', weaponCurrentPosition)
+          changeCellClasslist(classBolt, weaponCurrentPosition)
         }
         if (weaponCurrentPosition === 130) {
-          console.log(cells[weaponCurrentPosition].classList.contains(enemyClass))
+          console.log(
+            cells[weaponCurrentPosition].classList.contains(classEnemy)
+          )
         }
-        if (isCollision(weaponCurrentPosition, 'enemy2weapon')) {
+        if (isCollision(weaponCurrentPosition)) {
           console.log('hit')
-          changeCellClasslist('bolt', weaponCurrentPosition)
-          changeCellClasslist(enemyClass, weaponCurrentPosition)
-          changeCellClasslist('explosion', weaponCurrentPosition)
           clearInterval(shoot)
         }
       }, 100)
     }
-    // left arrow
-    if (key === 39 && !isLeftBoundary) {
-      changeCellClasslist(playerClass, playerCurrentPosition)
+    // left arrow or 'a'
+    if (key === 39 || (key === 65 && !isLeftBoundary)) {
+      changeCellClasslist(classPlayer, playerCurrentPosition)
       playerCurrentPosition += 1
-      changeCellClasslist(playerClass, playerCurrentPosition)
-    // right arrow
-    } else if (key === 37 && !isRightBoundary) {
-      changeCellClasslist(playerClass, playerCurrentPosition)
+      changeCellClasslist(classPlayer, playerCurrentPosition)
+      // right arrow or 'd'
+    } else if (key === 37 || (key === 68 && !isRightBoundary)) {
+      changeCellClasslist(classPlayer, playerCurrentPosition)
       playerCurrentPosition -= 1
-      changeCellClasslist(playerClass, playerCurrentPosition)
+      changeCellClasslist(classPlayer, playerCurrentPosition)
     } else if (key === 32) {
       useWeapon()
+    } else if (key === 13) {
+      enemyMovement()
+    }
+  }
+
+  /**
+   * takes a cell position and determines whether there has been a collision at the given at that cell
+   * @param {number} position cell position
+   * @returns {boolean} if true, a collision occurred
+   */
+  const isCollision = (position) => {
+    const enemy = cells[position].classList.contains(classEnemy)
+    const weapon =
+      cells[position].classList.contains(classBolt) ||
+      cells[position].classList.contains(classBomb)
+    const player = cells[position].classList.contains(classPlayer)
+    if (enemy && weapon) {
+      changeCellClasslist(classCollision, position)
+      soundEnemyKilled.play()
+      return true
     }
   }
 
   /**
    * Handles enemy movement and weapon action. Enemy movement is based on an interval of one second
    */
-  const enemyAction = () => {
-    let soundCounter = 1
+  const enemyMovement = () => {
+    let soundCounter = 0
     let direction = 1
     let isAlreadyInBoundary = false
     const allMove = (movement) => {
       enemyPosition.forEach((enemy) => {
-        changeCellClasslist(enemyClass, enemy)
+        changeCellClasslist(classEnemy, enemy)
       })
 
       enemyPosition = enemyPosition.map((enemy) => (enemy += movement))
 
       enemyPosition.forEach((enemy) => {
-        changeCellClasslist(enemyClass, enemy)
+        changeCellClasslist(classEnemy, enemy)
       })
     }
-
-    const enemyMovement = setInterval(() => {
-      // soundCounter++
-      // if (soundCounter === 1) {
-      //   soundMovement1.play()
-      // } else if (soundCounter === 2) {
-      //   soundMovement2.play()
-      // } else if (soundCounter === 3) {
-      //   soundMovement3.play()
-      // } else if (soundCounter === 4) {
-      //   soundMovement4.play()
-      //   soundCounter = 0
-      // }
-      //change direction on edge
-      // count++
+    const movement = setInterval(() => {
+      soundCounter++
+      if (soundCounter === 1) {
+        soundMovement1.play()
+      } else if (soundCounter === 2) {
+        soundMovement2.play()
+      } else if (soundCounter === 3) {
+        soundMovement3.play()
+      } else if (soundCounter === 4) {
+        soundMovement4.play()
+        soundCounter = 0
+      }
       const isInBoundary =
-      enemyPosition.some((item) => rightBoundary.includes(item)) ||
-      enemyPosition.some((item) => leftBoundary.includes(item))
-      const isFloor = enemyPosition.some((item) => bottomBoundary.includes(item))
-
+        enemyPosition.some((item) => rightBoundary.includes(item)) ||
+        enemyPosition.some((item) => leftBoundary.includes(item))
+      const isFloor = enemyPosition.some((item) =>
+        bottomBoundary.includes(item)
+      )
+      enemyPosition = enemyPosition.filter(
+        (position) => !cells[position].classList.contains(classCollision)
+      )
+      cells.forEach((cell) => {
+        cell.classList.remove(classCollision)
+      })
       if (isInBoundary && !isAlreadyInBoundary) {
         console.log(isAlreadyInBoundary)
         direction = direction * -1
@@ -267,23 +297,28 @@ function init() {
       }
     }, 1000)
   }
+
+  //#endregion
+
+  //#region //* functions called from event listeners
   /**
-   * handles the game start. starts the `enemyAction()`
+   * Loads the gameboard. runs the functions `createGameBoard` and
+    `generateStartingPositions`
    */
-  const startGame = () => {
-    enemyAction()
-
+  const gameLoad = () => {
+    createGameBoard()
+    generateStartingPositions(numberOfRows)
   }
+
+  /**
+   * Start the game. Calls the enemy functions
+   */
+  const gameStart = () => {
+    enemyMovement()
+  }
+  gameLoad()
   document.addEventListener('keydown', playerAction)
-  startButton.addEventListener('click', startGame)
-
-
-
-
-
-
-
-
+  startButton.addEventListener('click', gameStart)
 
   // let stopGame = true
 
@@ -305,14 +340,7 @@ function init() {
   // const displayLife = document.querySelector('.displayLife p')
   // const displayLevel = document.querySelector('.displayLevel p')
 
-  // const bonusDisplay = document.querySelector('.displayCurrentBonusWeapon p')
-  // const powerBar = document.querySelector('.powerBar')
-  // const displayPowerBar = document.querySelector('.displayPowerBar')
-  // const powerBarH3 = document.querySelector('.displayPowerBar h3')
-  // powerBar.max = powerUpCharge
 
-  // const resetButton = document.querySelector('.resetButton')
-  // const homeButton = document.querySelector('.homeButton')
 
   // //tutorialScreen selectors
   // const tutorialScreen = document.querySelector('.tutorialScreen')
