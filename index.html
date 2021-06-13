@@ -28,17 +28,17 @@
     <section class="arcadeVideo hidden">
     <video src="/assets/splashVideo.mp4" muted autoplay class="splashVideo" type='video/mp4'></video>
     </section>
-    <section class="splashScreen hidden">
+    <section class="splashScreen">
       <h1>SPACE INVADERS</h1>
         <div class="startMenu">
-          <button class="startButtonHome" type="button">GAME START</button>
+          <button class="startButtonHome navigationButton" type="button" value=".gameScreen">GAME START</button>
           <button type="button" class="loadGameButton noFunction">GAME LOAD</button type="button">
-          <button type="button" class="highScoreButton noFunction">HIGHSCORES</button>
-          <button type= "button" class="tutorialButton">TUTORIAL</button>
+          <button type="button" class="highScoreButton noFunction" value=".highscoreScreen">HIGHSCORES</button>
+          <button type= "button" class="tutorialButton navigationButton" value=".tutorialScreen">TUTORIAL</button>
           <button class="optionsButton noFunction" type="button">OPTIONS</button>
         </div>
     </section>
-    <section class="gameScreen" >
+    <section class="gameScreen hidden" >
       <div class="gridWrapper">
         <div class="grid"></div>
       </div >
@@ -64,14 +64,14 @@
         </div>
         <button type="button" class="startButton">Start Game</button>
         <button type="button" class="resetButton">Reset Game</button>
-        <button class="returnHomeButton">Home</button>
+        <button class="returnHomeButton navigationButton" value=".splashScreen">Home</button>
       </div>
     </section>
     <section class="highscoreScreen hidden">
       <h1>High scores</h1>
       <p>enter your high scores</p>
       <button type="submit">submit my score</button>
-      <button class="returnHomeButton">Home</button>
+      <button class="returnHomeButton navigationButton" value=".splashScreen">Home</button>
     </section>
     <section class="tutorialScreen hidden">
       <h1>HOW TO PLAY</h1>
@@ -85,13 +85,13 @@
           <p><br>We have a supply of special bombs that will kill a number of enemies in a single hit. <br>However, they are temperamental and will shooting regular bolts will reset their charge. <br>Keep an eye on your visor for an indicator when the bombs are charged and operational. <br>Press the P key to open fire<br></p>
           <p><br>On occasion some fighters have observed fast moving ships scouting above. <br>If you see one, shoot it down! <br>They sometimes carry advanced shielding tech that can protect you from a round of enemy fire!</p>
         </div>
-        <button class="returnHomeButton">Home</button>
+        <button class="returnHomeButton navigationButton" value=".splashScreen">Home</button>
     </div>
     </section>
     <section class="optionsScreen hidden">
       <h1>OPTIONS SCREEN</h1>
       <p>i am the options screen! here you can change settings in the game to make it easier or more difficult, your choice</p>
-      <button class="returnHomeButton">Home</button>
+      <button class="returnHomeButton navigationButton" value=".splashScreen">Home</button>
     </section>
     <section class="gameOverScreen hidden ">
       <h1>GAME OVER</h1>
@@ -102,7 +102,7 @@
         </div>
         <div class="loseScreenButtons">
           <button type="button" class="resetButton">Let me try again...</button>
-          <button type="button" class="returnHomeButton">i'm done, no more</button>
+          <button type="button" class="returnHomeButton navigationButton">i'm done, no more</button>
         </div>
       </div>
     </section>
@@ -115,7 +115,7 @@
         </div>
         <div class="winScreenButtons">
           <button type="button" class="submitHighScore">Submit Your Score</button>
-          <button class="returnHomeButton">Home</button>
+          <button class="returnHomeButton navigationButton">Home</button>
         </div>
       </div>
     </section>

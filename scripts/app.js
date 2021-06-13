@@ -49,6 +49,7 @@ const init = () => {
   //#endregion
   //#region //* UNIVERSAL SELECTORS
   const returnHomeButton = document.querySelectorAll('.returnHomeButton')
+  const navigationButton = document.querySelectorAll('.navigationButton')
   const allSections = document.querySelectorAll('section')
   const audioMuted = document.querySelector('.audioMuted')
   const audioPlay = document.querySelector('.audioPlay')
@@ -314,9 +315,7 @@ const init = () => {
       switch (collisionType) {
         case 'bomb':
           bombArea.forEach((position) => {
-
             changeCellClasslist(classCollision, position)
-
           })
           break
         default:
@@ -390,14 +389,16 @@ const init = () => {
 
   /**
    * Assigns the class hidden to all screens, then removes the class hidden from the Element `screen`.
-   * @param {Element} screen the screen to display
+   * @param {Element} display the screen to display
    */
-  const toggleScreen = (screen) => {
+  const toggleScreen = (event) => {
+    const { value } = event.target
     allSections.forEach((section) => {
       if (!section.classList.contains('hidden')) {
         section.classList.add('hidden')
       }
     })
+    const screen = document.querySelector(value)
     screen.classList.remove('hidden')
   }
   /**
@@ -421,7 +422,9 @@ const init = () => {
     createGameBoard()
     generateStartingPositions(numberOfRows)
   }
-
+  const resetGame = () => {
+    window.location.reload()
+  }
   /**
    * Start the game. Calls the enemy functions
    */
@@ -446,30 +449,24 @@ const init = () => {
       powerBarH3.innerText = 'POWERING UP...'
     }
   }
+  allSections.forEach((section) => {
+    console.log(section.classList)
+  })
   //#endregion
   //#region //* EVENT LISTENERS
   document.addEventListener('keydown', playerAction)
   startButton.addEventListener('click', gameStart)
   // splashVideo.addEventListener('ended', hideVideo)
-  startButtonHome.addEventListener('click', gameStart)
+  navigationButton.forEach((button) => {
+    button.addEventListener('click', toggleScreen)
+  })
+  //#endregion
+
   //loadGameButton.addEventListener('click',loadGame)
-  tutorialButton.addEventListener('click', toTutorial)
-  //optionsButton.addEventListener('click', toOptions)
 
   //gameScreen event listeners
-  resetButton.addEventListener('click', resetGame)
-  startButton.addEventListener('click', setStartGame)
-  document.addEventListener('keydown', characterMoveset)
+  // resetButton.addEventListener('click', resetGame)
 
-  //universal event listeners
-  returnHomeButton.forEach((element) => {
-    element.addEventListener('click', returnHome)
-  })
-
-  //#endregion
-  // //* **********************GAME START FUNCTIONS*****************************
-
-  // //splashVideo and splashScreen Functions
   //#region //! splash screen functions, need to amend, rewritten into new function toggleScreen, delete after testing
   // function hideVideo() {
   //   splashVideo.classList.add('hidden')
@@ -499,18 +496,12 @@ const init = () => {
   //   splashVideo.play()
   // }
   //#endregion
-  // //gameOver gameWin functions
 
   //#region //! old code not needed, delete after testing
   // function gameRestart() {
   //   splashScreen.classList.add('hidden')
   //   gameOverScreen.classList.add('hidden')
   //   gameScreen.classList.remove('hidden')
-  // }
-
-  // function resetGame() {
-  //   window.location.reload()
-  //   gameRestart()
   // }
 
   // //gameScreen functions - generate items
@@ -759,6 +750,7 @@ const init = () => {
   //     }
   //   }, 1000)
   // }
+  //#endregion
 
   // function enemyRemainingCheck() {
   //   const enemyRemainingCheck = setInterval(() => {
