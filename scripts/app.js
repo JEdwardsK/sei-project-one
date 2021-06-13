@@ -55,6 +55,7 @@ const init = () => {
   displayLevel.innerText = currentLevel
   powerBar.max = powerUpCharge
   let gameEnd = false
+  let isGameStart = false
 
   //* player variables
   // the starting player position should always be in the centre of the bottom row on the game board.
@@ -403,19 +404,24 @@ const init = () => {
    * Start the game. Calls the enemy functions
    */
   const gameStart = () => {
-    enemyMovement()
-    // enemyWeaponFire()
-    startButton.disabled = true
+    console.log('test')
+    if (!isGameStart) {
+      isGameStart = true
+      enemyMovement()
+      // enemyWeaponFire()
+      startButton.disabled = true
+      startButton.setAttribute('style', 'color: rgb(144, 140, 140)')
+    }
   }
   gameLoad()
 
-  const playerAction = (event) => {
+  const handleKeyDown = (event) => {
     console.log(event.keyCode)
     const { keyCode: key } = event
     const movementKeys = [37, 39, 65, 68]
-
-    if (movementKeys.includes(key)) playerMovement(key)
-    else if (key === 32) useWeapon('bolt')
+    if (key === 13 ) gameStart()
+    else if (movementKeys.includes(key)) playerMovement(key)
+    else if (key === 32 ) useWeapon('bolt')
     else if (key === 80 && isPowerUpReady >= powerUpCharge) {
       useWeapon('bomb')
       isPowerUpReady = 0
@@ -427,8 +433,8 @@ const init = () => {
   //#endregion
 
   //#region //* EVENT LISTENERS
-  document.addEventListener('keydown', playerAction)
-  startButton.addEventListener('click', gameStart)
+  document.addEventListener('keydown', handleKeyDown)
+  // startButton.addEventListener('click', gameStart)
   navigationButton.forEach((button) => {
     button.addEventListener('click', toggleScreen)
   })
