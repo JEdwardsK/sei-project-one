@@ -33,7 +33,7 @@
         <div class="startMenu">
           <button class="startButtonHome navigationButton" type="button" value=".gameScreen">GAME START</button>
           <button type="button" class="loadGameButton noFunction">GAME LOAD</button type="button">
-          <button type="button" class="highScoreButton noFunction" value=".highscoreScreen">HIGHSCORES</button>
+          <button type="button" class="highScoreButton noFunction" value=".highScoreScreen">HIGHSCORES</button>
           <button type= "button" class="tutorialButton navigationButton" value=".tutorialScreen">TUTORIAL</button>
           <button class="optionsButton noFunction" type="button">OPTIONS</button>
         </div>
@@ -102,7 +102,7 @@
         </div>
         <div class="loseScreenButtons">
           <button type="button" class="resetButton">Let me try again...</button>
-          <button type="button" class="returnHomeButton navigationButton">i'm done, no more</button>
+          <button type="button" class="returnHomeButton navigationButton" value=".splashScreen">i'm done, no more</button>
         </div>
       </div>
     </section>
@@ -110,12 +110,12 @@
       <h1>YOU WON</h1>
       <div class="winScreenContent">
         <div class="winScreenLeft">
-          <p>GAME OVER, YOU WIN!!! <br>You succesfully repelled the invading forces and live to fight another day... </p>
+          <p>GAME OVER, YOU WIN!!! <br>You successfully repelled the invading forces and live to fight another day... </p>
           <p class="finalScore"></p>
         </div>
         <div class="winScreenButtons">
-          <button type="button" class="submitHighScore">Submit Your Score</button>
-          <button class="returnHomeButton navigationButton">Home</button>
+          <button type="button" disabled class="submitHighScore noFunction">Submit Your Score</button>
+          <button class="returnHomeButton navigationButton" value=".splashScreen">Home</button>
         </div>
       </div>
     </section>
