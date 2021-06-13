@@ -1,33 +1,62 @@
 const init = () => {
-  //#region  Document selectors
-  //elements
-  const grid = document.querySelector('.grid')
-  const bonusDisplay = document.querySelector('.displayCurrentBonusWeapon p')
-  const powerBar = document.querySelector('.powerBar')
-  const displayPowerBar = document.querySelector('.displayPowerBar')
-  const powerBarH3 = document.querySelector('.displayPowerBar h3')
-  powerBar.max = powerUpCharge
+  //#region  //* DOCUMENT SELECTORS
+    //#region  //* GAME SCREEN SELECTORS
+    const gameScreen = document.querySelector('.gameScreen')
+    const grid = document.querySelector('.grid')
+    const bonusDisplay = document.querySelector('.displayCurrentBonusWeapon p')
+    const powerBar = document.querySelector('.powerBar')
+    const displayPowerBar = document.querySelector('.displayPowerBar')
+    const powerBarH3 = document.querySelector('.displayPowerBar h3')
+    const resetButton = document.querySelector('.resetButton')
+    const homeButton = document.querySelector('.homeButton')
+    const startButton = document.querySelector('.startButton')
+    const displayScore = document.querySelector('.displayScore p')
+    const displayLife = document.querySelector('.displayLife p')
+    const displayLevel = document.querySelector('.displayLevel p')
+    //#endregion
+    //#region //* HOMESCREEN SELECTORS
+    const startPage = document.querySelector('.startPage')
+    const arcadeVideo = document.querySelector('.arcadeVideo')
+    const splashScreen = document.querySelector('.splashScreen')
+    const startButtonHome = document.querySelector('.startButtonHome')
+    const loadGameButton = document.querySelector('.loadGameButton')
+    const highScoreButton = document.querySelector('.highScoreButton')
+    const tutorialButton = document.querySelector('.tutorialButton')
+    const optionsButton = document.querySelector('.optionsButton')
+    //#endregion
+    //#region //* TUTORIAL, GAMEOVER/WIN, OPTIONS SELECTORS
+    const tutorialScreen = document.querySelector('.tutorialScreen')
+    const gameOverScreen = document.querySelector('.gameOverScreen')
+    const gameWinScreen = document.querySelector('.gameWinScreen')
+    const submitHighScore = document.querySelector('.submitHighScore')
+    const finalScore = document.querySelector('.finalScore')
+    const optionsScreen = document.querySelector('.optionsScreen')
+    const highScoreScreen = document.querySelector('.highScoreScreen')
 
-  const resetButton = document.querySelector('.resetButton')
-  const homeButton = document.querySelector('.homeButton')
-  const startButton = document.querySelector('.startButton')
-
-  //sounds
-  // const splashVideo = document.querySelector('.splashVideo')
-  const soundBoltFire = document.querySelector('.soundBoltFire')
-  const soundExplosion = document.querySelector('.soundExplosion')
-  const soundMovement1 = document.querySelector('.soundMovement1')
-  const soundMovement2 = document.querySelector('.soundMovement2')
-  const soundMovement3 = document.querySelector('.soundMovement3')
-  const soundMovement4 = document.querySelector('.soundMovement4')
-  const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
-  const soundUfo1 = document.querySelector('.soundUfo1')
-  const soundUfo2 = document.querySelector('.soundUfo2')
-  const startButton = document.querySelector('.startButton')
-
+    //#endregion
+    //#region //* SOUND SELECTORS
+    // const splashVideo = document.querySelector('.splashVideo')
+    const soundBoltFire = document.querySelector('.soundBoltFire')
+    const soundExplosion = document.querySelector('.soundExplosion')
+    const soundMovement1 = document.querySelector('.soundMovement1')
+    const soundMovement2 = document.querySelector('.soundMovement2')
+    const soundMovement3 = document.querySelector('.soundMovement3')
+    const soundMovement4 = document.querySelector('.soundMovement4')
+    const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
+    const soundUfo1 = document.querySelector('.soundUfo1')
+    const soundUfo2 = document.querySelector('.soundUfo2')
+    const startButton = document.querySelector('.startButton')
+    //#endregion
+    //#region //* UNIVERSAL SELECTORS
+    const returnHomeButton = document.querySelectorAll('.returnHomeButton')
+    const allSections = document.querySelectorAll('section')
+    const audioMuted = document.querySelector('.audioMuted')
+    const audioPlay = document.querySelector('.audioPlay')
+    const allAudioElements = document.querySelectorAll('audio')
+    //#endregion
   //#endregion
 
-  //#region VARIABLES
+  //#region //* VARIABLES
 
   //* grid variables
   // adjustable variables. height may break due to css styling percentages for `.cell div`
@@ -36,7 +65,6 @@ const init = () => {
   let currentLevel = 1
   const powerUpCharge = 4
   const scoreModifier1 = 10
-
 
   // do not adjust, the empty arrays will have numbers pushed into them in later functions
   const width = height
@@ -48,6 +76,9 @@ const init = () => {
   const topBoundary = []
   let scoreCounter = 0
   let isPowerupReady = 0
+  displayLife.innerText = lifeCounter
+  displayLevel.innerText = currentLevel
+  powerBar.max = powerUpCharge
 
   //* player variables
   // the starting player position should always be in the centre of the bottom row on the game board.
@@ -74,7 +105,7 @@ const init = () => {
   const classBomb = 'weaponBomb'
   //#endregion
 
-  //#region FUNCTION DECLARATIONS
+  //#region //* FUNCTION DECLARATIONS
 
   /**
    * Returns a random number between the parameters `min` and `max`, inclusive
@@ -300,7 +331,7 @@ const init = () => {
 
   //#endregion
 
-  //#region //* functions called from event listeners
+  //#region //* FUNCTIONS CALLED BY EVENT LISTENERS
   /**
    * Loads the gameboard. runs the functions `createGameBoard` and
     `generateStartingPositions`
@@ -317,58 +348,27 @@ const init = () => {
     enemyMovement()
   }
   gameLoad()
+  //#endregion
+  //#region //* EVENT LISTENERS
   document.addEventListener('keydown', playerAction)
   startButton.addEventListener('click', gameStart)
 
-  // let stopGame = true
-
-  // // splashScreen selectors
-
-  // const startPage = document.querySelector('.startPage')
-  // const arcadeVideo = document.querySelector('.arcadeVideo')
-  // const splashScreen = document.querySelector('.splashScreen')
-  // const startButtonHome = document.querySelector('.startButtonHome')
-  // const loadGameButton = document.querySelector('.loadGameButton')
-  // const highScoreButton = document.querySelector('.highScoreButton')
-  // const tutorialButton = document.querySelector('.tutorialButton')
-  // const optionsButton = document.querySelector('.optionsButton')
-
-  // //gameScreen selectors
-  // const gameScreen = document.querySelector('.gameScreen')
-
-  // const displayScore = document.querySelector('.displayScore p')
-  // const displayLife = document.querySelector('.displayLife p')
-  // const displayLevel = document.querySelector('.displayLevel p')
-
-
-
-  // //tutorialScreen selectors
-  // const tutorialScreen = document.querySelector('.tutorialScreen')
-
-  // //gameOver and GameWin Selectors
-  // const gameOverScreen = document.querySelector('.gameOverScreen')
-  // const gameWinScreen = document.querySelector('.gameWinScreen')
-  // const submitHighScore = document.querySelector('.submitHighScore')
-  // const finalScore = document.querySelector('.finalScore')
-
-  // //highScoreScreen selectors
-  // const highScoreScreen = document.querySelector('.highScoreScreen')
-
-  // //optionsScreen selectiors
-  // const optionsScreen = document.querySelector('.optionsScreen')
-
-  // //universal selectors
-  // const returnHomeButton = document.querySelectorAll('.returnHomeButton')
-  // const allSections = document.querySelectorAll('section')
-  // const audioMuted = document.querySelector('.audioMuted')
-  // const audioPlay = document.querySelector('.audioPlay')
-  // const allAudioElements = document.querySelectorAll('audio')
-
-  // displayLife.innerText = lifeCounter
-  // displayLevel.innerText = currentLevel
+  //#endregion
   // //* **********************GAME START FUNCTIONS*****************************
-
+  /**
+   * Assigns the class hidden to all screens, then removes the class hidden from the Element `screen`.
+   * @param {Element} screen the screen to display
+   */
+  const toggleScreen = (screen) => {
+    allSections.forEach(section => {
+      if (!section.classList.contains(hidden)) {
+        section.classList.add(hidden)
+      }
+    })
+    screen.classList.remove(hidden)
+  }
   // //splashVideo and splashScreen Functions
+  //#region //! splash screen functions, need to amend, rewritten into new function toggleScreen, delete after testing
   // function hideVideo() {
   //   splashVideo.classList.add('hidden')
   //   splashScreen.classList.remove('hidden')
@@ -396,7 +396,7 @@ const init = () => {
   //   arcadeVideo.classList.remove('hidden')
   //   splashVideo.play()
   // }
-
+ //#endregion
   // //gameOver gameWin functions
 
   // function gameOver() {
