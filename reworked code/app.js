@@ -1,7 +1,19 @@
 function init() {
-  // Document selectors
+  //#region  Document selectors
+  //elements
   const grid = document.querySelector('.grid')
   // const startButton = document.querySelector('.startButton')
+
+  //sounds
+  const soundBoltFire = document.querySelector('.soundBoltFire')
+  const soundExplosion = document.querySelector('.soundExplosion')
+  const soundMovement1 = document.querySelector('.soundMovement1')
+  const soundMovement2 = document.querySelector('.soundMovement2')
+  const soundMovement3 = document.querySelector('.soundMovement3')
+  const soundMovement4 = document.querySelector('.soundMovement4')
+  const soundEnemyKilled = document.querySelector('.soundEnemyKilled')
+
+  //#endregion
 
   //#region VARIABLES
 
@@ -41,25 +53,6 @@ function init() {
   //#endregion
 
   //#region FUNCTION DECLARATIONS
-  /**
-   * takes a cell position and determines whether there has been a collision at the given at that cell
-   * @param {number} position cell position
-   * @param {string} type string defining case for switch, can be 'enemy2weapon' or 'enemy2player'
-   * @returns {boolean} if true, a collision occurred
-   */
-  const isCollision = (position, type) => {
-    const enemy = cells[position].classList.contains(classEnemy)
-    const weapon = cells[position].classList.contains(classBolt)
-    const player = cells[position].classList.contains(classPlayer)
-    switch (type) {
-      case 'enemy2weapon':
-        return enemy && weapon
-      case 'enemy2player':
-        return enemy && player
-      default:
-        return false
-    }
-  }
 
   /**
    * Generates the grid and defines its boundaries, updating the `leftBoundary`, `rightBoundary`, `bottomBoundary` and `topBoundary` variables.
@@ -120,9 +113,13 @@ function init() {
    * @param {number} position the cell position
    */
   const changeCellClasslist = (character, position) => {
-    cells[position].classList.contains(character)
-      ? cells[position].classList.remove(character)
-      : cells[position].classList.add(character)
+    if (character === classCollision) {
+      cells[position].classList = classCollision
+    } else {
+      cells[position].classList.contains(character)
+        ? cells[position].classList.remove(character)
+        : cells[position].classList.add(character)
+    }
   }
 
   /**
@@ -137,6 +134,7 @@ function init() {
     const useWeapon = () => {
       let weaponCurrentPosition = weaponStartingPosition
       let count = -2
+      soundBoltFire.play()
       changeCellClasslist(classBolt, weaponCurrentPosition)
       const shoot = setInterval(() => {
         changeCellClasslist(classBolt, weaponCurrentPosition)
@@ -151,11 +149,8 @@ function init() {
             cells[weaponCurrentPosition].classList.contains(classEnemy)
           )
         }
-        if (isCollision(weaponCurrentPosition, 'enemy2weapon')) {
+        if (isCollision(weaponCurrentPosition)) {
           console.log('hit')
-          changeCellClasslist(classBolt, weaponCurrentPosition)
-          changeCellClasslist(classEnemy, weaponCurrentPosition)
-          changeCellClasslist(classCollision, weaponCurrentPosition)
           clearInterval(shoot)
         }
       }, 100)
@@ -176,10 +171,42 @@ function init() {
       enemyMovement()
     }
   }
+
+  /**
+   * takes a cell position and determines whether there has been a collision at the given at that cell
+   * @param {number} position cell position
+   * @returns {boolean} if true, a collision occurred
+   */
+  const isCollision = (position) => {
+    const enemy = cells[position].classList.contains(classEnemy)
+    const weapon =
+      cells[position].classList.contains(classBolt) ||
+      cells[position].classList.contains(classBomb)
+    const player = cells[position].classList.contains(classPlayer)
+    if (enemy && weapon) {
+      changeCellClasslist(classCollision, position)
+      soundEnemyKilled.play()
+      return true
+    }
+
+    // changeCellClasslist(classBolt, position)
+    // changeCellClasslist(classEnemy, position)
+    // changeCellClasslist(classCollision, position)
+    // switch (type) {
+    //   case 'enemy2weapon':
+    //     return enemy && weapon
+    //   case 'enemy2player':
+    //     return enemy && player
+    //   default:
+    //     return false
+    // }
+  }
+
   /**
    * Handles enemy movement and weapon action. Enemy movement is based on an interval of one second
    */
   const enemyMovement = () => {
+    let soundCounter = 0
     let count = 1
     let direction = 1
     let isAlreadyInBoundary = false
@@ -198,6 +225,18 @@ function init() {
     const movement = setInterval(() => {
       //change direction on edge
       count++
+
+      soundCounter++
+      if (soundCounter === 1) {
+        soundMovement1.play()
+      } else if (soundCounter === 2) {
+        soundMovement2.play()
+      } else if (soundCounter === 3) {
+        soundMovement3.play()
+      } else if (soundCounter === 4) {
+        soundMovement4.play()
+        soundCounter = 0
+      }
       const isInBoundary =
         enemyPosition.some((item) => rightBoundary.includes(item)) ||
         enemyPosition.some((item) => leftBoundary.includes(item))
