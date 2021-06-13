@@ -1,5 +1,4 @@
 function init() {
-
   const height = 20
   const width = 20
   const cellCount = height * width
@@ -14,9 +13,9 @@ function init() {
   const bottomBoundary = []
   const topBoundary = []
   const isCollision = (position, type) => {
-    const enemy =  cells[position].classList.contains(enemyClass)
-    const weapon =  cells[position].classList.contains('bolt')
-    const player =  cells[position].classList.contains(playerClass)
+    const enemy = cells[position].classList.contains('enemy')
+    const weapon = cells[position].classList.contains('weapon')
+    const player = cells[position].classList.contains('player')
     switch (type) {
       case 'enemy2weapon':
         return enemy && weapon
@@ -45,27 +44,27 @@ function init() {
     cells.push(cell)
   }
   const addStartingPositions = (rowNumber) => {
-    cells[playerStartingPosition].classList.add(playerClass)
-    leftBoundary.forEach(position => {
+    cells[playerStartingPosition].classList.add('player')
+    leftBoundary.forEach((position) => {
       cells[position].classList.add('boundary')
     })
-    rightBoundary.forEach(position => {
+    rightBoundary.forEach((position) => {
       cells[position].classList.add('boundary')
     })
-    topBoundary.forEach(position => {
+    topBoundary.forEach((position) => {
       cells[position].classList.add('bottom')
     })
 
     const empty = []
     for (let i = 1; i <= rowNumber; i++) {
-      const row = enemyFirstRow.map(cell => cell + (i * 20))
+      const row = enemyFirstRow.map((cell) => cell + i * 20)
       empty.push(row)
     }
     enemyPosition = empty.flat()
   }
   addStartingPositions(3)
 
-  const changeCellClasslist = (character, position ) => {
+  const changeCellClasslist = (character, position) => {
     // switch (type) {
     //   case 'add':
     //     cells[position].classList.add(character)
@@ -76,11 +75,12 @@ function init() {
     //     default:
     //       break
     //     }
-       cells[position].classList.contains(character) ? cells[position].classList.remove(character) :
-        cells[position].classList.add(character)
+    cells[position].classList.contains(character)
+      ? cells[position].classList.remove(character)
+      : cells[position].classList.add(character)
   }
-  enemyPosition.forEach(enemy => {
-    cells[enemy].classList.add(enemyClass)
+  enemyPosition.forEach((enemy) => {
+    cells[enemy].classList.add('enemy')
   })
   const playerAction = (event) => {
     console.log(event.keyCode)
@@ -91,82 +91,72 @@ function init() {
     const useWeapon = () => {
       let weaponCurrentPosition = weaponStartingPosition
       let count = -2
-      changeCellClasslist('bolt', weaponCurrentPosition)
+      changeCellClasslist('weapon', weaponCurrentPosition)
       const shoot = setInterval(() => {
-        changeCellClasslist('bolt', weaponCurrentPosition)
+        changeCellClasslist('weapon', weaponCurrentPosition)
         weaponCurrentPosition -= width
         if (weaponCurrentPosition < width - 1) {
           clearInterval(shoot)
         } else {
-          changeCellClasslist('bolt', weaponCurrentPosition)
+          changeCellClasslist('weapon', weaponCurrentPosition)
         }
         if (weaponCurrentPosition === 130) {
-          console.log(
-            cells[weaponCurrentPosition].classList.contains(enemyClass)
-          )
+          console.log(cells[weaponCurrentPosition].classList.contains('enemy'))
         }
         if (isCollision(weaponCurrentPosition, 'enemy2weapon')) {
           console.log('hit')
-          changeCellClasslist('bolt', weaponCurrentPosition)
-          changeCellClasslist(enemyClass, weaponCurrentPosition)
+          changeCellClasslist('weapon', weaponCurrentPosition)
+          changeCellClasslist('enemy', weaponCurrentPosition)
           changeCellClasslist('explosion', weaponCurrentPosition)
           clearInterval(shoot)
-
         }
-
       }, 100)
     }
     // left arrow
     if (key === 39 && !isLeftBoundary) {
-      changeCellClasslist(playerClass, playerCurrentPosition)
+      changeCellClasslist('player', playerCurrentPosition)
       playerCurrentPosition += 1
-      changeCellClasslist(playerClass, playerCurrentPosition)
-    // right arrow
+      changeCellClasslist('player', playerCurrentPosition)
+      // right arrow
     } else if (key === 37 && !isRightBoundary) {
-      changeCellClasslist(playerClass, playerCurrentPosition)
+      changeCellClasslist('player', playerCurrentPosition)
       playerCurrentPosition -= 1
-      changeCellClasslist(playerClass, playerCurrentPosition)
+      changeCellClasslist('player', playerCurrentPosition)
     } else if (key === 32) {
       useWeapon()
     }
   }
   const enemyMovement = () => {
-    let soundCounter = 1
+    let count = 1
     let direction = 1
     let isAlreadyInBoundary = false
     const allMove = (movement) => {
       enemyPosition.forEach((enemy) => {
-        changeCellClasslist(enemyClass, enemy)
+        changeCellClasslist('enemy', enemy)
       })
 
-      enemyPosition = enemyPosition.map(
-        (enemy) => (enemy += movement)
-      )
+      enemyPosition = enemyPosition.map((enemy) => (enemy += movement))
 
       enemyPosition.forEach((enemy) => {
-        changeCellClasslist(enemyClass, enemy)
+        changeCellClasslist('enemy', enemy)
       })
     }
 
     const movement = setInterval(() => {
-      soundCounter++
-      if (soundCounter === 1) {
-        soundMovement1.play()
-      } else if (soundCounter === 2) {
-        soundMovement2.play()
-      } else if (soundCounter === 3) {
-        soundMovement3.play()
-      } else if (soundCounter === 4) {
-        soundMovement4.play()
-        soundCounter = 0
-      }
       //change direction on edge
       count++
       const isInBoundary =
         enemyPosition.some((item) => rightBoundary.includes(item)) ||
         enemyPosition.some((item) => leftBoundary.includes(item))
-      const isFloor = enemyPosition.some((item) => bottomBoundary.includes(item))
-
+      const isFloor = enemyPosition.some((item) =>
+        bottomBoundary.includes(item)
+      )
+      enemyPosition = enemyPosition.filter(
+        (position) => !cells[position].classList.contains('explosion')
+      )
+      cells.forEach((cell) => {
+        cell.classList.remove('explosion')
+      })
       if (isInBoundary && !isAlreadyInBoundary) {
         console.log(isAlreadyInBoundary)
         direction = direction * -1
@@ -182,11 +172,8 @@ function init() {
         clearInterval(movement)
       }
     }, 1000)
-
   }
   enemyMovement()
-
-
 
   document.addEventListener('keydown', playerAction)
 }
